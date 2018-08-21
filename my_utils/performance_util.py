@@ -26,3 +26,10 @@ def save_train_validation(fn, history_array, metrics):
 def save_test(fn, test_acc_array, test_loss_array):
     np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_test_acc.csv', test_acc_array, delimiter=',')
     np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_test_loss.csv', test_loss_array, delimiter=',')
+
+
+def labelize(y_arr):
+    y_label = []
+    for y in y_arr:
+        y_label = np.append(y_label, np.argmax(y))
+    return y_label

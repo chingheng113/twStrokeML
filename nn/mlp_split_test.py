@@ -88,23 +88,25 @@ if __name__ == '__main__':
     # ====== Binary
     x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
-        history, model = mlp_binary(data_util.scale(x_data.iloc[train]),
+        x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_data.iloc[train])
+
+        history, model = mlp_binary(data_util.scale(x_train_cnn),
                                     to_categorical(y_data.iloc[train]),
                                     parameter)
         history_array.append(history)
 
-        loss, acc = model.evaluate(data_util.scale(x_data.iloc[test]),
+        x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_data.iloc[test])
+        loss, acc = model.evaluate(data_util.scale(x_test_cnn),
                                    to_categorical(y_data.iloc[test]),
                                    verbose=0)
         test_acc_array.append(acc)
         test_loss_array.append(loss)
 
-        y_pred = model.predict(data_util.scale(x_data.iloc[test]))
+        y_pred = model.predict(data_util.scale(x_test_cnn))
         # predict_array.append(y_pred, y_data.iloc[test])
         print(confusion_matrix(y_data.iloc[test], performance_util.labelize(y_pred)))
         print(classification_report(y_data.iloc[test], performance_util.labelize(y_pred)))
 
     print('===> Test:', np.mean(test_acc_array))
-    performance_util.save_performance_all('mlp_2C', history_array, test_acc_array, test_loss_array, 'acc')
     plot_fig.plot_acc_loss_all(history_array, 'acc')
     print('Done')

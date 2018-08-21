@@ -17,16 +17,16 @@ def cnn_binary(x, y, para):
     callbacks_list = [early_stop]
 
     model = Sequential()
-    model.add(Conv1D(filters=3, kernel_size=2, strides=2, input_shape=(nb_features, 1)))
+    model.add(Conv1D(filters=4, kernel_size=2, strides=2, input_shape=(nb_features, 1)))
     model.add(Activation('relu'))
-    model.add(MaxPool1D())
-    model.add(Dropout(para['drop_rate']))
+    # model.add(MaxPool1D())
+    # model.add(Dropout(para['drop_rate']))
     # layer_Final
     model.add(Flatten())
     model.add(Dense(units=nb_classes))
     model.add(Activation('softmax'))
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=1e-4, momentum=0.9),
+                  optimizer=optimizers.sgd(lr=1e-3, momentum=0.5),
                   metrics=['accuracy'])
     history = model.fit(x, y,
                         batch_size=para['size_of_batch'],
@@ -34,7 +34,7 @@ def cnn_binary(x, y, para):
                         shuffle=True,
                         validation_split=0.33,
                         callbacks=callbacks_list)
-    return model, history
+    return history, model
 
 
 if __name__ == '__main__':
@@ -63,13 +63,13 @@ if __name__ == '__main__':
 
         x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_data.iloc[test])
         x_test_cnn = np.expand_dims(data_util.scale(x_test_cnn), 2)
-        loss, acc = model.evaluate(data_util.scale(x_test_cnn),
+        loss, acc = model.evaluate(x_test_cnn,
                                    to_categorical(y_data.iloc[test]),
                                    verbose=0)
         test_acc_array.append(acc)
         test_loss_array.append(loss)
 
-        y_pred = model.predict(data_util.scale(x_test_cnn))
+        y_pred = model.predict(x_test_cnn)
         # predict_array.append(y_pred, y_data.iloc[test])
         print(confusion_matrix(y_data.iloc[test], performance_util.labelize(y_pred)))
         print(classification_report(y_data.iloc[test], performance_util.labelize(y_pred)))

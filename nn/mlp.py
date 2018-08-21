@@ -110,7 +110,6 @@ if __name__ == '__main__':
         print(classification_report(y_data.iloc[test], y_pred))
 
     print('===> Test:', np.mean(test_acc_array))
-    performance_util.save_prediction('aa', predict_array)
     performance_util.save_performance_all(prfm_para['fn'], history_array, test_acc_array,
                                           test_loss_array, predict_array, prfm_para['matric'])
     plot_fig.plot_acc_loss_all(history_array, prfm_para['matric'])

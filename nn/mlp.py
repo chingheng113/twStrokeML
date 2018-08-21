@@ -9,29 +9,29 @@ from keras import optimizers
 import numpy as np
 
 
-# def mlp_multi(x, y, para):
-#     nb_features = x.shape[1]
-#     nb_classes = y.shape[1]
-#     # model
-#     early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=1000, verbose=1, mode='auto')
-#     callbacks_list = [early_stop]
-#     model = Sequential(name=para['model_name'])
-#     model.add(Dense(50, input_dim=nb_features))
-#     model.add(BatchNormalization())
-#     model.add(Activation('relu'))
-#     model.add(Dropout(para['drop_rate']))
-#     model.add(Dense(units=nb_classes))
-#     model.add(Activation('softmax'))
-#     model.compile(loss='categorical_crossentropy',
-#                   optimizer=optimizers.sgd(),
-#                   metrics=['categorical_accuracy'])
-#     history = model.fit(x, y,
-#                         batch_size=para['size_of_batch'],
-#                         epochs=para['nb_epoch'],
-#                         validation_split=0.33,
-#                         shuffle=True,
-#                         callbacks=callbacks_list)
-#     return history, model
+def mlp_multi(x, y, para):
+    nb_features = x.shape[1]
+    nb_classes = y.shape[1]
+    # model
+    early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=1000, verbose=1, mode='auto')
+    callbacks_list = [early_stop]
+    model = Sequential(name=para['model_name'])
+    model.add(Dense(50, input_dim=nb_features))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Dropout(para['drop_rate']))
+    model.add(Dense(units=nb_classes))
+    model.add(Activation('softmax'))
+    model.compile(loss='categorical_crossentropy',
+                  optimizer=optimizers.sgd(),
+                  metrics=['categorical_accuracy'])
+    history = model.fit(x, y,
+                        batch_size=para['size_of_batch'],
+                        epochs=para['nb_epoch'],
+                        validation_split=0.33,
+                        shuffle=True,
+                        callbacks=callbacks_list)
+    return history, model
 
 
 def mlp_binary(x, y, para):
@@ -74,7 +74,8 @@ if __name__ == '__main__':
     test_loss_array = []
     predict_array = []
     # ====== Multi-classes
-    # x_data, y_data = data_util.get_individual('wholeset_Jim_nomissing_validated.csv')
+    # id_data, x_data, y_data = data_util.get_individual('wholeset_Jim_nomissing_validated.csv')
+    # prfm_para = {'fn':'mlp_indiv', 'matric':'categorical_accuracy'}
     # for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
     #     history, model = mlp_multi(data_util.scale(x_data.iloc[train]),
     #                                to_categorical(y_data.iloc[train]),
@@ -86,7 +87,8 @@ if __name__ == '__main__':
     #     test_acc_array.append(acc)
     #     test_loss_array.append(loss)
     # ====== Binary
-    x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+    id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+    prfm_para = {'fn':'mlp_2c', 'matric':'acc'}
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         history, model = mlp_binary(data_util.scale(x_data.iloc[train]),
                                     to_categorical(y_data.iloc[train]),
@@ -99,12 +101,17 @@ if __name__ == '__main__':
         test_acc_array.append(acc)
         test_loss_array.append(loss)
 
-        y_pred = model.predict(data_util.scale(x_data.iloc[test]))
-        # predict_array.append(y_pred, y_data.iloc[test])
-        print(confusion_matrix(y_data.iloc[test], performance_util.labelize(y_pred)))
-        print(classification_report(y_data.iloc[test], performance_util.labelize(y_pred)))
+        predict_result = id_data.iloc[test]
+        predict_result['true'] = y_data.iloc[test]
+        y_pred = performance_util.labelize(model.predict(data_util.scale(x_data.iloc[test])))
+        predict_result['predict'] = y_pred
+        predict_array.append(predict_result)
+        print(confusion_matrix(y_data.iloc[test], y_pred))
+        print(classification_report(y_data.iloc[test], y_pred))
 
     print('===> Test:', np.mean(test_acc_array))
-    performance_util.save_performance_all('mlp_2C', history_array, test_acc_array, test_loss_array, 'acc')
-    plot_fig.plot_acc_loss_all(history_array, 'acc')
+    performance_util.save_prediction('aa', predict_array)
+    performance_util.save_performance_all(prfm_para['fn'], history_array, test_acc_array,
+                                          test_loss_array, predict_array, prfm_para['matric'])
+    plot_fig.plot_acc_loss_all(history_array, prfm_para['matric'])
     print('Done')

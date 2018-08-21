@@ -1,11 +1,12 @@
 import numpy as np
+import pandas as pd
 import os
 
 
-def save_performance_all(fn, history_array, test_acc_array, test_loss_array, metrics):
+def save_performance_all(fn, history_array, test_acc_array, test_loss_array, prediction_array, metrics):
     save_train_validation(fn, history_array, metrics)
     save_test(fn, test_acc_array, test_loss_array)
-
+    save_prediction(fn, prediction_array)
 
 def save_train_validation(fn, history_array, metrics):
     train_acc = []
@@ -26,6 +27,15 @@ def save_train_validation(fn, history_array, metrics):
 def save_test(fn, test_acc_array, test_loss_array):
     np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_test_acc.csv', test_acc_array, delimiter=',')
     np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_test_loss.csv', test_loss_array, delimiter=',')
+
+
+def save_prediction(fn, prediction_array):
+    for inx, prediction in enumerate(prediction_array):
+        if inx == 0:
+            df = prediction
+        else:
+            df = pd.concat([df, prediction])
+        np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_predictions.csv', df, delimiter=',', fmt='%s')
 
 
 def labelize(y_arr):

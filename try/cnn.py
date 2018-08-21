@@ -52,7 +52,7 @@ if __name__ == '__main__':
     test_loss_array = []
     predict_array = []
     # ====== Binary
-    x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+    id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_data.iloc[train])
 

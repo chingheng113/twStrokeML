@@ -47,7 +47,7 @@ def mlp_binary(x, y, para):
     model.add(Dense(units=nb_classes))
     model.add(Activation('softmax'))
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=7e-4, momentum=0.5),
+                  optimizer=optimizers.sgd(lr=5e-3, momentum=0.5),
                   metrics=['accuracy'])
     print(model.summary())
     history = model.fit(x, y,
@@ -65,8 +65,8 @@ if __name__ == '__main__':
     n_fold = 2
     np.random.seed(seed)
     parameter = {'model_name': 'mlp',
-            'size_of_batch': 32,
-            'nb_epoch': 500,
+            'size_of_batch': 128,
+            'nb_epoch': 150,
             'drop_rate': 0.}
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
     history_array = []

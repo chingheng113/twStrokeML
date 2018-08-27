@@ -38,16 +38,16 @@ def mlp_binary(x, y, para):
     nb_features = x.shape[1]
     nb_classes = y.shape[1]
     # model
-    early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=1000, verbose=1, mode='auto')
+    early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=100, verbose=1, mode='auto')
     callbacks_list = [early_stop]
     model = Sequential(name=para['model_name'])
-    model.add(Dense(160, input_dim=nb_features, use_bias=True))
+    model.add(Dense(30, input_dim=nb_features, use_bias=True))
     model.add(Activation('relu'))
     model.add(Dropout(para['drop_rate']))
     model.add(Dense(units=nb_classes))
     model.add(Activation('softmax'))
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=7e-4, momentum=0.5),
+                  optimizer=optimizers.sgd(lr=5e-3, momentum=0.5),
                   metrics=['accuracy'])
     print(model.summary())
     history = model.fit(x, y,
@@ -89,13 +89,14 @@ if __name__ == '__main__':
     id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_data.iloc[train])
-
+        # x_train = data_util.kera_feature(x_data.iloc[train])
         history, model = mlp_binary(data_util.scale(x_train_cnn),
                                     to_categorical(y_data.iloc[train]),
                                     parameter)
         history_array.append(history)
 
         x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_data.iloc[test])
+        # x_test = data_util.kera_feature(x_data.iloc[test])
         loss, acc = model.evaluate(data_util.scale(x_test_cnn),
                                    to_categorical(y_data.iloc[test]),
                                    verbose=0)

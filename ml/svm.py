@@ -7,7 +7,7 @@ from my_utils import data_util, plot_fig, performance_util
 if __name__ == '__main__':
     # wholeset_Jim_nomissing_validated.csv
     seed = 7
-    n_fold = 10
+    n_fold = 2
     np.random.seed(seed)
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
     id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')

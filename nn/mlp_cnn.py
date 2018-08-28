@@ -51,6 +51,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para):
     mlp_nb_features = x_mlp.shape[1]
     nb_classes = y.shape[1]
     x_cnn = np.expand_dims(x_cnn, 2)
+    mlp_hidden_num = int(round((mlp_nb_features+nb_classes)*2/3, 0))
     # model
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=100, verbose=1, mode='auto')
     callbacks_list = [early_stop]
@@ -62,7 +63,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para):
     cnn_s = Dense(nb_classes)(h1)
     # mlp
     mlp_input = Input(shape=(mlp_nb_features,))
-    hidden1 = Dense(160, activation='relu')(mlp_input)
+    hidden1 = Dense(mlp_hidden_num, activation='relu')(mlp_input)
     dr = Dropout(0.2)(hidden1)
     mlp_s = Dense(nb_classes)(dr)
     # merge
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     parameter = {'model_name': 'mlp_cnn',
                  'size_of_batch': 128,
-                 'nb_epoch': 150}
+                 'nb_epoch': 300}
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
     history_array = []
     test_acc_array = []
@@ -118,18 +119,21 @@ if __name__ == '__main__':
     #     test_loss_array.append(loss)
     # ====== Binary
     id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+    selected_features = data_util.get_selected_feature_name('wholeset_Jim_nomissing_validated_fs.csv')
     prfm_para = {'fn':'mlp_cnn_2c', 'matric':'acc'}
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_data.iloc[train])
-        history, model = mlp_cnn_binary(data_util.scale(x_train_cnn),
-                                       data_util.scale(x_train_mlp),
+        x_train_cnn_fs, x_train_mlp_fs = data_util.select_cnn_mlp_input(x_train_cnn, x_train_mlp, selected_features)
+        history, model = mlp_cnn_binary(data_util.scale(x_train_cnn_fs),
+                                       data_util.scale(x_train_mlp_fs),
                                        to_categorical(y_data.iloc[train]),
                                        parameter)
         history_array.append(history)
 
         x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_data.iloc[test])
-        x_test_cnn = np.expand_dims(data_util.scale(x_test_cnn), 2)
-        x_test_mlp = data_util.scale(x_test_mlp)
+        x_test_cnn_fs, x_test_mlp_fs = data_util.select_cnn_mlp_input(x_test_cnn, x_test_mlp, selected_features)
+        x_test_cnn = np.expand_dims(data_util.scale(x_test_cnn_fs), 2)
+        x_test_mlp = data_util.scale(x_test_mlp_fs)
         loss, acc = model.evaluate([x_test_cnn, x_test_mlp],
                                    to_categorical(y_data.iloc[test]),
                                    verbose=0)

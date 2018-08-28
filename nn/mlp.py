@@ -69,7 +69,7 @@ if __name__ == '__main__':
     parameter = {'model_name': 'mlp',
             'size_of_batch': 128,
             'nb_epoch': 150,
-            'drop_rate': 0.}
+            'drop_rate': 0.3}
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
     history_array = []
     test_acc_array = []

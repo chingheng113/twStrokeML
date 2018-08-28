@@ -64,22 +64,39 @@ def variance_threshold_selector(data, threshold=0.5):
     return data[data.columns[selector.get_support(indices=True)]]
 
 
+def get_selected_feature_name(fn):
+    id_data, x_data, y_data = get_individual(fn)
+    return x_data.columns.values
+
 
 def split_cnn_mlp_input(x_data):
+    # cnn_col = ["discharged_mrs", "MRS_1",
+    #            "NIHS_1a_in", "NIHS_1a_out", "NIHS_1b_in", "NIHS_1b_out", "NIHS_1c_in", "NIHS_1c_out",
+    #            "NIHS_2_in", "NIHS_2_out", "NIHS_3_in", "NIHS_3_out", "NIHS_4_in", "NIHS_4_out",
+    #            "NIHS_5aL_in", "NIHS_5aL_out", "NIHS_5bR_in", "NIHS_5bR_out",
+    #            "NIHS_6aL_in", "NIHS_6aL_out", "NIHS_6bR_in", "NIHS_6bR_out", "NIHS_7_in", "NIHS_7_out",
+    #            "NIHS_8_in", "NIHS_8_out", "NIHS_9_in", "NIHS_9_out", "NIHS_10_in", "NIHS_10_out",
+    #            "NIHS_11_in", "NIHS_11_out",
+    #            'OMAS_FL', 'AMAS_FL', 'OMAG_FL', 'AMAG_FL', 'OMTI_FL', 'AMTI_FL', 'OMCL_FL', 'AMCL_FL', 'OMWA_FL',
+    #            'OMPL_FL', 'AMPL_FL', 'OMANH_FL', 'AMWA_FL', 'AMANH_FL', 'OMAND_FL', 'AMAND_FL', 'OMLI_FL', 'AMLI_FL']
     cnn_col = ["discharged_mrs", "MRS_1",
-               "NIHS_1a_in", "NIHS_1a_out", "NIHS_1b_in", "NIHS_1b_out", "NIHS_1c_in", "NIHS_1c_out",
-               "NIHS_2_in", "NIHS_2_out", "NIHS_3_in", "NIHS_3_out", "NIHS_4_in", "NIHS_4_out",
-               "NIHS_5aL_in", "NIHS_5aL_out", "NIHS_5bR_in", "NIHS_5bR_out",
-               "NIHS_6aL_in", "NIHS_6aL_out", "NIHS_6bR_in", "NIHS_6bR_out", "NIHS_7_in", "NIHS_7_out",
-               "NIHS_8_in", "NIHS_8_out", "NIHS_9_in", "NIHS_9_out", "NIHS_10_in", "NIHS_10_out",
-               "NIHS_11_in", "NIHS_11_out",
-               'OMAS_FL', 'AMAS_FL', 'OMAG_FL', 'AMAG_FL', 'OMTI_FL', 'AMTI_FL', 'OMCL_FL', 'AMCL_FL', 'OMWA_FL',
-               'OMPL_FL', 'AMPL_FL', 'OMANH_FL', 'AMWA_FL', 'AMANH_FL', 'OMAND_FL', 'AMAND_FL', 'OMLI_FL', 'AMLI_FL']
+           "NIHS_1a_in", "NIHS_1a_out", "NIHS_1b_in", "NIHS_1b_out", "NIHS_1c_in", "NIHS_1c_out",
+           "NIHS_2_in", "NIHS_2_out", "NIHS_3_in", "NIHS_3_out", "NIHS_4_in", "NIHS_4_out",
+           "NIHS_5aL_in", "NIHS_5aL_out", "NIHS_5bR_in", "NIHS_5bR_out",
+           "NIHS_6aL_in", "NIHS_6aL_out", "NIHS_6bR_in", "NIHS_6bR_out", "NIHS_7_in", "NIHS_7_out",
+           "NIHS_8_in", "NIHS_8_out", "NIHS_9_in", "NIHS_9_out", "NIHS_10_in", "NIHS_10_out",
+           "NIHS_11_in", "NIHS_11_out"]
 
     x_cnn = x_data[cnn_col]
     x_mlp = x_data.drop(cnn_col, axis=1)
     return x_cnn, x_mlp
 
+
+def select_cnn_mlp_input(x_cnn, x_mlp, selected_features):
+    cnn_features = x_cnn.columns.values
+    diff_feature = np.setdiff1d(selected_features, cnn_features)
+    x_mlp = x_mlp[diff_feature]
+    return x_cnn, x_mlp
 
 def kera_feature(df):
     kf = ["onset_age", "MRS_1", "discharged_mrs", "Stairs", "NIHS_1b_in", "NIHS_5aL_in", "OFFDT_cf",

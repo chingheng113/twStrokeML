@@ -12,11 +12,12 @@ import numpy as np
 def mlp_multi(x, y, para):
     nb_features = x.shape[1]
     nb_classes = y.shape[1]
+    hidden_num = int(round((nb_features+nb_classes)*2/3, 0))
     # model
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=1000, verbose=1, mode='auto')
     callbacks_list = [early_stop]
     model = Sequential(name=para['model_name'])
-    model.add(Dense(50, input_dim=nb_features))
+    model.add(Dense(hidden_num, input_dim=nb_features))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(para['drop_rate']))
@@ -37,11 +38,12 @@ def mlp_multi(x, y, para):
 def mlp_binary(x, y, para):
     nb_features = x.shape[1]
     nb_classes = y.shape[1]
+    hidden_num = int(round((nb_features+nb_classes)*2/3, 0))
     # model
     early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=1000, verbose=1, mode='auto')
     callbacks_list = [early_stop]
     model = Sequential(name=para['model_name'])
-    model.add(Dense(160, input_dim=nb_features, use_bias=True))
+    model.add(Dense(hidden_num, input_dim=nb_features, use_bias=True))
     model.add(Activation('relu'))
     model.add(Dropout(para['drop_rate']))
     model.add(Dense(units=nb_classes))

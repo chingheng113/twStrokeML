@@ -10,7 +10,7 @@ if __name__ == '__main__':
     n_fold = 2
     np.random.seed(seed)
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
-    id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+    id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
     classifier = SVC(kernel='linear')
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         classifier.fit(data_util.scale(x_data.iloc[train]), y_data.iloc[train])
@@ -19,6 +19,7 @@ if __name__ == '__main__':
         print(classification_report(y_data.iloc[test], y_pred))
         print("SVM-輸出訓練集的準確率為：", classifier.score(data_util.scale(x_data.iloc[train]), y_data.iloc[train]))
         print("SVM-輸出測試集的準確率為：", classifier.score(data_util.scale(x_data.iloc[test]), y_data.iloc[test]))
+    performance_util.save_model(classifier, 'svm_2c')
     # id_data, x_data, y_data = data_util.get_individual('wholeset_Jim_nomissing_validated.csv')
     # classifier = SVC(kernel='linear', decision_function_shape='ovo')
     # for index, (train, test) in enumerate(kfold.split(x_data, y_data)):

@@ -1,3 +1,4 @@
+import pickle
 import numpy as np
 import pandas as pd
 import os
@@ -7,6 +8,7 @@ def save_performance_all(fn, history_array, test_acc_array, test_loss_array, pre
     save_train_validation(fn, history_array, metrics)
     save_test(fn, test_acc_array, test_loss_array)
     save_prediction(fn, prediction_array)
+
 
 def save_train_validation(fn, history_array, metrics):
     train_acc = []
@@ -43,3 +45,8 @@ def labelize(y_arr):
     for y in y_arr:
         y_label = np.append(y_label, np.argmax(y))
     return y_label
+
+
+def save_model(model, name):
+    with open('..'+os.sep+'saved_model'+os.sep+name+'.pickle', 'wb') as f:
+        pickle.dump(model, f)

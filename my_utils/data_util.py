@@ -96,3 +96,9 @@ def scale(x_data):
     # x_data = np.round(sp.MinMaxScaler(feature_range=(0, 1)).fit_transform(x_data), 3)
     x_data = np.round(sp.StandardScaler().fit_transform(x_data), 3)
     return x_data
+
+
+def save_dataframe_to_csv(df, file_name):
+    dirname = os.path.dirname(__file__)
+    filepath = os.path.join(dirname, '..'+os.sep+'data_source'+os.sep)
+    df.to_csv(filepath + file_name + '.csv', sep=',', index=False)

@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     # Create a selector object that will use the random forest classifier to identify
     # features that have an importance of more than XX
-    rf = RandomForestClassifier(n_estimators=100, criterion='entropy', random_state=7)
+    rf = RandomForestClassifier(n_estimators=100, criterion='entropy', random_state=seed)
     sfm = SelectFromModel(rf, threshold=5e-3)
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         rf.fit(data_util.scale(x_data.iloc[train]), y_data.iloc[train])

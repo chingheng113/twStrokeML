@@ -1,34 +1,28 @@
+from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
 import pickle
 import numpy as np
 import pandas as pd
 import os
 
 
-def save_performance_all(fn, history_array, test_acc_array, test_loss_array, prediction_array, metrics):
-    save_train_validation(fn, history_array, metrics)
-    save_test(fn, test_acc_array, test_loss_array)
-    save_prediction(fn, prediction_array)
-
-
-def save_train_validation(fn, history_array, metrics):
+def save_train_validation(path, hist, metrics, index):
     train_acc = []
     train_loss = []
     val_loss = []
     val_acc = []
-    for hist in history_array:
-        train_acc.append(hist.history[metrics])
-        train_loss.append(hist.history['val_'+metrics])
-        val_acc.append(np.asarray(hist.history['loss']))
-        val_loss.append(np.asarray(hist.history['val_loss']))
-    np.savetxt('..'+os.sep+'result'+os.sep+fn+'_train_acc.csv', train_acc, delimiter=',')
-    np.savetxt('..'+os.sep+'result'+os.sep+fn+'_train_loss.csv', train_loss, delimiter=',')
-    np.savetxt('..'+os.sep+'result'+os.sep+fn+'_val_acc.csv', val_loss, delimiter=',')
-    np.savetxt('..'+os.sep+'result'+os.sep+fn+'_val_loss.csv', val_acc, delimiter=',')
+    train_acc.append(hist.history[metrics])
+    train_loss.append(hist.history['val_'+metrics])
+    val_acc.append(np.asarray(hist.history['loss']))
+    val_loss.append(np.asarray(hist.history['val_loss']))
+    np.savetxt(path+'_train_acc_'+index+'.csv', train_acc, delimiter=',')
+    np.savetxt(path+'_train_loss_'+index+'.csv', train_loss, delimiter=',')
+    np.savetxt(path+'_val_acc_'+index+'.csv', val_loss, delimiter=',')
+    np.savetxt(path+'_val_loss_'+index+'.csv', val_acc, delimiter=',')
 
 
-def save_test(fn, test_acc_array, test_loss_array):
-    np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_test_acc.csv', test_acc_array, delimiter=',')
-    np.savetxt('..' + os.sep + 'result' + os.sep + fn + '_test_loss.csv', test_loss_array, delimiter=',')
+def save_test(path, test_acc_array, test_loss_array):
+    np.savetxt(path + '_test_acc.csv', test_acc_array, delimiter=',')
+    np.savetxt(path + '_test_loss.csv', test_loss_array, delimiter=',')
 
 
 def save_prediction(fn, prediction_array):
@@ -50,3 +44,4 @@ def labelize(y_arr):
 def save_model(model, name):
     with open('..'+os.sep+'saved_model'+os.sep+name+'.pickle', 'wb') as f:
         pickle.dump(model, f)
+

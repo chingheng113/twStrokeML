@@ -15,7 +15,7 @@ def get_file_path(file_name):
 def load_all(fn):
     read_file_path = get_file_path(fn)
     df = pd.read_csv(read_file_path, encoding='utf8')
-    # df = df.ix[:100]
+    df = df.ix[:100]
     return df.sample(frac=1)
 
 
@@ -93,7 +93,7 @@ def split_cnn_mlp_input(x_data):
     return x_cnn, x_mlp
 
 
-def select_cnn_mlp_input(x_cnn, x_mlp, selected_features):
+def selected_cnn_mlp_input(x_cnn, x_mlp, selected_features):
     cnn_features = x_cnn.columns.values
     diff_feature = np.setdiff1d(selected_features, cnn_features)
     x_mlp = x_mlp[diff_feature]

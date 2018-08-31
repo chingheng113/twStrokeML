@@ -8,19 +8,9 @@ import matplotlib.pyplot as plt
 from sklearn.feature_selection import SelectFromModel
 
 
-if __name__ == '__main__':
-    seed = 7
-    n_fold = 2
-    n_class = 2
-    if n_class == 2:
-        id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
-        fn = 'reduced_dimension_2c'
-    else:
-        id_data, x_data, y_data = data_util.get_individual('wholeset_Jim_nomissing_validated.csv')
-        fn = 'reduced_dimension_individual'
-    kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
-    t_sne = TSNE(n_components=2, perplexity=30.0, learning_rate=200.0)
-    for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
-        x_data_train = data_util.scale(x_data.iloc[train])
-        t_sne.fit_transform(x_data_train)
-        print('d')
+def tsne_features_add(x_data, seed):
+    t_sne = TSNE(n_components=3, perplexity=30, learning_rate=200.0, random_state=seed)
+    new_features = t_sne.fit_transform(x_data)
+    # df = pd.DataFrame(new_features, columns=['tsne_x', 'tsne_y', 'tsne_z'])
+    new_x_data = np.concatenate([x_data, new_features], axis=1)
+    return new_x_data

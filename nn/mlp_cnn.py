@@ -59,7 +59,7 @@ if __name__ == '__main__':
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
     experiment = 2
-    n_fold = 2
+    n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep
     # ******************
     id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
@@ -129,8 +129,6 @@ if __name__ == '__main__':
         predict_result_test['1'] = test_probas[:, 1]
         predict_result_test.to_csv(save_path + parameter['model_name'] + '_predict_result_test_'+str(index)+'.csv',
                                    sep=',', encoding='utf-8')
-
-
 
         loss, acc = model.evaluate([x_test_cnn, x_test_mlp], to_categorical(y_data.iloc[test]), verbose=0)
         test_acc_array.append(acc)

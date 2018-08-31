@@ -11,13 +11,13 @@ def save_train_validation(path, hist, metrics, index):
     val_loss = []
     val_acc = []
     train_acc.append(hist.history[metrics])
-    train_loss.append(hist.history['val_'+metrics])
-    val_acc.append(np.asarray(hist.history['loss']))
+    val_acc.append(hist.history['val_'+metrics])
+    train_loss.append(np.asarray(hist.history['loss']))
     val_loss.append(np.asarray(hist.history['val_loss']))
     np.savetxt(path+'_train_acc_'+index+'.csv', train_acc, delimiter=',')
     np.savetxt(path+'_train_loss_'+index+'.csv', train_loss, delimiter=',')
-    np.savetxt(path+'_val_acc_'+index+'.csv', val_loss, delimiter=',')
-    np.savetxt(path+'_val_loss_'+index+'.csv', val_acc, delimiter=',')
+    np.savetxt(path+'_val_acc_'+index+'.csv', val_acc, delimiter=',')
+    np.savetxt(path+'_val_loss_'+index+'.csv', val_loss, delimiter=',')
 
 
 def save_test(path, test_acc_array, test_loss_array):

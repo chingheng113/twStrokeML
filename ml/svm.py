@@ -10,7 +10,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 0
+    experiment = 1
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep
     # ******************
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         model_name = 'svm_2c_fe'
 
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
-    classifier = SVC(kernel='linear', probability=True, random_state=seed)
+    classifier = SVC(kernel='linear', probability=True, random_state=seed, verbose=True)
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
         # Training
         x_train = data_util.scale(x_data.iloc[train])

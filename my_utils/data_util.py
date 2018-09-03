@@ -52,10 +52,9 @@ def get_poor_god(fn):
                                    n_samples=resample_size,     # to match minority class
                                    random_state=7) # reproducible results
     resample_inx = pd.concat([df_majority_downsampled, df_minority], axis=0)
-    resampled_id_data = id_data.iloc[resample_inx.index.values]
-    resampled_x_data = x_data.iloc[resample_inx.index.values]
-    resampled_y_data = y_data.iloc[resample_inx.index.values]
-
+    resampled_id_data = id_data.loc[resample_inx.index]
+    resampled_x_data = x_data.loc[resample_inx.index]
+    resampled_y_data = y_data.loc[resample_inx.index]
     return resampled_id_data, resampled_x_data, resampled_y_data
 
 

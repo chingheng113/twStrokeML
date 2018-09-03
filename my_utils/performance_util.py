@@ -1,5 +1,6 @@
 from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
 import pickle
+from scipy import interp
 import numpy as np
 import pandas as pd
 import os
@@ -45,3 +46,75 @@ def save_model(model, name):
     with open('..'+os.sep+'saved_model'+os.sep+name+'.pickle', 'wb') as f:
         pickle.dump(model, f)
 
+
+def calculate_roc_auc(model_name, status, inx):
+    filepath = model_name + os.sep + status + os.sep
+    file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    # Compute ROC curve and area the curve
+    fpr, tpr, thresholds = roc_curve(label, probas_[:, 1])
+    roc_auc = auc(fpr, tpr)
+    return fpr, tpr, roc_auc
+
+
+def average_roc_auc(model_name, status):
+    tprs = []
+    aucs = []
+    mean_fpr = np.linspace(0, 1, 300)
+    for inx in range(0,10,1):
+        fpr, tpr, roc_auc = calculate_roc_auc(model_name, status, inx)
+        tprs.append(interp(mean_fpr, fpr, tpr))
+        tprs[-1][0] = 0.0
+        aucs.append(roc_auc)
+    mean_tpr = np.mean(tprs, axis=0)
+    mean_tpr[-1] = 1.0
+    mean_auc = auc(mean_fpr, mean_tpr)
+    std_auc = np.std(aucs)
+    return mean_fpr, mean_tpr, mean_auc, std_auc
+
+
+def get_confusion_matrix(model_name, status, inx):
+    filepath = model_name + os.sep + status + os.sep
+    file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    predict = labelize(probas_)
+    return confusion_matrix(label, predict)
+
+
+def get_sum_confusion_matrix(model_name, status):
+    sum_array = np.zeros((2, 2))
+    for inx in range(0,10,1):
+        confusion_matrix = get_confusion_matrix(model_name, status, inx)
+        sum_array = sum_array + confusion_matrix
+    return sum_array
+
+
+def get_classification_report(model_name, status, inx):
+    filepath = model_name + os.sep + status + os.sep
+    file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    predict = labelize(probas_)
+    return classification_report(label, predict)
+
+
+def get_average_classification_report(model_name, status):
+    for inx in range(0,10,1):
+        filepath = model_name + os.sep + status + os.sep
+        file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+        df = pd.read_csv(filepath+file_name, encoding='utf8')
+        label = list(df['label'].values)
+        probas_ = df[['0', '1']].values
+        predict = list(labelize(probas_))
+        if inx == 0:
+            labels = label
+            predicts = predict
+        else:
+            labels.extend(label)
+            predicts.extend(predict)
+    return classification_report(labels, predicts,digits=4)

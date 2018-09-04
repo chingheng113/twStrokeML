@@ -7,8 +7,9 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html
+    # model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
     model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
-    status = 'fs'
+    status = 'normal'
     for model_name in model_names:
         mean_fpr, mean_tpr, mean_auc, std_auc = performance_util.average_roc_auc(model_name, status)
         plt.plot(mean_fpr, mean_tpr,

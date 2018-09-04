@@ -11,7 +11,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 2
+    experiment = 1
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep
     # ******************

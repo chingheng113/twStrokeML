@@ -1,4 +1,4 @@
-from my_utils import data_util, performance_util
+from my_utils import data_util, performance_util, plot_fig
 from sklearn.model_selection import StratifiedKFold
 from keras.layers import Dense, Activation, Dropout, BatchNormalization
 from keras.utils import to_categorical
@@ -25,7 +25,7 @@ def mlp_binary(x, y, para, indx):
     model.add(Dense(units=nb_classes))
     model.add(Activation('softmax'))
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=5e-3, momentum=0.5),
+                  optimizer=optimizers.sgd(lr=1e-3, momentum=0.5),
                   metrics=['accuracy'])
     print(model.summary())
     history = model.fit(x, y,
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 0
+    experiment = 1
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp' + os.sep
     # ******************
@@ -51,19 +51,19 @@ if __name__ == '__main__':
         parameter = {'model_name': 'mlp_2c_normal',
                      'size_of_batch': 128,
                      'nb_epoch': 150,
-                     'drop_rate': 0.3}
+                     'drop_rate': 0.4}
     elif experiment == 1:
         id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
         parameter = {'model_name': 'mlp_2c_fs',
                      'size_of_batch': 128,
                      'nb_epoch': 150,
-                     'drop_rate': 0.3}
+                     'drop_rate': 0.4}
     else:
         id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
         parameter = {'model_name': 'mlp_2c_fe',
                      'size_of_batch': 128,
                      'nb_epoch': 150,
-                     'drop_rate': 0.3}
+                     'drop_rate': 0.4}
 
     test_acc_array = []
     test_loss_array = []
@@ -101,6 +101,7 @@ if __name__ == '__main__':
         loss, acc = model.evaluate(x_test, to_categorical(y_data.iloc[test]), verbose=0)
         test_acc_array.append(acc)
         test_loss_array.append(loss)
+        # plot_fig.plot_acc_loss(history, 'acc')
 
     performance_util.save_test(save_path+parameter['model_name'], test_acc_array, test_loss_array)
     print('Done')

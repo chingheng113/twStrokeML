@@ -27,7 +27,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     cnn_input = Input(shape=(cnn_nb_features, 1))
     conv1 = Conv1D(filters=10, kernel_size=2, strides=2, activation='relu')(cnn_input)
     flate = Flatten()(conv1)
-    h1 = Dense(50, activation='relu')(flate)
+    h1 = Dense(100, activation='relu')(flate)
     cnn_s = Dense(nb_classes)(h1)
     # mlp
     mlp_input = Input(shape=(mlp_nb_features,))
@@ -41,7 +41,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     # print(model.summary())
     plot_fig.plot_model(model, para['model_name'])
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=5e-3, momentum=0.5),
+                  optimizer=optimizers.sgd(lr=4e-3, momentum=0.5),
                   metrics=['accuracy'])
     history = model.fit([x_cnn, x_mlp], y,
                         batch_size=para['size_of_batch'],
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 2
+    experiment = 0
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep
     # ******************
@@ -133,6 +133,6 @@ if __name__ == '__main__':
         loss, acc = model.evaluate([x_test_cnn, x_test_mlp], to_categorical(y_data.iloc[test]), verbose=0)
         test_acc_array.append(acc)
         test_loss_array.append(loss)
-
+        # plot_fig.plot_acc_loss(history, 'acc')
     performance_util.save_test(save_path+parameter['model_name'], test_acc_array, test_loss_array)
     print('Done')

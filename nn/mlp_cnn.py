@@ -58,7 +58,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 0
+    experiment = 2
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep
     # ******************

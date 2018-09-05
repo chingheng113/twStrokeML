@@ -22,7 +22,6 @@ def plot_all_features(importances, feature_names):
 
 if __name__ == '__main__':
     # https://chrisalbon.com/machine_learning/trees_and_forests/feature_selection_using_random_forest/
-    # wholeset_Jim_nomissing_validated.csv
     seed = 7
     np.random.seed(seed)
     id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')

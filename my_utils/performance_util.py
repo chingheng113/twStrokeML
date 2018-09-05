@@ -1,6 +1,9 @@
 from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
+from keras.models import load_model
 import pickle
+from sklearn.externals import joblib
 from scipy import interp
+from my_utils import data_util
 import numpy as np
 import pandas as pd
 import os
@@ -47,9 +50,31 @@ def save_model(model, name):
         pickle.dump(model, f)
 
 
+def load_ml_model(model_name, best_model_inx):
+    model_path = data_util.get_model_path(model_name+'_'+str(best_model_inx))+'.pickle'
+    return joblib.load(model_path)
+
+
+def load_nn_model(model_name, best_model_inx):
+    model_path = data_util.get_model_path(model_name+'_'+str(best_model_inx))
+    return load_model(model_path)
+
+
 def calculate_roc_auc(model_name, status, inx):
     filepath = model_name + os.sep + status + os.sep
     file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    # Compute ROC curve and area the curve
+    fpr, tpr, thresholds = roc_curve(label, probas_[:, 1])
+    roc_auc = auc(fpr, tpr)
+    return fpr, tpr, roc_auc
+
+
+def calculate_holdout_roc_auc(model_name, status):
+    filepath = model_name + os.sep + status + os.sep
+    file_name = model_name+'_2c_'+status+'_predict_result_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values
@@ -96,6 +121,15 @@ def get_sum_confusion_matrix(model_name, status):
 def get_classification_report(model_name, status, inx):
     filepath = model_name + os.sep + status + os.sep
     file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    predict = labelize(probas_)
+    return classification_report(label, predict)
+
+def get_holdout_classification_report(model_name, status):
+    filepath = model_name + os.sep + status + os.sep
+    file_name = model_name+'_2c_'+status+'_predict_result_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values

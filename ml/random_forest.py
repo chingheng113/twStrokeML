@@ -1,5 +1,6 @@
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.metrics import accuracy_score
 import numpy as np
 from my_utils import data_util, performance_util
 from feature_engineering import tsne_extraction as tsne
@@ -11,20 +12,25 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 1
+    experiment = 0
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep
     # ******************
     if experiment == 0:
-        id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
         model_name = 'rf_2c_normal'
     elif experiment == 1:
-        id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
+        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
         model_name = 'rf_2c_fs'
     else:
-        id_data, x_data, y_data = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
+        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
         model_name = 'rf_2c_fe'
 
+    # --
+    id_data, id_data_hold, x_data, x_hold, y_data, y_hold = train_test_split(id_data_all, x_data_all, y_data_all, test_size=0.3, random_state=seed)
+    # --
+
+    test_acc_array = []
     kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
     rf = RandomForestClassifier(n_estimators=100, criterion='entropy', random_state=seed)
     for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
@@ -55,8 +61,23 @@ if __name__ == '__main__':
         predict_result_test['1'] = test_probas[:, 1]
         predict_result_test.to_csv(save_path + model_name + '_predict_result_test_'+str(index)+'.csv',
                                    sep=',', encoding='utf-8')
-
+        test_acc = accuracy_score(y_data.iloc[test], rf.predict(x_test))
+        test_acc_array.append(test_acc)
         performance_util.save_model(rf, model_name+'_'+str(index))
-
+    print('10-CV Done')
+    # --
+    best_model_inx = test_acc_array.index(max(test_acc_array))
+    hold_model = performance_util.load_ml_model(model_name, best_model_inx)
+    x_hold = data_util.scale(x_hold)
+    if experiment == 2:
+        x_hold = tsne.tsne_features_add(x_hold, seed)
+    predict_result_hold = id_data_hold
+    holdout_probas = hold_model.predict_proba(x_hold)
+    predict_result_hold['label'] = y_hold
+    predict_result_hold['0'] = holdout_probas[:, 0]
+    predict_result_hold['1'] = holdout_probas[:, 1]
+    predict_result_hold.to_csv(save_path + model_name + '_predict_result_hold.csv',
+                               sep=',', encoding='utf-8')
+    print('hold-out Done')
 
 

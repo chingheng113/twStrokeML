@@ -112,8 +112,11 @@ if __name__ == '__main__':
     # --
     best_model_inx = test_acc_array.index(max(test_acc_array))
     hold_model = performance_util.load_nn_model(parameter['model_name'], best_model_inx)
+    x_hold = data_util.scale(x_hold)
+    if experiment == 2:
+        x_hold = tsne.tsne_features_add(x_hold, seed)
     predict_result_hold = id_data_hold
-    holdout_probas = hold_model.predict(data_util.scale(x_hold))
+    holdout_probas = hold_model.predict(x_hold)
     predict_result_hold['label'] = y_hold
     predict_result_hold['0'] = holdout_probas[:, 0]
     predict_result_hold['1'] = holdout_probas[:, 1]

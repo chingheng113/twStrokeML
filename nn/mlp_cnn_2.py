@@ -21,7 +21,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     # model
     # early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=100, verbose=1, mode='auto')
     filepath = '..'+os.sep+'saved_model'+os.sep+para['model_name']+'_'+str(indx)
-    checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+    checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     # cnn
     cnn_input = Input(shape=(cnn_nb_features, 1))
     conv1 = Conv1D(filters=10, kernel_size=2, strides=2, activation='relu')(cnn_input)
@@ -40,7 +40,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     # print(model.summary())
     plot_fig.plot_model(model, para['model_name'])
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=4e-3, momentum=0.5),
+                  optimizer=optimizers.sgd(lr=5e-3),
                   metrics=['accuracy'])
     history = model.fit([x_cnn, x_mlp], y,
                         batch_size=para['size_of_batch'],
@@ -64,21 +64,21 @@ if __name__ == '__main__':
     id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
     if experiment == 0:
         parameter = {'model_name': 'mlp_cnn_2c_normal',
-                     'size_of_batch': 128,
+                     'size_of_batch': 64,
                      'nb_epoch': 150,
-                     'drop_rate': 0.2}
+                     'drop_rate': 0.5}
     elif experiment == 1:
         selected_features = data_util.get_selected_feature_name('wholeset_Jim_nomissing_validated_fs.csv')
         parameter = {'model_name': 'mlp_cnn_2c_fs',
-                     'size_of_batch': 128,
+                     'size_of_batch': 64,
                      'nb_epoch': 150,
-                     'drop_rate': 0.2}
+                     'drop_rate': 0.5}
     else:
         selected_features = data_util.get_selected_feature_name('wholeset_Jim_nomissing_validated_fs.csv')
         parameter = {'model_name': 'mlp_cnn_2c_fe',
-                     'size_of_batch': 128,
+                     'size_of_batch': 64,
                      'nb_epoch': 150,
-                     'drop_rate': 0.2}
+                     'drop_rate': 0.5}
 
     # --
     id_data, id_data_hold, x_data, x_hold, y_data, y_hold = train_test_split(id_data_all, x_data_all, y_data_all, test_size=0.3, random_state=seed)

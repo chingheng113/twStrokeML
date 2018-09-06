@@ -17,7 +17,7 @@ def mlp_binary(x, y, para, indx):
     # model
     # early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=1000, verbose=1, mode='auto')
     filepath = '..'+os.sep+'saved_model'+os.sep+para['model_name']+'_'+str(indx)
-    checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+    checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     model = Sequential(name=para['model_name'])
     model.add(Dense(hidden_num, input_dim=nb_features, use_bias=True))
     model.add(Activation('relu'))
@@ -25,7 +25,7 @@ def mlp_binary(x, y, para, indx):
     model.add(Dense(units=nb_classes))
     model.add(Activation('softmax'))
     model.compile(loss='binary_crossentropy',
-                  optimizer=optimizers.sgd(lr=1e-3, momentum=0.5),
+                  optimizer=optimizers.sgd(lr=5e-3),
                   metrics=['accuracy'])
     print(model.summary())
     history = model.fit(x, y,
@@ -42,26 +42,26 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 0
+    experiment = 1
     n_fold = 10
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp' + os.sep
     # ******************
     if experiment == 0:
         id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
         parameter = {'model_name': 'mlp_2c_normal',
-                     'size_of_batch': 128,
+                     'size_of_batch': 64,
                      'nb_epoch': 150,
                      'drop_rate': 0.4}
     elif experiment == 1:
         id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
         parameter = {'model_name': 'mlp_2c_fs',
-                     'size_of_batch': 128,
+                     'size_of_batch': 64,
                      'nb_epoch': 150,
                      'drop_rate': 0.4}
     else:
         id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
         parameter = {'model_name': 'mlp_2c_fe',
-                     'size_of_batch': 128,
+                     'size_of_batch': 64,
                      'nb_epoch': 150,
                      'drop_rate': 0.4}
 

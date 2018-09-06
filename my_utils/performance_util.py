@@ -134,7 +134,7 @@ def get_holdout_classification_report(model_name, status):
     label = df['label']
     probas_ = df[['0', '1']].values
     predict = labelize(probas_)
-    return classification_report(label, predict)
+    return classification_report(label, predict, digits=4)
 
 
 def get_average_classification_report(model_name, status):
@@ -151,4 +151,4 @@ def get_average_classification_report(model_name, status):
         else:
             labels.extend(label)
             predicts.extend(predict)
-    return classification_report(labels, predicts,digits=4)
+    return classification_report(labels, predicts, digits=4)

@@ -57,26 +57,28 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 0
+    experiment = 1
     n_fold = 10
+    # all, ischemic, hemorrhagic
+    sub_class = 'hemorrhagic'
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep
     # ******************
-    id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
+    id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
     if experiment == 0:
-        parameter = {'model_name': 'mlp_cnn_2c_normal',
-                     'size_of_batch': 64,
+        parameter = {'model_name': 'mlp_cnn_2c_normal_'+sub_class,
+                     'size_of_batch': 24,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
     elif experiment == 1:
-        selected_features = data_util.get_selected_feature_name('wholeset_Jim_nomissing_validated_fs.csv')
-        parameter = {'model_name': 'mlp_cnn_2c_fs',
-                     'size_of_batch': 64,
+        selected_features = data_util.get_selected_feature_name(sub_class)
+        parameter = {'model_name': 'mlp_cnn_2c_fs_'+sub_class,
+                     'size_of_batch': 24,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
     else:
-        selected_features = data_util.get_selected_feature_name('wholeset_Jim_nomissing_validated_fs.csv')
-        parameter = {'model_name': 'mlp_cnn_2c_fe',
-                     'size_of_batch': 64,
+        selected_features = data_util.get_selected_feature_name(sub_class)
+        parameter = {'model_name': 'mlp_cnn_2c_fe_'+sub_class,
+                     'size_of_batch': 24,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
 

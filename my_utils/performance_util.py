@@ -60,9 +60,9 @@ def load_nn_model(model_name, best_model_inx):
     return load_model(model_path)
 
 
-def calculate_roc_auc(model_name, status, inx):
+def calculate_roc_auc(model_name, status, sub_class, inx):
     filepath = model_name + os.sep + status + os.sep
-    file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    file_name = model_name+'_2c_'+status+'_'+sub_class+'_predict_result_test_'+str(inx)+'.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values
@@ -72,9 +72,9 @@ def calculate_roc_auc(model_name, status, inx):
     return fpr, tpr, roc_auc
 
 
-def calculate_holdout_roc_auc(model_name, status):
+def calculate_holdout_roc_auc(model_name, status, sub_class):
     filepath = model_name + os.sep + status + os.sep
-    file_name = model_name+'_2c_'+status+'_predict_result_hold.csv'
+    file_name = model_name+'_2c_'+status+'_'+sub_class+'_predict_result_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values
@@ -84,12 +84,12 @@ def calculate_holdout_roc_auc(model_name, status):
     return fpr, tpr, roc_auc
 
 
-def average_roc_auc(model_name, status):
+def average_roc_auc(model_name, status, sub_class):
     tprs = []
     aucs = []
     mean_fpr = np.linspace(0, 1, 300)
     for inx in range(0,10,1):
-        fpr, tpr, roc_auc = calculate_roc_auc(model_name, status, inx)
+        fpr, tpr, roc_auc = calculate_roc_auc(model_name, status, sub_class, inx)
         tprs.append(interp(mean_fpr, fpr, tpr))
         tprs[-1][0] = 0.0
         aucs.append(roc_auc)
@@ -100,9 +100,9 @@ def average_roc_auc(model_name, status):
     return mean_fpr, mean_tpr, mean_auc, std_auc
 
 
-def get_confusion_matrix(model_name, status, inx):
+def get_confusion_matrix(model_name, status, sub_class, inx):
     filepath = model_name + os.sep + status + os.sep
-    file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    file_name = model_name+'_2c_'+status+'_'+sub_class+'_predict_result_test_'+str(inx)+'.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values
@@ -110,26 +110,26 @@ def get_confusion_matrix(model_name, status, inx):
     return confusion_matrix(label, predict)
 
 
-def get_sum_confusion_matrix(model_name, status):
+def get_sum_confusion_matrix(model_name, status, sub_class):
     sum_array = np.zeros((2, 2))
     for inx in range(0,10,1):
-        confusion_matrix = get_confusion_matrix(model_name, status, inx)
+        confusion_matrix = get_confusion_matrix(model_name, status, sub_class, inx)
         sum_array = sum_array + confusion_matrix
     return sum_array
 
 
-def get_classification_report(model_name, status, inx):
+def get_classification_report(model_name, status, sub_class, inx):
     filepath = model_name + os.sep + status + os.sep
-    file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+    file_name = model_name+'_2c_'+status+'_'+sub_class+'_predict_result_test_'+str(inx)+'.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values
     predict = labelize(probas_)
     return classification_report(label, predict)
 
-def get_holdout_classification_report(model_name, status):
+def get_holdout_classification_report(model_name, sub_class, status):
     filepath = model_name + os.sep + status + os.sep
-    file_name = model_name+'_2c_'+status+'_predict_result_hold.csv'
+    file_name = model_name+'_2c_'+status+'_'+sub_class+'_predict_result_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values
@@ -137,10 +137,10 @@ def get_holdout_classification_report(model_name, status):
     return classification_report(label, predict, digits=4)
 
 
-def get_average_classification_report(model_name, status):
+def get_average_classification_report(model_name, sub_class, status):
     for inx in range(0,10,1):
         filepath = model_name + os.sep + status + os.sep
-        file_name = model_name+'_2c_'+status+'_predict_result_test_'+str(inx)+'.csv'
+        file_name = model_name+'_2c_'+status+'_'+sub_class+'_predict_result_test_'+str(inx)+'.csv'
         df = pd.read_csv(filepath+file_name, encoding='utf8')
         label = list(df['label'].values)
         probas_ = df[['0', '1']].values

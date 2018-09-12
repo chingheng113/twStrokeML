@@ -12,19 +12,23 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 0
+    experiment = 1
     n_fold = 10
+    # all, ischemic, hemorrhagic
+    sub_class = 'hemorrhagic'
     save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep
     # ******************
     if experiment == 0:
-        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv')
-        model_name = 'rf_2c_normal'
+        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
+        model_name = 'rf_2c_normal_'+sub_class
     elif experiment == 1:
-        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
-        model_name = 'rf_2c_fs'
+        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
+        x_data_all = data_util.feature_selection(x_data_all, sub_class)
+        model_name = 'rf_2c_fs_'+sub_class
     else:
-        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated_fs.csv')
-        model_name = 'rf_2c_fe'
+        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
+        x_data_all = data_util.feature_selection(x_data_all, sub_class)
+        model_name = 'rf_2c_fe_'+sub_class
 
     # --
     id_data, id_data_hold, x_data, x_hold, y_data, y_hold = train_test_split(id_data_all, x_data_all, y_data_all, test_size=0.3, random_state=seed)

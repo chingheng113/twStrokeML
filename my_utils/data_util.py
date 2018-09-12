@@ -38,8 +38,24 @@ def get_individual(fn):
     return id_data, x_data, y_data
 
 
-def get_poor_god(fn):
+def get_ischemic(fn):
     df = load_all(fn)
+    return df[(df['ICD_ID_1.0'] == 1) | (df['ICD_ID_2.0'] == 1)]
+
+
+def get_hemorrhagic(fn):
+    df = load_all(fn)
+    return df[(df['ICD_ID_3.0'] == 1) | (df['ICD_ID_4.0'] == 1)]
+
+
+def get_poor_god(fn, sub_class='all'):
+    df = pd.DataFrame()
+    if sub_class == 'ischemic':
+        df = get_ischemic(fn)
+    elif sub_class == 'hemorrhagic':
+        df = get_hemorrhagic(fn)
+    else:
+        df = load_all(fn)
     id_data, x_data, y_data = get_x_y_data(df)
     # Good < 3, Poor >= 3
     start = min(df['MRS_3'].values) - 1.0
@@ -70,9 +86,10 @@ def variance_threshold_selector(data, threshold=0.5):
     return data[data.columns[selector.get_support(indices=True)]]
 
 
-def get_selected_feature_name(fn):
-    id_data, x_data, y_data = get_individual(fn)
-    return x_data.columns.values
+def get_selected_feature_name(sub_type):
+    read_file_path = get_file_path('selected_features_'+sub_type+'.csv')
+    df = pd.read_csv(read_file_path, encoding='utf8')
+    return df.values
 
 
 def split_cnn_mlp_input(x_data):
@@ -104,6 +121,12 @@ def selected_cnn_mlp_input(x_cnn, x_mlp, selected_features):
     x_mlp = x_mlp[diff_feature]
     return x_cnn, x_mlp
 
+
+def feature_selection(df, sub_type='all'):
+    selected_features = get_selected_feature_name(sub_type).ravel()
+    return df[selected_features]
+
+
 def kera_feature(df):
     kf = ["onset_age", "MRS_1", "discharged_mrs", "Stairs", "NIHS_1b_in", "NIHS_5aL_in", "OFFDT_cf",
           "CT_FL", "NIHS_2_out", "COMPU_FL", "PCVA_FL", "TRMRE_FL", "DETST_FL", "TRMVE_FL", "PTT1_NM", "COMPN_FL", "HB_NM",
@@ -125,3 +148,14 @@ def save_dataframe_to_csv(df, file_name):
     dirname = os.path.dirname(__file__)
     filepath = os.path.join(dirname, '..'+os.sep+'data_source'+os.sep)
     df.to_csv(filepath + file_name + '.csv', sep=',', index=False)
+
+
+def save_np_array_to_csv(array, file_name):
+    dirname = os.path.dirname(__file__)
+    filepath = os.path.join(dirname, '..'+os.sep+'data_source'+os.sep)
+    np.savetxt(filepath + file_name + '.csv', array, delimiter=',', fmt='%s')
+
+
+if __name__ == '__main__':
+    resampled_id_data, resampled_x_data, resampled_y_data = get_poor_god('wholeset_Jim_nomissing_validated.csv', 'hemorrhagic')
+    print(resampled_y_data.shape)

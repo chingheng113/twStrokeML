@@ -83,6 +83,16 @@ def calculate_holdout_roc_auc(model_name, status, sub_class):
     roc_auc = auc(fpr, tpr)
     return fpr, tpr, roc_auc
 
+def calculate_holdout_roc_auc_all(model_name, status):
+    filepath = '..'+os.sep+'result_all'+os.sep+model_name + os.sep + status + os.sep
+    file_name = model_name+'_2c_'+status+'_predict_result_hold.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    # Compute ROC curve and area the curve
+    fpr, tpr, thresholds = roc_curve(label, probas_[:, 1])
+    roc_auc = auc(fpr, tpr)
+    return fpr, tpr, roc_auc
 
 def average_roc_auc(model_name, status, sub_class):
     tprs = []

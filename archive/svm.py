@@ -2,7 +2,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 from my_utils import data_util, performance_util
-from feature_engineering import tsne_extraction as tsne
+from archive import tsne_extraction as tsne
 import os
 
 if __name__ == '__main__':

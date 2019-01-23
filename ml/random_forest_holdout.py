@@ -3,7 +3,7 @@ from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.metrics import accuracy_score
 import numpy as np
 from my_utils import data_util, performance_util
-from feature_engineering import tsne_extraction as tsne
+from archive import tsne_extraction as tsne
 import os
 
 

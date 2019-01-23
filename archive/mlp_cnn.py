@@ -1,12 +1,10 @@
 from my_utils import data_util, plot_fig, performance_util
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import classification_report, confusion_matrix
-from keras.layers import Input, Conv1D, MaxPool1D, Flatten, concatenate, Dense, Activation, Dropout, BatchNormalization
-from keras.layers.core import ActivityRegularization
-from keras import layers, regularizers
+from keras.layers import Input, Conv1D, Flatten, Dense, Activation, Dropout
+from keras import layers
 from keras.utils import to_categorical
-from keras.callbacks import ModelCheckpoint, EarlyStopping
-from feature_engineering import tsne_extraction as tsne
+from keras.callbacks import ModelCheckpoint
+from archive import tsne_extraction as tsne
 from keras.models import Model
 from keras import optimizers
 import numpy as np

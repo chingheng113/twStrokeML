@@ -36,7 +36,7 @@ if __name__ == '__main__':
     x_data, x_hold, y_data, y_hold = train_test_split(x_data, y_data, test_size=0.3, random_state=seed)
     rf.fit(data_util.scale(x_data), y_data)
     importances = rf.feature_importances_
-    # plot_all_features(importances, feature_names)
+    plot_all_features(importances, feature_names)
 
     # Train the selector for all dataset
     sfm.fit(x_data, y_data)

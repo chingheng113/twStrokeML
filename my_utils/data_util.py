@@ -157,5 +157,7 @@ def save_np_array_to_csv(array, file_name):
 
 
 if __name__ == '__main__':
-    resampled_id_data, resampled_x_data, resampled_y_data = get_poor_god('wholeset_Jim_nomissing_validated.csv', 'hemorrhagic')
-    print(resampled_y_data.shape)
+    resampled_id_data, resampled_x_data, resampled_y_data = get_poor_god('wholeset_Jim_nomissing_validated.csv', 'all')
+    df_all = pd.concat([resampled_id_data, resampled_x_data, resampled_y_data], axis=1)
+    save_dataframe_to_csv(df_all, 'str_all_good_poor')
+    print(df_all.shape)

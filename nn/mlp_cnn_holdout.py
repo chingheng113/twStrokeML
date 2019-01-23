@@ -39,6 +39,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     model = Model(inputs=[cnn_input, mlp_input], outputs=output)
     # print(model.summary())
     plot_fig.plot_model(model, para['model_name'])
+    # 5e-3
     model.compile(loss='binary_crossentropy',
                   optimizer=optimizers.sgd(lr=5e-3),
                   metrics=['accuracy'])
@@ -57,28 +58,28 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 1
+    experiment = 2
     n_fold = 10
-    # all, ischemic, hemorrhagic
-    sub_class = 'hemorrhagic'
+    # all, ischemic, hemorrhagic. 56, 24
+    sub_class = 'ischemic'
     save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep
     # ******************
     id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
     if experiment == 0:
         parameter = {'model_name': 'mlp_cnn_2c_normal_'+sub_class,
-                     'size_of_batch': 24,
+                     'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
     elif experiment == 1:
         selected_features = data_util.get_selected_feature_name(sub_class)
         parameter = {'model_name': 'mlp_cnn_2c_fs_'+sub_class,
-                     'size_of_batch': 24,
+                     'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
     else:
         selected_features = data_util.get_selected_feature_name(sub_class)
         parameter = {'model_name': 'mlp_cnn_2c_fe_'+sub_class,
-                     'size_of_batch': 24,
+                     'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
 

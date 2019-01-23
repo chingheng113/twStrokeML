@@ -12,7 +12,7 @@ if __name__ == '__main__':
     np.random.seed(seed)
     # ******************
     # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 1
+    experiment = 2
     n_fold = 10
     # all, ischemic, hemorrhagic
     sub_class = 'hemorrhagic'

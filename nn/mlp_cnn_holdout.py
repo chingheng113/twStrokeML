@@ -52,88 +52,74 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     return history, model
 
 
-if __name__ == '__main__':
-    seed = 7
-    np.random.seed(seed)
-    # ******************
-    # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 2
-    n_fold = 10
-    # all, ischemic, hemorrhagic. 56, 24
-    sub_class = 'ischemic'
-    save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep
-    # ******************
-    id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
+def do_mlp_cnn(hold_out_round, sub_class, experiment):
+    np.random.seed(hold_out_round)
+    if sub_class == 'ischemic':
+        id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
+            'training_is_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+        id_hold, x_hold, y_hold = data_util.get_poor_god(
+            'hold_is_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+    else:
+        id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
+            'training_he_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+        id_hold, x_hold, y_hold = data_util.get_poor_god(
+            'hold_he_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+    #
     if experiment == 0:
-        parameter = {'model_name': 'mlp_cnn_2c_normal_'+sub_class,
-                     'size_of_batch': 56,
-                     'nb_epoch': 150,
-                     'drop_rate': 0.5}
-    elif experiment == 1:
-        selected_features = data_util.get_selected_feature_name(sub_class)
-        parameter = {'model_name': 'mlp_cnn_2c_fs_'+sub_class,
+        save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep + 'all' + os.sep
+        parameter = {'model_name': 'mlp_cnn_'+sub_class+'_h_'+str(hold_out_round),
                      'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
     else:
+        save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep + 'fs' + os.sep
         selected_features = data_util.get_selected_feature_name(sub_class)
-        parameter = {'model_name': 'mlp_cnn_2c_fe_'+sub_class,
+        parameter = {'model_name': 'mlp_cnn_fs_'+sub_class+'_h_'+str(hold_out_round),
                      'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
 
-    # --
-    id_data, id_data_hold, x_data, x_hold, y_data, y_hold = train_test_split(id_data_all, x_data_all, y_data_all, test_size=0.3, random_state=seed)
-    # --
-
     test_acc_array = []
     test_loss_array = []
-    kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
-
-
-    for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
+    kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=hold_out_round)
+    for index, (train, test) in enumerate(kfold.split(x_train_all, y_train_all)):
         # training
-        x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_data.iloc[train])
+        x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_train_all.iloc[train])
         if experiment == 1:
             x_train_cnn, x_train_mlp = data_util.selected_cnn_mlp_input(x_train_cnn, x_train_mlp, selected_features)
-        elif experiment == 2:
-            x_train_cnn, x_train_mlp = data_util.selected_cnn_mlp_input(x_train_cnn, x_train_mlp, selected_features)
-            x_train_mlp = tsne.tsne_features_add(data_util.scale(x_train_mlp), seed)
         x_train_cnn = data_util.scale(x_train_cnn)
         x_train_mlp = data_util.scale(x_train_mlp)
-        history, model = mlp_cnn_binary(x_train_cnn,x_train_mlp, to_categorical(y_data.iloc[train]), parameter, index)
-        performance_util.save_train_validation(save_path+parameter['model_name'], history, 'acc', str(index))
+        y_train = y_train_all.iloc[train]
 
         # Testing
-        x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_data.iloc[test])
+        x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_train_all.iloc[test])
         if experiment == 1:
             x_test_cnn, x_test_mlp = data_util.selected_cnn_mlp_input(x_test_cnn, x_test_mlp, selected_features)
-        elif experiment == 2:
-            x_test_cnn, x_test_mlp = data_util.selected_cnn_mlp_input(x_test_cnn, x_test_mlp, selected_features)
-            x_test_mlp = tsne.tsne_features_add(x_test_mlp, seed)
-
         x_test_cnn = np.expand_dims(data_util.scale(x_test_cnn), 2)
         x_test_mlp = data_util.scale(x_test_mlp)
+        y_test = y_train_all.iloc[test]
 
-        # Evaluation
-        predict_result_train = id_data.iloc[train]
+        # train on 90% training
+        history, model = mlp_cnn_binary(x_train_cnn,x_train_mlp, to_categorical(y_train), parameter, index)
+        performance_util.save_train_validation(save_path+parameter['model_name'], history, 'acc', str(index))
+        predict_result_train = id_train_all.iloc[train]
         x_train_cnn = np.expand_dims(x_train_cnn, 2)
         train_probas = model.predict([x_train_cnn, x_train_mlp])
-        predict_result_train['label'] = y_data.iloc[train]
+        predict_result_train['label'] = y_train
         predict_result_train['0'] = train_probas[:, 0]
         predict_result_train['1'] = train_probas[:, 1]
-        predict_result_train.to_csv(save_path + parameter['model_name'] + '_predict_result_train_'+str(index)+'.csv',
+        predict_result_train.to_csv(save_path + parameter['model_name'] + '_train_cv'+str(index)+'.csv',
                                     sep=',', encoding='utf-8')
-
-        predict_result_test = id_data.iloc[test]
+        # Evaluation on 10% training
+        predict_result_test = id_train_all.iloc[test]
         test_probas = model.predict([x_test_cnn, x_test_mlp])
-        predict_result_test['label'] = y_data.iloc[test]
+        predict_result_test['label'] = y_test
         predict_result_test['0'] = test_probas[:, 0]
         predict_result_test['1'] = test_probas[:, 1]
-        predict_result_test.to_csv(save_path + parameter['model_name'] + '_predict_result_test_'+str(index)+'.csv',
+        predict_result_test.to_csv(save_path + parameter['model_name'] + '_test_cv'+str(index)+'.csv',
                                    sep=',', encoding='utf-8')
 
-        loss, acc = model.evaluate([x_test_cnn, x_test_mlp], to_categorical(y_data.iloc[test]), verbose=0)
+        loss, acc = model.evaluate([x_test_cnn, x_test_mlp], to_categorical(y_test), verbose=0)
         test_acc_array.append(acc)
         test_loss_array.append(loss)
         # plot_fig.plot_acc_loss(history, 'acc')
@@ -145,17 +131,24 @@ if __name__ == '__main__':
     x_hold_cnn, x_hold_mlp = data_util.split_cnn_mlp_input(x_hold)
     if experiment == 1:
         x_hold_cnn, x_hold_mlp = data_util.selected_cnn_mlp_input(x_hold_cnn, x_hold_mlp, selected_features)
-    elif experiment == 2:
-        x_hold_cnn, x_hold_mlp = data_util.selected_cnn_mlp_input(x_hold_cnn, x_hold_mlp, selected_features)
-        x_hold_mlp = tsne.tsne_features_add(data_util.scale(x_hold_mlp), seed)
 
     x_hold_cnn = np.expand_dims(data_util.scale(x_hold_cnn), 2)
     x_hold_mlp = data_util.scale(x_hold_mlp)
-    predict_result_hold = id_data_hold
+    predict_result_hold = id_hold
     holdout_probas = hold_model.predict([x_hold_cnn, x_hold_mlp])
     predict_result_hold['label'] = y_hold
     predict_result_hold['0'] = holdout_probas[:, 0]
     predict_result_hold['1'] = holdout_probas[:, 1]
-    predict_result_hold.to_csv(save_path + parameter['model_name'] + '_predict_result_hold.csv',
+    predict_result_hold.to_csv(save_path + parameter['model_name']  + '_hold.csv',
                                sep=',', encoding='utf-8')
     print('hold-out Done')
+
+
+if __name__ == '__main__':
+    hold_out_round = 0
+    # ischemic, hemorrhagic
+    sub_class = 'ischemic'
+    # none = 0, feature selection = 1
+    experiment = 0
+    #
+    do_mlp_cnn(hold_out_round, sub_class, experiment)

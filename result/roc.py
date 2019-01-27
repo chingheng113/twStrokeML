@@ -10,8 +10,8 @@ if __name__ == '__main__':
     hold_out_round = 0
     # model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
     # present_names = ['ANN', 'RF', 'HANN', 'SVM']
-    model_names = ['svm']
-    present_names = ['SVM']
+    model_names = ['mlp_cnn']
+    present_names = ['HANN']
     # all, fs
     status = 'all'
     # ischemic, hemorrhagic

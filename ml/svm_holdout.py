@@ -35,11 +35,11 @@ def do_svm(hold_out_round, sub_class, experiment):
         # Training
         x_train = data_util.scale(x_train_all.iloc[train])
         y_train = y_train_all.iloc[train]
-        classifier.fit(x_train, y_train)
         # Testing
         x_test = data_util.scale(x_train_all.iloc[test])
         y_test = y_train_all.iloc[test]
         # train on 90% training
+        classifier.fit(x_train, y_train)
         predict_result_train = id_train_all.iloc[train]
         train_probas = classifier.predict_proba(x_train)
         predict_result_train['label'] = y_train
@@ -59,7 +59,6 @@ def do_svm(hold_out_round, sub_class, experiment):
         test_acc_array.append(test_acc)
         performance_util.save_model(classifier, model_name+'_'+str(index))
     print('10-CV Done')
-
     # --
     best_model_inx = test_acc_array.index(max(test_acc_array))
     hold_model = performance_util.load_ml_model(model_name, best_model_inx)

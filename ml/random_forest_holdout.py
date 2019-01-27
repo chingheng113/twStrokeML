@@ -7,65 +7,58 @@ from archive import tsne_extraction as tsne
 import os
 
 
-if __name__ == '__main__':
-    seed = 7
-    np.random.seed(seed)
-    # ******************
-    # none = 0, feature selection = 1, feature extraction = 2
-    experiment = 2
-    n_fold = 10
-    # all, ischemic, hemorrhagic
-    sub_class = 'hemorrhagic'
-    save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep
-    # ******************
-    if experiment == 0:
-        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
-        model_name = 'rf_2c_normal_'+sub_class
-    elif experiment == 1:
-        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
-        x_data_all = data_util.feature_selection(x_data_all, sub_class)
-        model_name = 'rf_2c_fs_'+sub_class
+def do_rf(hold_out_round, sub_class, experiment):
+    np.random.seed(hold_out_round)
+    np.random.seed(hold_out_round)
+    if sub_class == 'ischemic':
+        id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
+            'training_is_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+        id_hold, x_hold, y_hold = data_util.get_poor_god(
+            'hold_is_' + str(hold_out_round) + '.csv', sub_class=sub_class)
     else:
-        id_data_all, x_data_all, y_data_all = data_util.get_poor_god('wholeset_Jim_nomissing_validated.csv', sub_class)
-        x_data_all = data_util.feature_selection(x_data_all, sub_class)
-        model_name = 'rf_2c_fe_'+sub_class
-
-    # --
-    id_data, id_data_hold, x_data, x_hold, y_data, y_hold = train_test_split(id_data_all, x_data_all, y_data_all, test_size=0.3, random_state=seed)
-    # --
+        id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
+            'training_he_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+        id_hold, x_hold, y_hold = data_util.get_poor_god(
+            'hold_he_' + str(hold_out_round) + '.csv', sub_class=sub_class)
+    #
+    if experiment == 0:
+        save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'all' + os.sep
+        model_name = 'rf_'+sub_class+'_h_'+str(hold_out_round)
+    else:
+        x_train_all = data_util.feature_selection(x_train_all, sub_class)
+        x_hold = data_util.feature_selection(x_hold, sub_class)
+        save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'fs' + os.sep
+        model_name = 'rf_fs_'+sub_class+'_h_'+str(hold_out_round)
+    #
 
     test_acc_array = []
-    kfold = StratifiedKFold(n_splits=n_fold, shuffle=True, random_state=seed)
-    rf = RandomForestClassifier(n_estimators=100, criterion='entropy', random_state=seed)
-    for index, (train, test) in enumerate(kfold.split(x_data, y_data)):
+    kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=hold_out_round)
+    rf = RandomForestClassifier(n_estimators=100, criterion='gini', random_state=hold_out_round)
+    for index, (train, test) in enumerate(kfold.split(x_train_all, y_train_all)):
         # Training
-        x_train = data_util.scale(x_data.iloc[train])
-        if experiment == 2:
-            x_train = tsne.tsne_features_add(x_train, seed)
-        rf.fit(data_util.scale(x_train), y_data.iloc[train])
-
+        x_train = data_util.scale(x_train_all.iloc[train])
+        y_train = y_train_all.iloc[train]
         # Testing
-        x_test = data_util.scale(x_data.iloc[test])
-        if experiment == 2:
-            x_test = tsne.tsne_features_add(x_test, seed)
-
-        # Evaluation
-        predict_result_train = id_data.iloc[train]
+        x_test = data_util.scale(x_train_all.iloc[test])
+        y_test = y_train_all.iloc[test]
+        # train on 90% training
+        rf.fit(x_train, y_train)
+        predict_result_train = id_train_all.iloc[train]
         train_probas = rf.predict_proba(x_train)
-        predict_result_train['label'] = y_data.iloc[train]
+        predict_result_train['label'] = y_train
         predict_result_train['0'] = train_probas[:, 0]
         predict_result_train['1'] = train_probas[:, 1]
-        predict_result_train.to_csv(save_path + model_name + '_predict_result_train_'+str(index)+'.csv',
+        predict_result_train.to_csv(save_path + model_name + '_train_cv'+str(index)+'.csv',
                                     sep=',', encoding='utf-8')
 
-        predict_result_test = id_data.iloc[test]
+        predict_result_test = id_train_all.iloc[test]
         test_probas = rf.predict_proba(x_test)
-        predict_result_test['label'] = y_data.iloc[test]
+        predict_result_test['label'] = y_test
         predict_result_test['0'] = test_probas[:, 0]
         predict_result_test['1'] = test_probas[:, 1]
-        predict_result_test.to_csv(save_path + model_name + '_predict_result_test_'+str(index)+'.csv',
+        predict_result_test.to_csv(save_path + model_name + '_test_cv'+str(index)+'.csv',
                                    sep=',', encoding='utf-8')
-        test_acc = accuracy_score(y_data.iloc[test], rf.predict(x_test))
+        test_acc = accuracy_score(y_test, rf.predict(x_test))
         test_acc_array.append(test_acc)
         performance_util.save_model(rf, model_name+'_'+str(index))
     print('10-CV Done')
@@ -73,15 +66,21 @@ if __name__ == '__main__':
     best_model_inx = test_acc_array.index(max(test_acc_array))
     hold_model = performance_util.load_ml_model(model_name, best_model_inx)
     x_hold = data_util.scale(x_hold)
-    if experiment == 2:
-        x_hold = tsne.tsne_features_add(x_hold, seed)
-    predict_result_hold = id_data_hold
+    predict_result_hold = id_hold
     holdout_probas = hold_model.predict_proba(x_hold)
     predict_result_hold['label'] = y_hold
     predict_result_hold['0'] = holdout_probas[:, 0]
     predict_result_hold['1'] = holdout_probas[:, 1]
-    predict_result_hold.to_csv(save_path + model_name + '_predict_result_hold.csv',
+    predict_result_hold.to_csv(save_path + model_name + '_hold.csv',
                                sep=',', encoding='utf-8')
     print('hold-out Done')
 
 
+if __name__ == '__main__':
+    hold_out_round = 0
+    # ischemic, hemorrhagic
+    sub_class = 'ischemic'
+    # none = 0, feature selection = 1
+    experiment = 0
+    #
+    do_rf(hold_out_round, sub_class, experiment)

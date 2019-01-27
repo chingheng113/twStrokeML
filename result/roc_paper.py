@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
+    hold_out_round = 0
     model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
     present_names = ['ANN', 'RF', 'HANN', 'SVM']
     fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(20,20))
@@ -13,7 +14,7 @@ if __name__ == '__main__':
 
     plt.subplot(331)
     for inx, model_name in enumerate(model_names):
-        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc_all(model_name, 'normal')
+        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc_all(hold_out_round, model_name, 'all')
         plt.plot(fpr, tpr,
                  label=present_names[inx]+' (AUC = %0.3f )' % auc,
                  lw=1, alpha=.8)
@@ -43,7 +44,7 @@ if __name__ == '__main__':
 
     plt.subplot(334)
     for inx, model_name in enumerate(model_names):
-        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc(model_name, 'normal', 'ischemic')
+        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc_all(hold_out_round, model_name, 'all')
         plt.plot(fpr, tpr,
                  label=present_names[inx]+' (AUC = %0.3f )' % auc,
                  lw=1, alpha=.8)
@@ -75,7 +76,7 @@ if __name__ == '__main__':
 
     plt.subplot(337)
     for inx, model_name in enumerate(model_names):
-        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc(model_name, 'normal', 'hemorrhagic')
+        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc_all(hold_out_round, model_name, 'all')
         plt.plot(fpr, tpr,
                  label=present_names[inx]+' (AUC = %0.3f )' % auc,
                  lw=1, alpha=.8)

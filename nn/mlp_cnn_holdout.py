@@ -1,4 +1,5 @@
-from my_utils import data_util, plot_fig, performance_util
+import os
+import sys
 from sklearn.model_selection import StratifiedKFold
 from keras.layers import Input, Conv1D, Flatten, Dense, Activation, Dropout
 from keras import layers
@@ -7,7 +8,8 @@ from keras.callbacks import ModelCheckpoint
 from keras.models import Model
 from keras import optimizers
 import numpy as np
-import os
+sys.path.append("..")
+from my_utils import data_util, plot_fig, performance_util
 
 
 def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
@@ -150,4 +152,5 @@ if __name__ == '__main__':
     # none = 0, feature selection = 1
     experiment = 1
     #
-    do_mlp_cnn(hold_out_round, sub_class, experiment)
+    # do_mlp_cnn(hold_out_round, sub_class, experiment)
+    do_mlp_cnn(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

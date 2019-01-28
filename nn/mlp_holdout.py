@@ -1,4 +1,3 @@
-from my_utils import data_util, performance_util
 from sklearn.model_selection import StratifiedKFold
 from keras.layers import Dense, Activation, Dropout
 from keras.utils import to_categorical
@@ -7,6 +6,9 @@ from keras.models import Sequential
 from keras import optimizers
 import numpy as np
 import os
+import sys
+sys.path.append("..")
+from my_utils import data_util, performance_util
 
 
 def mlp_binary(x, y, para, indx):
@@ -56,7 +58,7 @@ def do_mlp(hold_out_round, sub_class, experiment):
                      'nb_epoch': 150,
                      'drop_rate': 0.4}
     else:
-        x_train_all = data_util.feature_selection(x_train_all, sub_class) + 'fs' + os.sep
+        x_train_all = data_util.feature_selection(x_train_all, sub_class)
         x_hold = data_util.feature_selection(x_hold, sub_class)
         save_path = '..' + os.sep + 'result' + os.sep + 'mlp' + os.sep + 'fs' + os.sep
         parameter = {'model_name': 'mlp_fs_'+sub_class+'_h_'+str(hold_out_round),
@@ -120,6 +122,7 @@ if __name__ == '__main__':
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
     # none = 0, feature selection = 1
-    experiment = 0
+    experiment = 1
     #
-    do_mlp(hold_out_round, sub_class, experiment)
+    # do_mlp(hold_out_round, sub_class, experiment)
+    do_mlp(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

@@ -2,8 +2,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score
 import numpy as np
-from my_utils import data_util, performance_util
 import os
+import sys
+sys.path.append("..")
+from my_utils import data_util, performance_util
 
 
 def do_rf(hold_out_round, sub_class, experiment):
@@ -82,4 +84,5 @@ if __name__ == '__main__':
     # none = 0, feature selection = 1
     experiment = 0
     #
-    do_rf(hold_out_round, sub_class, experiment)
+    # do_rf(hold_out_round, sub_class, experiment)
+    do_rf(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

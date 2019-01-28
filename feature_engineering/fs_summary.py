@@ -8,7 +8,7 @@ def plot_features(df):
     importances = df['mean'].values
     indices = np.argsort(df['mean'])
     # Top 30
-    indices = indices[-50:]
+    indices = indices[-30:]
     plt.figure(1)
     plt.barh(range(len(indices)), df['mean'].loc[indices], color='b', align='center')
     plt.yticks(range(len(indices)), feature_names[indices], fontsize=6)
@@ -18,7 +18,7 @@ def plot_features(df):
 
 if __name__ == '__main__':
     # Just get the feature names
-    subtype = 'he'
+    subtype = 'is'
     if subtype == 'is':
         sub_class = 'ischemic'
     else:
@@ -42,6 +42,8 @@ if __name__ == '__main__':
     final_mean_importance = robust_f.drop(['f_index'], axis=1).mean(axis=1)
     final_f = pd.DataFrame(data={'f_name': feature_names})
     final_f['mean'] = final_mean_importance
-    final_f.to_csv('final_'+subtype+'.csv', sep=',', encoding='utf-8', index=False)
+    #
+    selected_final_f = final_f.sort_values(by=['mean'], ascending=False).iloc[0:30,:]
+    selected_final_f.to_csv('selected_features_'+sub_class+'.csv', sep=',', encoding='utf-8', index=False)
     # plot_features(final_f)
     print('Done')

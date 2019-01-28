@@ -78,6 +78,6 @@ if __name__ == '__main__':
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
     # none = 0, feature selection = 1
-    experiment = 0
+    experiment = 1
     #
     do_svm(hold_out_round, sub_class, experiment)

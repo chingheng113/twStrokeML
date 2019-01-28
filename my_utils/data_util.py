@@ -21,7 +21,7 @@ def get_file_path(file_name):
 def load_all(fn):
     read_file_path = get_file_path(fn)
     df = pd.read_csv(read_file_path, encoding='utf8')
-    df = df.ix[:50]
+    # df = df.ix[:50]
     return df.sample(frac=1)
 
 
@@ -48,6 +48,14 @@ def get_hemorrhagic(fn):
     return df[(df['ICD_ID_3.0'] == 1) | (df['ICD_ID_4.0'] == 1)]
 
 
+def get_binarized_label(df):
+    # Good <= 2, Poor >= 3
+    start = min(df['MRS_3'].values) - 1.0
+    end = max(df['MRS_3'].values) + 1.0
+    y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
+    return y_data
+
+
 def get_poor_god(fn, sub_class='all'):
     df = pd.DataFrame()
     if sub_class == 'ischemic':
@@ -57,7 +65,7 @@ def get_poor_god(fn, sub_class='all'):
     else:
         df = load_all(fn)
     id_data, x_data, y_data = get_x_y_data(df)
-    # Good < 3, Poor >= 3
+    # Good <= 2, Poor >= 3
     start = min(df['MRS_3'].values) - 1.0
     end = max(df['MRS_3'].values) + 1.0
     y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
@@ -87,9 +95,11 @@ def variance_threshold_selector(data, threshold=0.5):
 
 
 def get_selected_feature_name(sub_type):
-    read_file_path = get_file_path('selected_features_'+sub_type+'.csv')
-    df = pd.read_csv(read_file_path, encoding='utf8')
-    return df.values
+    dirname = os.path.dirname(__file__)
+    filepath = os.path.join(dirname, '..' + os.sep + 'feature_engineering' + os.sep)
+    df = pd.read_csv(filepath+os.sep+'selected_features_'+sub_type+'.csv', encoding='utf8')
+    feature_names = df['f_name']
+    return feature_names.values
 
 
 def split_cnn_mlp_input(x_data):
@@ -122,20 +132,9 @@ def selected_cnn_mlp_input(x_cnn, x_mlp, selected_features):
     return x_cnn, x_mlp
 
 
-def feature_selection(df, sub_type='all'):
+def feature_selection(df, sub_type):
     selected_features = get_selected_feature_name(sub_type).ravel()
     return df[selected_features]
-
-
-def kera_feature(df):
-    kf = ["onset_age", "MRS_1", "discharged_mrs", "Stairs", "NIHS_1b_in", "NIHS_5aL_in", "OFFDT_cf",
-          "CT_FL", "NIHS_2_out", "COMPU_FL", "PCVA_FL", "TRMRE_FL", "DETST_FL", "TRMVE_FL", "PTT1_NM", "COMPN_FL", "HB_NM",
-          "WBC_NM", "NIHS_4_in", "MCDBA_ID", "TRMIV_FL", "brainstem_mril", "GPT_NM", "TRMLM_FL", "NIHS_8_in", "HBAC_NM",
-          "subcortical_MCA_mril", "MCDL_ID", "cortical_MCA_ctl", "TRMSM_FL", "OFFDT_rehab", "PTINR_NM", "subcortical_MCA_ctl",
-          "TRMIA_FL", "OMAS_FL", "OFFDT_rcw", "CDL_ID", "WEIGHT_NM", "TRMAS_FL", "CDR_ID", "PCA_cortex_ctr", "CA_ID", "AMAND_FL",
-          "cortical_MCA_ctr", "UA_NM", "HD_FL", "THDA_FL", "OMCL_FL", "cerebellum_mrir", "GOT_NM", "RR_NM", "cortical_MCA_mril",
-          "TOAST_svo", "MRA_FL", "brainstem_mrir", "AMLI_FL", "PTT2_NM", "TCCS_ID"]
-    return df[kf]
 
 
 def scale(x_data):

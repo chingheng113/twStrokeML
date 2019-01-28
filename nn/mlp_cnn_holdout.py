@@ -1,10 +1,9 @@
 from my_utils import data_util, plot_fig, performance_util
-from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import StratifiedKFold
 from keras.layers import Input, Conv1D, Flatten, Dense, Activation, Dropout
 from keras import layers
 from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint
-from archive import tsne_extraction as tsne
 from keras.models import Model
 from keras import optimizers
 import numpy as np
@@ -149,6 +148,6 @@ if __name__ == '__main__':
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
     # none = 0, feature selection = 1
-    experiment = 0
+    experiment = 1
     #
     do_mlp_cnn(hold_out_round, sub_class, experiment)

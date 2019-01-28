@@ -4,7 +4,7 @@ from keras.layers import Input, Conv1D, Flatten, Dense, Activation, Dropout
 from keras import layers
 from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint
-from archive import tsne_extraction as tsne
+from figures import tsne_plot as tsne
 from keras.models import Model
 from keras import optimizers
 import numpy as np

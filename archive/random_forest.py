@@ -2,7 +2,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 from my_utils import data_util, performance_util
-from archive import tsne_extraction as tsne
+from figures import tsne_plot as tsne
 import os
 
 

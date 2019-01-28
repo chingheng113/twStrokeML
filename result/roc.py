@@ -11,9 +11,9 @@ if __name__ == '__main__':
     # model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
     # present_names = ['ANN', 'RF', 'HANN', 'SVM']
     model_names = ['mlp_cnn']
-    present_names = ['HANN']
+    present_names = ['mlp_cnn']
     # all, fs
-    status = 'all'
+    status = 'fs'
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
         title_tr = 'Training ROC curve of whole features dataset'
         title_te = 'Hold-out testing ROC curve of whole features dataset'
     else:
-        title_te = 'Training ROC curve of selected features dataset'
+        title_tr = 'Training ROC curve of selected features dataset'
         title_te = 'Hold-out testing ROC curve of selected features dataset'
 
     for inx, model_name in enumerate(model_names):

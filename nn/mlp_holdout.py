@@ -1,11 +1,10 @@
 from my_utils import data_util, performance_util
-from sklearn.model_selection import StratifiedKFold, train_test_split
+from sklearn.model_selection import StratifiedKFold
 from keras.layers import Dense, Activation, Dropout
 from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential
 from keras import optimizers
-from archive import tsne_extraction as tsne
 import numpy as np
 import os
 

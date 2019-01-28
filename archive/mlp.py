@@ -5,7 +5,7 @@ from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential
 from keras import optimizers
-from archive import tsne_extraction as tsne
+from figures import tsne_plot as tsne
 import numpy as np
 import os
 

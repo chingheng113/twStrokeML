@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     # http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html
     # ['mlp', 'rf', 'mlp_cnn', 'svm']
-    model_names = ['svm']
+    model_names = ['mlp_cnn']
     # all, fs
-    status = 'all'
+    status = 'fs'
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
     hold_out_round = 0

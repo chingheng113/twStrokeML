@@ -63,8 +63,7 @@ def load_nn_model(model_name, best_model_inx):
 def calculate_roc_auc(hold_out_round, model_name, status, sub_class, inx):
     filepath = model_name + os.sep + status + os.sep
     if status == 'fs':
-        file_name = model_name + '_h_' + str(
-            hold_out_round) + '_' + status + '_' + sub_class + '_predict_result_test_' + str(inx) + '.csv'
+        file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
     else:
         file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
 
@@ -80,8 +79,7 @@ def calculate_roc_auc(hold_out_round, model_name, status, sub_class, inx):
 def calculate_holdout_roc_auc(hold_out_round, model_name, status, sub_class):
     filepath = model_name + os.sep + status + os.sep
     if status == 'fs':
-        file_name = model_name + '_h_' + str(
-            hold_out_round) + '_' + status + '_' + sub_class + '_predict_result_test_' + '.csv'
+        file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
     else:
         file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
@@ -151,7 +149,7 @@ def get_classification_report(model_name, status, sub_class, inx):
 def get_holdout_classification_report(hold_out_round, model_name, sub_class, status):
     filepath = model_name + os.sep + status + os.sep
     if status == 'fs':
-        file_name = model_name + '_h_' + str(hold_out_round) + '_' + status + '_' + sub_class + '_predict_result_test_' +  '.csv'
+        file_name = model_name + '_' + status +'_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
     else:
         file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
@@ -165,7 +163,7 @@ def get_average_classification_report(hold_out_round, model_name, sub_class, sta
     for inx in range(0,10,1):
         filepath = model_name + os.sep + status + os.sep
         if status == 'fs':
-            file_name = model_name+'_h_' + str(hold_out_round) + '_'+status+'_'+sub_class+'_predict_result_test_'+str(inx)+'.csv'
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
         else:
             file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
         df = pd.read_csv(filepath+file_name, encoding='utf8')

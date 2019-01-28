@@ -14,7 +14,7 @@ if __name__ == '__main__':
     seed = range(1,11,1)
     print(seed)
     df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
-    df_is= get_ischemic(df_all)
+    df_is = get_ischemic(df_all)
     df_he = get_hemorrhagic(df_all)
     for i in range(0, 10):
         df_train_is, df_hold_is = train_test_split(df_is, test_size=0.3, random_state=seed[i], stratify=df_is['MRS_3'])

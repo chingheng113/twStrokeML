@@ -38,7 +38,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     output = Activation('softmax')(merge)
     model = Model(inputs=[cnn_input, mlp_input], outputs=output)
     # print(model.summary())
-    plot_fig.plot_model(model, para['model_name'])
+    # plot_fig.plot_model(model, para['model_name'])
     # 5e-3
     model.compile(loss='binary_crossentropy',
                   optimizer=optimizers.sgd(lr=5e-3),

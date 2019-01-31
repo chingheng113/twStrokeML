@@ -16,9 +16,9 @@ if __name__ == '__main__':
     male_df = df[df['GENDER_TX'] == 1]
 
     # female_n = female_df.shape[0]
-    # female_p = round(female_n/total_n, 2)
+    # female_p = round(female_n/total_n, 3)
     # male_n = male_df.shape[0]
-    # male_p = round(male_n/total_n, 2)
+    # male_p = round(male_n/total_n, 3)
     #
     # female_age_mean = round(np.mean(female_df['onset_age']), 1)
     # female_age_std = round(np.std(female_df['onset_age']), 1)
@@ -26,56 +26,74 @@ if __name__ == '__main__':
     # male_age_std = round(np.std(male_df['onset_age']), 1)
 
     # female_good = female_df[female_df['discharged_mrs'] < 3].shape[0]
-    # female_good_p = round(female_good/total_n, 2)
+    # female_good_p = round(female_good/total_n, 3)
     # female_poor = female_df[female_df['discharged_mrs'] > 2].shape[0]
-    # female_poor_p = round(female_poor/total_n, 2)
+    # female_poor_p = round(female_poor/total_n, 3)
     #
     # male_good = male_df[male_df['discharged_mrs'] < 3].shape[0]
-    # male_good_p = round(male_good/total_n, 2)
+    # male_good_p = round(male_good/total_n, 3)
     # male_poor = male_df[male_df['discharged_mrs'] > 2].shape[0]
-    # male_poor_p = round(male_poor/total_n, 2)
+    # male_poor_p = round(male_poor/total_n, 3)
     #
     # f_bi_i = female_df [(79 < female_df['bi_total']) & (female_df['bi_total'] < 101)].shape[0]
-    # f_bi_i_p = round(f_bi_i/total_n, 2)
+    # f_bi_i_p = round(f_bi_i/total_n, 3)
     # f_bi_m = female_df [(59 < female_df['bi_total']) & (female_df['bi_total'] < 80)].shape[0]
-    # f_bi_m_p = round(f_bi_m/total_n, 2)
+    # f_bi_m_p = round(f_bi_m/total_n, 3)
     # f_bi_p = female_df [(39 < female_df['bi_total']) & (female_df['bi_total'] < 60)].shape[0]
-    # f_bi_p_p = round(f_bi_p/total_n, 2)
+    # f_bi_p_p = round(f_bi_p/total_n, 3)
     # f_bi_v = female_df [(19 < female_df['bi_total']) & (female_df['bi_total'] < 40)].shape[0]
-    # f_bi_v_p = round(f_bi_v/total_n, 2)
+    # f_bi_v_p = round(f_bi_v/total_n, 3)
     # f_bi_t = female_df [female_df['bi_total'] < 20].shape[0]
-    # f_bi_t_p = round(f_bi_p/total_n,2)
+    # f_bi_t_p = round(f_bi_p/total_n, 3)
     #
     # m_bi_i = male_df [(79 < male_df['bi_total']) & (male_df['bi_total'] < 101)].shape[0]
-    # m_bi_i_p = round(m_bi_i/total_n, 2)
+    # m_bi_i_p = round(m_bi_i/total_n, 3)
     # m_bi_m = male_df [(59 < male_df['bi_total']) & (male_df['bi_total'] < 80)].shape[0]
-    # m_bi_m_p = round(m_bi_m/total_n, 2)
+    # m_bi_m_p = round(m_bi_m/total_n, 3)
     # m_bi_p = male_df [(39 < male_df['bi_total']) & (male_df['bi_total'] < 60)].shape[0]
-    # m_bi_p_p = round(m_bi_p/total_n, 2)
+    # m_bi_p_p = round(m_bi_p/total_n, 3)
     # m_bi_v = male_df [(19 < male_df['bi_total']) & (male_df['bi_total'] < 40)].shape[0]
-    # m_bi_v_p = round(m_bi_v/total_n, 2)
+    # m_bi_v_p = round(m_bi_v/total_n, 3)
     # m_bi_t = male_df [male_df['bi_total'] < 20].shape[0]
-    # m_bi_t_p = round(m_bi_p/total_n,2)
+    # m_bi_t_p = round(m_bi_p/total_n, 3)
+
+    # f_m_1 = female_df[female_df['ICD_ID_1.0'] == 1].shape[0]
+    # f_m_1_p = round(f_m_1/total_n, 3)
+    # f_m_2 = female_df[female_df['ICD_ID_2.0'] == 1].shape[0]
+    # f_m_2_p = round(f_m_2 / total_n, 3)
+    # f_m_3 = female_df[female_df['ICD_ID_3.0'] == 1].shape[0]
+    # f_m_3_p = round(f_m_3 / total_n, 3)
+    # f_m_4 = female_df[female_df['ICD_ID_4.0'] == 1].shape[0]
+    # f_m_4_p = round(f_m_4 / total_n, 3)
+    #
+    # m_m_1 = male_df[male_df['ICD_ID_1.0'] == 1].shape[0]
+    # m_m_1_p = round(m_m_1/total_n, 3)
+    # m_m_2 = male_df[male_df['ICD_ID_2.0'] == 1].shape[0]
+    # m_m_2_p = round(m_m_2 / total_n, 3)
+    # m_m_3 = male_df[male_df['ICD_ID_3.0'] == 1].shape[0]
+    # m_m_3_p = round(m_m_3 / total_n, 3)
+    # m_m_4 = male_df[male_df['ICD_ID_4.0'] == 1].shape[0]
+    # m_m_4_p = round(m_m_4 / total_n, 3)
 
     f_ni_0 = female_df[female_df['nihss_total'] == 0].shape[0]
-    f_ni_0_p = round(f_ni_0/total_n, 2)
+    f_ni_0_p = round(f_ni_0/total_n, 3)
     f_ni_1 = female_df[(0 < female_df['nihss_total']) & (female_df['nihss_total'] < 5)].shape[0]
-    f_ni_1_p = round(f_ni_1/total_n, 2)
+    f_ni_1_p = round(f_ni_1/total_n, 3)
     f_ni_2 = female_df[(4 < female_df['nihss_total']) & (female_df['nihss_total'] < 16)].shape[0]
-    f_ni_2_p = round(f_ni_2/total_n, 2)
+    f_ni_2_p = round(f_ni_2/total_n, 3)
     f_ni_3 = female_df[(15 < female_df['nihss_total']) & (female_df['nihss_total'] < 21)].shape[0]
-    f_ni_3_p = round(f_ni_3/total_n, 2)
+    f_ni_3_p = round(f_ni_3/total_n, 3)
     f_ni_4 = female_df[20 < female_df['nihss_total']].shape[0]
-    f_ni_4_p = round(f_ni_4/total_n, 2)
+    f_ni_4_p = round(f_ni_4/total_n, 3)
 
     m_ni_0 = male_df[male_df['nihss_total'] == 0].shape[0]
-    m_ni_0_p = round(m_ni_0/total_n, 2)
+    m_ni_0_p = round(m_ni_0/total_n, 3)
     m_ni_1 = male_df[(0 < male_df['nihss_total']) & (male_df['nihss_total'] < 5)].shape[0]
-    m_ni_1_p = round(m_ni_1/total_n, 2)
+    m_ni_1_p = round(m_ni_1/total_n, 3)
     m_ni_2 = male_df[(4 < male_df['nihss_total']) & (male_df['nihss_total'] < 16)].shape[0]
-    m_ni_2_p = round(m_ni_2/total_n, 2)
+    m_ni_2_p = round(m_ni_2/total_n, 3)
     m_ni_3 = male_df[(15 < male_df['nihss_total']) & (male_df['nihss_total'] < 21)].shape[0]
-    m_ni_3_p = round(m_ni_3/total_n, 2)
+    m_ni_3_p = round(m_ni_3/total_n, 3)
     m_ni_4 = male_df[20 < male_df['nihss_total']].shape[0]
-    m_ni_4_p = round(m_ni_4/total_n, 2)
+    m_ni_4_p = round(m_ni_4/total_n, 3)
     print('done')

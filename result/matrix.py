@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     # http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html
-    # ['mlp', 'rf', 'mlp_cnn', 'svm']
-    model_names = ['mlp_cnn']
+
+    model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
     # all, fs
     status = 'fs'
     # ischemic, hemorrhagic

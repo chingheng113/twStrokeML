@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     # http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html
     hold_out_round = 0
-    # model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
-    # present_names = ['ANN', 'RF', 'HANN', 'SVM']
-    model_names = ['mlp']
-    present_names = ['mlp']
+    model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
+    present_names = ['ANN', 'RF', 'HANN', 'SVM']
+    # model_names = ['mlp']
+    # present_names = ['mlp']
     # all, fs
     status = 'all'
     # ischemic, hemorrhagic
-    sub_class = 'ischemic'
+    sub_class = 'hemorrhagic'
 
     if status == 'all':
         title_tr = 'Training ROC curve of whole features dataset'

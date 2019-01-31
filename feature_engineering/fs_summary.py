@@ -1,7 +1,10 @@
 from my_utils import data_util
+import csv
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import Counter
+import seaborn as sns
 
 
 def plot_features(df):
@@ -16,20 +19,46 @@ def plot_features(df):
     plt.show()
 
 
-def cut_off(feature_list):
+def plot_heatmap(dict, sub_class):
+    df = pd.DataFrame(data=dict)
+    f, ax = plt.subplots(figsize = (50, df.shape[0]))
+    cmap = sns.cubehelix_palette(start=1, rot=3, gamma=0.8, as_cmap=True)
+    g = sns.heatmap(df, cmap=cmap, linewidths=0.05, ax=ax)
+    if sub_class == 'ischemic':
+        ax.set_title('Feature Selection Heatmap of ischemic')
+    else:
+        ax.set_title('Feature Selection Heatmap of hemorrhagic')
+    ax.set_xlabel('Dataset')
+    ax.set_ylabel('Feature')
+    ax.set_yticklabels(g.get_yticklabels(), rotation=40, fontsize=10)
+    plt.show()
+
+
+def get_final_features(feature_df, feature_names):
+    # 10 hold-out rounds
+    all_selected_features = []
     for i in range(0, 10, 1):
-        c_name = 'rf'+str(hold_out_round)
+        c_name = 'rf'+str(i)
+        feature_list = feature_df[['f_index', c_name]]
         feature_list_no_zero = feature_list.loc[feature_list[c_name] != 0]
         no_zero_importance = feature_list_no_zero[c_name].values
         cutoff = np.std(no_zero_importance)+np.min(no_zero_importance)
-        list = feature_list.loc[feature_list[c_name] > cutoff]
-        print(list.shape)
-    return feature_list
+        selected_f = feature_list.loc[feature_list[c_name] > cutoff]
+        selected_f.sort_values(by=[c_name], inplace=True, ascending=False)
+        selected_f_names = feature_names[selected_f['f_index'].values]
+        if i == 0:
+            all_selected_features = selected_f_names
+        else:
+            all_selected_features = np.append(all_selected_features, selected_f_names)
+    feature_dict = Counter(all_selected_features)
+    # use to draw heatmap
+    plot_heatmap(feature_dict, sub_class)
+    return list(feature_dict.keys())
 
 
 if __name__ == '__main__':
     # Just get the feature names
-    subtype = 'is'
+    subtype = 'he'
     if subtype == 'is':
         sub_class = 'ischemic'
     else:
@@ -50,16 +79,9 @@ if __name__ == '__main__':
             robust_f_df['rf'+str(hold_out_round)] = mean_importance
         else:
             robust_f_df['rf'+str(hold_out_round)] = mean_importance
-    robust_f = cut_off(robust_f_df)
 
+    final_features = get_final_features(robust_f_df, feature_names)
+    final_features = np.concatenate([['f_name'], final_features])
+    np.savetxt('selected_features' + '_' + sub_class + '.csv', final_features, delimiter=',', fmt='%s')
 
-
-
-    # final_mean_importance = robust_f.drop(['f_index'], axis=1).mean(axis=1)
-    # final_f = pd.DataFrame(data={'f_name': feature_names})
-    # final_f['mean'] = final_mean_importance
-    # #
-    # selected_final_f = final_f.sort_values(by=['mean'], ascending=False).iloc[0:30,:]
-    # selected_final_f.to_csv('selected_features_'+sub_class+'.csv', sep=',', encoding='utf-8', index=False)
-    # plot_features(final_f)
     print('Done')

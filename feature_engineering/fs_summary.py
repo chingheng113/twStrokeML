@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
-import seaborn as sns
+
 
 
 def plot_features(df):
@@ -16,21 +16,6 @@ def plot_features(df):
     plt.barh(range(len(indices)), df['mean'].loc[indices], color='b', align='center')
     plt.yticks(range(len(indices)), feature_names[indices], fontsize=6)
     plt.xlabel('Average Importance')
-    plt.show()
-
-
-def plot_heatmap(dict, sub_class):
-    df = pd.DataFrame(data=dict)
-    f, ax = plt.subplots(figsize = (50, df.shape[0]))
-    cmap = sns.cubehelix_palette(start=1, rot=3, gamma=0.8, as_cmap=True)
-    g = sns.heatmap(df, cmap=cmap, linewidths=0.05, ax=ax)
-    if sub_class == 'ischemic':
-        ax.set_title('Feature Selection Heatmap of ischemic')
-    else:
-        ax.set_title('Feature Selection Heatmap of hemorrhagic')
-    ax.set_xlabel('Dataset')
-    ax.set_ylabel('Feature')
-    ax.set_yticklabels(g.get_yticklabels(), rotation=40, fontsize=10)
     plt.show()
 
 
@@ -52,7 +37,6 @@ def get_final_features(feature_df, feature_names):
             all_selected_features = np.append(all_selected_features, selected_f_names)
     feature_dict = Counter(all_selected_features)
     # use to draw heatmap
-    plot_heatmap(feature_dict, sub_class)
     return list(feature_dict.keys())
 
 

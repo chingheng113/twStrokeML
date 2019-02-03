@@ -1,4 +1,4 @@
-from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
+from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc, precision_recall_fscore_support
 from keras.models import load_model
 import pickle
 from sklearn.externals import joblib
@@ -146,26 +146,14 @@ def get_classification_report(model_name, status, sub_class, inx):
     predict = labelize(probas_)
     return classification_report(label, predict)
 
-def get_holdout_classification_report(hold_out_round, model_name, sub_class, status):
-    filepath = model_name + os.sep + status + os.sep
-    if status == 'fs':
-        file_name = model_name + '_' + status +'_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
-    else:
-        file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
-    df = pd.read_csv(filepath+file_name, encoding='utf8')
-    label = df['label']
-    probas_ = df[['0', '1']].values
-    predict = labelize(probas_)
-    return classification_report(label, predict, digits=4)
 
-
-def get_average_classification_report(hold_out_round, model_name, sub_class, status):
+def get_average_test_classification_report(model_name, sub_class, status):
     for inx in range(0,10,1):
         filepath = model_name + os.sep + status + os.sep
         if status == 'fs':
-            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(inx) + '_hold.csv'
         else:
-            file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
+            file_name = model_name + '_' + sub_class + '_h_' + str(inx) + '_hold.csv'
         df = pd.read_csv(filepath+file_name, encoding='utf8')
         label = list(df['label'].values)
         probas_ = df[['0', '1']].values
@@ -176,4 +164,25 @@ def get_average_classification_report(hold_out_round, model_name, sub_class, sta
         else:
             labels.extend(label)
             predicts.extend(predict)
-    return classification_report(labels, predicts, digits=4)
+    return classification_report(labels, predicts, digits=3)
+
+
+def get_all_performance_scores(model_name, sub_class, status):
+    precisions = []
+    recalls = []
+    fscores = []
+    for inx in range(0,10,1):
+        filepath = model_name + os.sep + status + os.sep
+        if status == 'fs':
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(inx) + '_hold.csv'
+        else:
+            file_name = model_name + '_' + sub_class + '_h_' + str(inx) + '_hold.csv'
+        df = pd.read_csv(filepath+file_name, encoding='utf8')
+        label = list(df['label'].values)
+        probas_ = df[['0', '1']].values
+        predict = list(labelize(probas_))
+        precision, recall, fscore, support = precision_recall_fscore_support(label, predict, average='macro')
+        precisions.extend([precision])
+        recalls.extend([recall])
+        fscores.extend([fscore])
+    return precisions, recalls, fscores

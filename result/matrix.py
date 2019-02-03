@@ -13,16 +13,18 @@ if __name__ == '__main__':
     # all, fs
     status = 'fs'
     # ischemic, hemorrhagic
-    sub_class = 'ischemic'
+    sub_class = 'hemorrhagic'
     hold_out_round = 0
     for model_name in model_names:
-        # performance_util.get_sum_confusion_matrix(model_name, status)
-        report = performance_util.get_average_classification_report(hold_out_round, model_name, sub_class, status)
-        report_hold = performance_util.get_holdout_classification_report(hold_out_round, model_name, sub_class, status)
+        precisions, recalls, fscores = performance_util.get_all_performance_scores(model_name, sub_class, status)
         print(model_name)
-        print(report)
-        print('----')
-        print(report_hold)
-        print('############')
-    print('done')
+        print(round(np.mean(precisions), 3))
+        print(round(np.std(precisions), 3))
+        print(round(np.mean(recalls), 3))
+        print(round(np.std(recalls), 3))
+        print(round(np.mean(fscores), 3))
+        print(round(np.std(fscores), 3))
+        # report = performance_util.get_average_test_classification_report(model_name, sub_class, status)
+        # print(report)
+print('done')
 

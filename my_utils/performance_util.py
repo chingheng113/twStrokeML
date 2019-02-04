@@ -60,22 +60,6 @@ def load_nn_model(model_name, best_model_inx):
     return load_model(model_path)
 
 
-def calculate_roc_auc(hold_out_round, model_name, status, sub_class, inx):
-    filepath = model_name + os.sep + status + os.sep
-    if status == 'fs':
-        file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
-    else:
-        file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
-
-    df = pd.read_csv(filepath+file_name, encoding='utf8')
-    label = df['label']
-    probas_ = df[['0', '1']].values
-    # Compute ROC curve and area the curve
-    fpr, tpr, thresholds = roc_curve(label, probas_[:, 1])
-    roc_auc = auc(fpr, tpr)
-    return fpr, tpr, roc_auc
-
-
 def calculate_holdout_roc_auc(hold_out_round, model_name, status, sub_class):
     filepath = model_name + os.sep + status + os.sep
     if status == 'fs':
@@ -103,12 +87,33 @@ def calculate_holdout_roc_auc_all(hold_out_round, model_name, status):
     return fpr, tpr, roc_auc
 
 
-def average_roc_auc(hold_out_round, model_name, status, sub_class):
+def calculate_roc_auc(hold_out_round, model_name, status, cv, sub_class, inx):
+    filepath = model_name + os.sep + status + os.sep
+    if status == 'fs':
+        if cv == 'test':
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
+        else:
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
+    else:
+        if cv == 'test':
+            file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
+        else:
+            file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
+    df = pd.read_csv(filepath+file_name, encoding='utf8')
+    label = df['label']
+    probas_ = df[['0', '1']].values
+    # Compute ROC curve and area the curve
+    fpr, tpr, thresholds = roc_curve(label, probas_[:, 1])
+    roc_auc = auc(fpr, tpr)
+    return fpr, tpr, roc_auc
+
+
+def average_roc_auc(model_name, status, sub_class, cv):
     tprs = []
     aucs = []
     mean_fpr = np.linspace(0, 1, 300)
     for inx in range(0, 10, 1):
-        fpr, tpr, roc_auc = calculate_roc_auc(hold_out_round, model_name, status, sub_class, inx)
+        fpr, tpr, roc_auc = calculate_roc_auc(inx, model_name, status, cv, sub_class, inx)
         tprs.append(interp(mean_fpr, fpr, tpr))
         tprs[-1][0] = 0.0
         aucs.append(roc_auc)

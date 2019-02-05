@@ -5,6 +5,27 @@ from my_utils import data_util
 if __name__ == '__main__':
     df = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
     df = df[df['ICD_ID_99.0'] != 1]
+    # mrs_dis_0 = df[df['discharged_mrs']==0].shape[0]
+    # mrs_dis_1 = df[df['discharged_mrs']==1].shape[0]
+    # mrs_dis_2 = df[df['discharged_mrs']==2].shape[0]
+    # mrs_dis_3 = df[df['discharged_mrs']==3].shape[0]
+    # mrs_dis_4 = df[df['discharged_mrs']==4].shape[0]
+    # mrs_dis_5 = df[df['discharged_mrs']==5].shape[0]
+    # mrs_dis_6 = df[df['discharged_mrs']==6].shape[0]
+    # mrs_30_0 = df[df['MRS_1']==0].shape[0]
+    # mrs_30_1 = df[df['MRS_1']==1].shape[0]
+    # mrs_30_2 = df[df['MRS_1']==2].shape[0]
+    # mrs_30_3 = df[df['MRS_1']==3].shape[0]
+    # mrs_30_4 = df[df['MRS_1']==4].shape[0]
+    # mrs_30_5 = df[df['MRS_1']==5].shape[0]
+    # mrs_30_6 = df[df['MRS_1']==6].shape[0]
+    mrs_90_0 = df[df['MRS_3']==0].shape[0]
+    mrs_90_1 = df[df['MRS_3']==1].shape[0]
+    mrs_90_2 = df[df['MRS_3']==2].shape[0]
+    mrs_90_3 = df[df['MRS_3']==3].shape[0]
+    mrs_90_4 = df[df['MRS_3']==4].shape[0]
+    mrs_90_5 = df[df['MRS_3']==5].shape[0]
+    mrs_90_6 = df[df['MRS_3']==6].shape[0]
     df['bi_total'] = pd.DataFrame(np.sum(df[['Feeding', 'Transfers', 'Bathing', 'Toilet_use', 'Grooming', 'Mobility',
                                              'Stairs', 'Dressing', 'Bowel_control', 'Bladder_control']], axis=1))
     df['nihss_total'] = pd.DataFrame(np.sum(df[['NIHS_1a_out', 'NIHS_1b_out', 'NIHS_1c_out', 'NIHS_2_out', 'NIHS_3_out', 'NIHS_4_out',

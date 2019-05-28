@@ -40,7 +40,7 @@ def mlp_cnn_binary(x_cnn, x_mlp, y, para, indx):
     # print(model.summary())
     # plot_fig.plot_model(model, para['model_name'])
     # 5e-3
-    model.compile(loss='binary_crossentropy',
+    model.compile(loss='categorical_crossentropy',
                   optimizer=optimizers.sgd(lr=5e-3),
                   metrics=['accuracy'])
     history = model.fit([x_cnn, x_mlp], y,

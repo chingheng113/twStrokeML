@@ -25,7 +25,7 @@ def mlp_binary(x, y, para, indx):
     model.add(Dropout(para['drop_rate']))
     model.add(Dense(units=nb_classes))
     model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy',
+    model.compile(loss='binary_crossentropy',
                   optimizer=optimizers.sgd(lr=5e-3),
                   metrics=['accuracy'])
     print(model.summary())

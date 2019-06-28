@@ -69,6 +69,22 @@ def get_poor_god(fn, sub_class='all'):
     start = min(df['MRS_3'].values) - 1.0
     end = max(df['MRS_3'].values) + 1.0
     y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
+    return id_data, x_data, y_data
+
+
+def get_poor_god_downsample(fn, sub_class='all'):
+    df = pd.DataFrame()
+    if sub_class == 'ischemic':
+        df = get_ischemic(fn)
+    elif sub_class == 'hemorrhagic':
+        df = get_hemorrhagic(fn)
+    else:
+        df = load_all(fn)
+    id_data, x_data, y_data = get_x_y_data(df)
+    # Good <= 2, Poor >= 3
+    start = min(df['MRS_3'].values) - 1.0
+    end = max(df['MRS_3'].values) + 1.0
+    y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
     if y_data[y_data == 0].size > y_data[y_data == 1].size:
         resample_size = y_data[y_data == 1].size
         df_majority = y_data[y_data == 0]

@@ -11,12 +11,12 @@ from my_utils import data_util, performance_util
 def do_svm(hold_out_round, sub_class, experiment):
     np.random.seed(hold_out_round)
     if sub_class == 'ischemic':
-        id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
+        id_train_all, x_train_all, y_train_all = data_util.get_poor_god_downsample(
             'training_is_' + str(hold_out_round) + '.csv', sub_class=sub_class)
         id_hold, x_hold, y_hold = data_util.get_poor_god(
             'hold_is_' + str(hold_out_round) + '.csv', sub_class=sub_class)
     else:
-        id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
+        id_train_all, x_train_all, y_train_all = data_util.get_poor_god_downsample(
             'training_he_' + str(hold_out_round) + '.csv', sub_class=sub_class)
         id_hold, x_hold, y_hold = data_util.get_poor_god(
             'hold_he_' + str(hold_out_round) + '.csv', sub_class=sub_class)

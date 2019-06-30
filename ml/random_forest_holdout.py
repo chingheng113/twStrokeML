@@ -24,11 +24,23 @@ def do_rf(hold_out_round, sub_class, experiment):
     if experiment == 0:
         save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'all' + os.sep
         model_name = 'rf_'+sub_class+'_h_'+str(hold_out_round)
-    else:
+    elif experiment == 1:
         x_train_all = data_util.feature_selection(x_train_all, sub_class)
         x_hold = data_util.feature_selection(x_hold, sub_class)
         save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'fs' + os.sep
         model_name = 'rf_fs_'+sub_class+'_h_'+str(hold_out_round)
+    elif experiment == 2:
+        x_train_all = x_train_all.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = x_hold.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'all_nf' + os.sep
+        model_name = 'rf_nf_' + sub_class + '_h_' + str(hold_out_round)
+    else:
+        x_train_all = data_util.feature_selection(x_train_all, sub_class)
+        x_train_all = x_train_all.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = data_util.feature_selection(x_hold, sub_class)
+        x_hold = x_hold.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'fs_nf' + os.sep
+        model_name = 'rf_fs_nf_'+sub_class+'_h_'+str(hold_out_round)
     #
 
     test_acc_array = []
@@ -80,8 +92,8 @@ if __name__ == '__main__':
     hold_out_round = 0
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
-    # none = 0, feature selection = 1
-    experiment = 0
+    # all = 0, feature selection = 1, all without follow = 3, feature selection without follow = 4
+    experiment = 3
     #
     # do_rf(hold_out_round, sub_class, experiment)
     do_rf(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

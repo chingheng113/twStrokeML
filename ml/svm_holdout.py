@@ -24,11 +24,23 @@ def do_svm(hold_out_round, sub_class, experiment):
     if experiment == 0:
         save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'all' + os.sep
         model_name = 'svm_'+sub_class+'_h_'+str(hold_out_round)
-    else:
+    elif experiment == 1:
         x_train_all = data_util.feature_selection(x_train_all, sub_class)
         x_hold = data_util.feature_selection(x_hold, sub_class)
         save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'fs' + os.sep
         model_name = 'svm_fs_'+sub_class+'_h_'+str(hold_out_round)
+    elif experiment == 2:
+        x_train_all = x_train_all.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = x_hold.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'all_nf' + os.sep
+        model_name = 'svm_nf_' + sub_class + '_h_' + str(hold_out_round)
+    else:
+        x_train_all = data_util.feature_selection(x_train_all, sub_class)
+        x_train_all = x_train_all.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = data_util.feature_selection(x_hold, sub_class)
+        x_hold = x_hold.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'fs_nf' + os.sep
+        model_name = 'svm_fs_nf_' + sub_class + '_h_' + str(hold_out_round)
     #
     test_acc_array = []
     kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=hold_out_round)
@@ -79,7 +91,7 @@ if __name__ == '__main__':
     hold_out_round = 0
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
-    # none = 0, feature selection = 1
+    # all = 0, feature selection = 1, all without follow = 3, feature selection without follow = 4
     experiment = 1
     #
     # do_svm(hold_out_round, sub_class, experiment)

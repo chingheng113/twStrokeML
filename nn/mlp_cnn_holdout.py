@@ -72,10 +72,23 @@ def do_mlp_cnn(hold_out_round, sub_class, experiment):
                      'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
-    else:
+    elif experiment == 1:
         save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep + 'fs' + os.sep
         selected_features = data_util.get_selected_feature_name(sub_class)
         parameter = {'model_name': 'mlp_cnn_fs_'+sub_class+'_h_'+str(hold_out_round),
+                     'size_of_batch': 56,
+                     'nb_epoch': 150,
+                     'drop_rate': 0.5}
+    elif experiment == 2:
+        save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep + 'all_nf' + os.sep
+        parameter = {'model_name': 'mlp_cnn_nf_' + sub_class + '_h_' + str(hold_out_round),
+                     'size_of_batch': 56,
+                     'nb_epoch': 150,
+                     'drop_rate': 0.5}
+    else:
+        save_path = '..' + os.sep + 'result' + os.sep + 'mlp_cnn' + os.sep + 'fs_nf' + os.sep
+        selected_features = data_util.get_selected_feature_name(sub_class)
+        parameter = {'model_name': 'mlp_cnn_fs_nf_'+sub_class+'_h_'+str(hold_out_round),
                      'size_of_batch': 56,
                      'nb_epoch': 150,
                      'drop_rate': 0.5}
@@ -86,16 +99,28 @@ def do_mlp_cnn(hold_out_round, sub_class, experiment):
     for index, (train, test) in enumerate(kfold.split(x_train_all, y_train_all)):
         # training
         x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_train_all.iloc[train])
-        if experiment == 1:
+        if experiment == 2:
+            x_train_cnn = x_train_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+            x_train_mlp = x_train_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        if experiment == 1 or experiment == 3:
             x_train_cnn, x_train_mlp = data_util.selected_cnn_mlp_input(x_train_cnn, x_train_mlp, selected_features)
+            if experiment == 3:
+                x_train_cnn = x_train_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+                x_train_mlp = x_train_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
         x_train_cnn = data_util.scale(x_train_cnn)
         x_train_mlp = data_util.scale(x_train_mlp)
         y_train = y_train_all.iloc[train]
 
         # Testing
         x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_train_all.iloc[test])
-        if experiment == 1:
+        if experiment == 2:
+            x_test_cnn = x_test_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+            x_test_mlp = x_test_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        if experiment == 1 or experiment == 3:
             x_test_cnn, x_test_mlp = data_util.selected_cnn_mlp_input(x_test_cnn, x_test_mlp, selected_features)
+            if experiment == 3:
+                x_test_cnn = x_test_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+                x_test_mlp = x_test_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
         x_test_cnn = np.expand_dims(data_util.scale(x_test_cnn), 2)
         x_test_mlp = data_util.scale(x_test_mlp)
         y_test = y_train_all.iloc[test]
@@ -149,8 +174,8 @@ if __name__ == '__main__':
     hold_out_round = 0
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
-    # none = 0, feature selection = 1
-    experiment = 1
+    # all = 0, feature selection = 1, all without follow = 3, feature selection without follow = 4
+    experiment = 3
     #
     # do_mlp_cnn(hold_out_round, sub_class, experiment)
     do_mlp_cnn(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]))

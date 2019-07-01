@@ -9,9 +9,9 @@ from sklearn.metrics import roc_auc_score
 
 
 id_train_all, x_train_all, y_train_all = data_util.get_poor_god_downsample(
-            'training_he_9.csv', sub_class='hemorrhagic')
+            'training_is_9.csv', sub_class='ischemic')
 id_hold, x_hold, y_hold = data_util.get_poor_god(
-            'hold_he_9.csv', sub_class='hemorrhagic')
+            'hold_is_9.csv', sub_class='ischemic')
 lm = LogisticRegression()
 x = x_train_all[['MRS_1']]
 y = y_train_all

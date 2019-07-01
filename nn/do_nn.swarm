@@ -1,0 +1,193 @@
+module load python/3.6
+
+# == ischemic - all ==
+python mlp_holdout.py 0 'ischemic' 0
+python mlp_holdout.py 1 'ischemic' 0
+python mlp_holdout.py 2 'ischemic' 0
+python mlp_holdout.py 3 'ischemic' 0
+python mlp_holdout.py 4 'ischemic' 0
+python mlp_holdout.py 5 'ischemic' 0
+python mlp_holdout.py 6 'ischemic' 0
+python mlp_holdout.py 7 'ischemic' 0
+python mlp_holdout.py 8 'ischemic' 0
+python mlp_holdout.py 9 'ischemic' 0
+
+# == hemorrhagic - all ==
+python mlp_holdout.py 0 'hemorrhagic' 0
+python mlp_holdout.py 1 'hemorrhagic' 0
+python mlp_holdout.py 2 'hemorrhagic' 0
+python mlp_holdout.py 3 'hemorrhagic' 0
+python mlp_holdout.py 4 'hemorrhagic' 0
+python mlp_holdout.py 5 'hemorrhagic' 0
+python mlp_holdout.py 6 'hemorrhagic' 0
+python mlp_holdout.py 7 'hemorrhagic' 0
+python mlp_holdout.py 8 'hemorrhagic' 0
+python mlp_holdout.py 9 'hemorrhagic' 0
+
+# == ischemic - fs ==
+python mlp_holdout.py 0 'ischemic' 1
+python mlp_holdout.py 1 'ischemic' 1
+python mlp_holdout.py 2 'ischemic' 1
+python mlp_holdout.py 3 'ischemic' 1
+python mlp_holdout.py 4 'ischemic' 1
+python mlp_holdout.py 5 'ischemic' 1
+python mlp_holdout.py 6 'ischemic' 1
+python mlp_holdout.py 7 'ischemic' 1
+python mlp_holdout.py 8 'ischemic' 1
+python mlp_holdout.py 9 'ischemic' 1
+
+# == ischemic - fs ==
+python mlp_holdout.py 0 'hemorrhagic' 1
+python mlp_holdout.py 1 'hemorrhagic' 1
+python mlp_holdout.py 2 'hemorrhagic' 1
+python mlp_holdout.py 3 'hemorrhagic' 1
+python mlp_holdout.py 4 'hemorrhagic' 1
+python mlp_holdout.py 5 'hemorrhagic' 1
+python mlp_holdout.py 6 'hemorrhagic' 1
+python mlp_holdout.py 7 'hemorrhagic' 1
+python mlp_holdout.py 8 'hemorrhagic' 1
+python mlp_holdout.py 9 'hemorrhagic' 1
+
+# == ischemic - all_nf ==
+python mlp_holdout.py 0 'ischemic' 2
+python mlp_holdout.py 1 'ischemic' 2
+python mlp_holdout.py 2 'ischemic' 2
+python mlp_holdout.py 3 'ischemic' 2
+python mlp_holdout.py 4 'ischemic' 2
+python mlp_holdout.py 5 'ischemic' 2
+python mlp_holdout.py 6 'ischemic' 2
+python mlp_holdout.py 7 'ischemic' 2
+python mlp_holdout.py 8 'ischemic' 2
+python mlp_holdout.py 9 'ischemic' 2
+
+# == hemorrhagic - all_nf ==
+python mlp_holdout.py 0 'hemorrhagic' 2
+python mlp_holdout.py 1 'hemorrhagic' 2
+python mlp_holdout.py 2 'hemorrhagic' 2
+python mlp_holdout.py 3 'hemorrhagic' 2
+python mlp_holdout.py 4 'hemorrhagic' 2
+python mlp_holdout.py 5 'hemorrhagic' 2
+python mlp_holdout.py 6 'hemorrhagic' 2
+python mlp_holdout.py 7 'hemorrhagic' 2
+python mlp_holdout.py 8 'hemorrhagic' 2
+python mlp_holdout.py 9 'hemorrhagic' 2
+
+# == ischemic - fs_nf ==
+python mlp_holdout.py 0 'ischemic' 3
+python mlp_holdout.py 1 'ischemic' 3
+python mlp_holdout.py 2 'ischemic' 3
+python mlp_holdout.py 3 'ischemic' 3
+python mlp_holdout.py 4 'ischemic' 3
+python mlp_holdout.py 5 'ischemic' 3
+python mlp_holdout.py 6 'ischemic' 3
+python mlp_holdout.py 7 'ischemic' 3
+python mlp_holdout.py 8 'ischemic' 3
+python mlp_holdout.py 9 'ischemic' 3
+
+# == ischemic - fs_nf ==
+python mlp_holdout.py 0 'hemorrhagic' 3
+python mlp_holdout.py 1 'hemorrhagic' 3
+python mlp_holdout.py 2 'hemorrhagic' 3
+python mlp_holdout.py 3 'hemorrhagic' 3
+python mlp_holdout.py 4 'hemorrhagic' 3
+python mlp_holdout.py 5 'hemorrhagic' 3
+python mlp_holdout.py 6 'hemorrhagic' 3
+python mlp_holdout.py 7 'hemorrhagic' 3
+python mlp_holdout.py 8 'hemorrhagic' 3
+python mlp_holdout.py 9 'hemorrhagic' 3
+
+# == ischemic - all ==
+python mlp_cnn_holdout.py 0 'ischemic' 0
+python mlp_cnn_holdout.py 1 'ischemic' 0
+python mlp_cnn_holdout.py 2 'ischemic' 0
+python mlp_cnn_holdout.py 3 'ischemic' 0
+python mlp_cnn_holdout.py 4 'ischemic' 0
+python mlp_cnn_holdout.py 5 'ischemic' 0
+python mlp_cnn_holdout.py 6 'ischemic' 0
+python mlp_cnn_holdout.py 7 'ischemic' 0
+python mlp_cnn_holdout.py 8 'ischemic' 0
+python mlp_cnn_holdout.py 9 'ischemic' 0
+
+# == hemorrhagic - all ==
+python mlp_cnn_holdout.py 0 'hemorrhagic' 0
+python mlp_cnn_holdout.py 1 'hemorrhagic' 0
+python mlp_cnn_holdout.py 2 'hemorrhagic' 0
+python mlp_cnn_holdout.py 3 'hemorrhagic' 0
+python mlp_cnn_holdout.py 4 'hemorrhagic' 0
+python mlp_cnn_holdout.py 5 'hemorrhagic' 0
+python mlp_cnn_holdout.py 6 'hemorrhagic' 0
+python mlp_cnn_holdout.py 7 'hemorrhagic' 0
+python mlp_cnn_holdout.py 8 'hemorrhagic' 0
+python mlp_cnn_holdout.py 9 'hemorrhagic' 0
+
+# == ischemic - fs ==
+python mlp_cnn_holdout.py 0 'ischemic' 1
+python mlp_cnn_holdout.py 1 'ischemic' 1
+python mlp_cnn_holdout.py 2 'ischemic' 1
+python mlp_cnn_holdout.py 3 'ischemic' 1
+python mlp_cnn_holdout.py 4 'ischemic' 1
+python mlp_cnn_holdout.py 5 'ischemic' 1
+python mlp_cnn_holdout.py 6 'ischemic' 1
+python mlp_cnn_holdout.py 7 'ischemic' 1
+python mlp_cnn_holdout.py 8 'ischemic' 1
+python mlp_cnn_holdout.py 9 'ischemic' 1
+
+# == ischemic - fs ==
+python mlp_cnn_holdout.py 0 'hemorrhagic' 1
+python mlp_cnn_holdout.py 1 'hemorrhagic' 1
+python mlp_cnn_holdout.py 2 'hemorrhagic' 1
+python mlp_cnn_holdout.py 3 'hemorrhagic' 1
+python mlp_cnn_holdout.py 4 'hemorrhagic' 1
+python mlp_cnn_holdout.py 5 'hemorrhagic' 1
+python mlp_cnn_holdout.py 6 'hemorrhagic' 1
+python mlp_cnn_holdout.py 7 'hemorrhagic' 1
+python mlp_cnn_holdout.py 8 'hemorrhagic' 1
+python mlp_cnn_holdout.py 9 'hemorrhagic' 1
+
+# == ischemic - all_nf ==
+python mlp_cnn_holdout.py 0 'ischemic' 2
+python mlp_cnn_holdout.py 1 'ischemic' 2
+python mlp_cnn_holdout.py 2 'ischemic' 2
+python mlp_cnn_holdout.py 3 'ischemic' 2
+python mlp_cnn_holdout.py 4 'ischemic' 2
+python mlp_cnn_holdout.py 5 'ischemic' 2
+python mlp_cnn_holdout.py 6 'ischemic' 2
+python mlp_cnn_holdout.py 7 'ischemic' 2
+python mlp_cnn_holdout.py 8 'ischemic' 2
+python mlp_cnn_holdout.py 9 'ischemic' 2
+
+# == hemorrhagic - all_nf ==
+python mlp_cnn_holdout.py 0 'hemorrhagic' 2
+python mlp_cnn_holdout.py 1 'hemorrhagic' 2
+python mlp_cnn_holdout.py 2 'hemorrhagic' 2
+python mlp_cnn_holdout.py 3 'hemorrhagic' 2
+python mlp_cnn_holdout.py 4 'hemorrhagic' 2
+python mlp_cnn_holdout.py 5 'hemorrhagic' 2
+python mlp_cnn_holdout.py 6 'hemorrhagic' 2
+python mlp_cnn_holdout.py 7 'hemorrhagic' 2
+python mlp_cnn_holdout.py 8 'hemorrhagic' 2
+python mlp_cnn_holdout.py 9 'hemorrhagic' 2
+
+# == ischemic - fs_nf ==
+python mlp_cnn_holdout.py 0 'ischemic' 3
+python mlp_cnn_holdout.py 1 'ischemic' 3
+python mlp_cnn_holdout.py 2 'ischemic' 3
+python mlp_cnn_holdout.py 3 'ischemic' 3
+python mlp_cnn_holdout.py 4 'ischemic' 3
+python mlp_cnn_holdout.py 5 'ischemic' 3
+python mlp_cnn_holdout.py 6 'ischemic' 3
+python mlp_cnn_holdout.py 7 'ischemic' 3
+python mlp_cnn_holdout.py 8 'ischemic' 3
+python mlp_cnn_holdout.py 9 'ischemic' 3
+
+# == ischemic - fs_nf ==
+python mlp_cnn_holdout.py 0 'hemorrhagic' 3
+python mlp_cnn_holdout.py 1 'hemorrhagic' 3
+python mlp_cnn_holdout.py 2 'hemorrhagic' 3
+python mlp_cnn_holdout.py 3 'hemorrhagic' 3
+python mlp_cnn_holdout.py 4 'hemorrhagic' 3
+python mlp_cnn_holdout.py 5 'hemorrhagic' 3
+python mlp_cnn_holdout.py 6 'hemorrhagic' 3
+python mlp_cnn_holdout.py 7 'hemorrhagic' 3
+python mlp_cnn_holdout.py 8 'hemorrhagic' 3
+python mlp_cnn_holdout.py 9 'hemorrhagic' 3

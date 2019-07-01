@@ -1,26 +1,26 @@
 module load python/3.6
 
 # == ischemic - all_nf ==
-python svm_holdout.py 0 'ischemic' 2
-python svm_holdout.py 1 'ischemic' 2
-python svm_holdout.py 2 'ischemic' 2
-python svm_holdout.py 3 'ischemic' 2
-python svm_holdout.py 4 'ischemic' 2
-python svm_holdout.py 5 'ischemic' 2
-python svm_holdout.py 6 'ischemic' 2
-python svm_holdout.py 7 'ischemic' 2
-python svm_holdout.py 8 'ischemic' 2
-python svm_holdout.py 9 'ischemic' 2
+python random_forest_holdout.py 0 'ischemic' 2
+python random_forest_holdout.py 1 'ischemic' 2
+python random_forest_holdout.py 2 'ischemic' 2
+python random_forest_holdout.py 3 'ischemic' 2
+python random_forest_holdout.py 4 'ischemic' 2
+python random_forest_holdout.py 5 'ischemic' 2
+python random_forest_holdout.py 6 'ischemic' 2
+python random_forest_holdout.py 7 'ischemic' 2
+python random_forest_holdout.py 8 'ischemic' 2
+python random_forest_holdout.py 9 'ischemic' 2
 
 # == hemorrhagic - all_nf ==
-python svm_holdout.py 0 'hemorrhagic' 2
-python svm_holdout.py 1 'hemorrhagic' 2
-python svm_holdout.py 2 'hemorrhagic' 2
-python svm_holdout.py 3 'hemorrhagic' 2
-python svm_holdout.py 4 'hemorrhagic' 2
-python svm_holdout.py 5 'hemorrhagic' 2
-python svm_holdout.py 6 'hemorrhagic' 2
-python svm_holdout.py 7 'hemorrhagic' 2
-python svm_holdout.py 8 'hemorrhagic' 2
-python svm_holdout.py 9 'hemorrhagic' 2
+python random_forest_holdout.py 0 'hemorrhagic' 2
+python random_forest_holdout.py 1 'hemorrhagic' 2
+python random_forest_holdout.py 2 'hemorrhagic' 2
+python random_forest_holdout.py 3 'hemorrhagic' 2
+python random_forest_holdout.py 4 'hemorrhagic' 2
+python random_forest_holdout.py 5 'hemorrhagic' 2
+python random_forest_holdout.py 6 'hemorrhagic' 2
+python random_forest_holdout.py 7 'hemorrhagic' 2
+python random_forest_holdout.py 8 'hemorrhagic' 2
+python random_forest_holdout.py 9 'hemorrhagic' 2
 

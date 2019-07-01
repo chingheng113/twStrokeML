@@ -174,7 +174,7 @@ if __name__ == '__main__':
     hold_out_round = 0
     # ischemic, hemorrhagic
     sub_class = 'ischemic'
-    # all = 0, feature selection = 1, all without follow = 3, feature selection without follow = 4
+    # all = 0, feature selection = 1, all without follow = 2, feature selection without follow = 3
     experiment = 3
     #
     # do_mlp_cnn(hold_out_round, sub_class, experiment)

@@ -94,11 +94,21 @@ def calculate_roc_auc(hold_out_round, model_name, status, cv, sub_class, inx):
             file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
         else:
             file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
-    else:
+    elif status == 'all':
         if cv == 'test':
             file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
         else:
             file_name = model_name + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
+    elif status == 'all_nf':
+        if cv == 'test':
+            file_name = model_name + '_nf_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
+        else:
+            file_name = model_name + '_nf_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
+    else:
+        if cv == 'test':
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_test_cv' + str(inx) + '.csv'
+        else:
+            file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(hold_out_round) + '_hold.csv'
     df = pd.read_csv(filepath+file_name, encoding='utf8')
     label = df['label']
     probas_ = df[['0', '1']].values

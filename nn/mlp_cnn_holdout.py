@@ -165,7 +165,7 @@ def do_mlp_cnn(hold_out_round, sub_class, experiment):
     predict_result_hold['label'] = y_hold
     predict_result_hold['0'] = holdout_probas[:, 0]
     predict_result_hold['1'] = holdout_probas[:, 1]
-    predict_result_hold.to_csv(save_path + parameter['model_name']  + '_hold.csv',
+    predict_result_hold.to_csv(save_path + parameter['model_name'] + '_hold.csv',
                                sep=',', encoding='utf-8')
     print('hold-out Done')
 

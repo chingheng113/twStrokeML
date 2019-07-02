@@ -13,9 +13,9 @@ if __name__ == '__main__':
     # model_names = ['mlp']
     # present_names = ['mlp']
     # all, fs
-    status = 'all'
+    status = 'fs_nf'
     # ischemic, hemorrhagic
-    sub_class = 'hemorrhagic'
+    sub_class = 'ischemic'
 
     if status == 'all':
         title_tr = 'Training ROC curve of whole features dataset'
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         title_te = 'Hold-out testing ROC curve of selected features dataset'
 
     for inx, model_name in enumerate(model_names):
-        mean_fpr, mean_tpr, mean_auc, std_auc = performance_util.average_roc_auc(hold_out_round, model_name, status, sub_class)
+        mean_fpr, mean_tpr, mean_auc, std_auc = performance_util.average_roc_auc(model_name, status, sub_class, 'test')
         plt.plot(mean_fpr, mean_tpr,
                  label=present_names[inx]+' (AUC = %0.3f $\pm$ %0.3f)' % (mean_auc, std_auc),
                  lw=1, alpha=.8)
@@ -37,17 +37,17 @@ if __name__ == '__main__':
     plt.show()
 
     #
-    for inx, model_name in enumerate(model_names):
-        fpr, tpr, auc = performance_util.calculate_holdout_roc_auc(hold_out_round, model_name, status, sub_class)
-        plt.plot(fpr, tpr,
-                 label=present_names[inx]+' (AUC = %0.3f )' % auc,
-                 lw=1, alpha=.8)
-    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='black', label='Luck', alpha=.8)
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title(title_te)
-    plt.legend(loc="lower right")
-    plt.show()
+    # for inx, model_name in enumerate(model_names):
+    #     fpr, tpr, auc = performance_util.calculate_holdout_roc_auc(hold_out_round, model_name, status, sub_class)
+    #     plt.plot(fpr, tpr,
+    #              label=present_names[inx]+' (AUC = %0.3f )' % auc,
+    #              lw=1, alpha=.8)
+    # plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='black', label='Luck', alpha=.8)
+    # plt.xlabel('False Positive Rate')
+    # plt.ylabel('True Positive Rate')
+    # plt.title(title_te)
+    # plt.legend(loc="lower right")
+    # plt.show()
     print('done')
 
 

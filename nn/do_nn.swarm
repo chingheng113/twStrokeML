@@ -36,7 +36,7 @@ python mlp_holdout.py 7 'ischemic' 1
 python mlp_holdout.py 8 'ischemic' 1
 python mlp_holdout.py 9 'ischemic' 1
 
-# == ischemic - fs ==
+# == hemorrhagic - fs ==
 python mlp_holdout.py 0 'hemorrhagic' 1
 python mlp_holdout.py 1 'hemorrhagic' 1
 python mlp_holdout.py 2 'hemorrhagic' 1
@@ -132,7 +132,7 @@ python mlp_cnn_holdout.py 7 'ischemic' 1
 python mlp_cnn_holdout.py 8 'ischemic' 1
 python mlp_cnn_holdout.py 9 'ischemic' 1
 
-# == ischemic - fs ==
+# == hemorrhagic - fs ==
 python mlp_cnn_holdout.py 0 'hemorrhagic' 1
 python mlp_cnn_holdout.py 1 'hemorrhagic' 1
 python mlp_cnn_holdout.py 2 'hemorrhagic' 1

@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == '__main__':
-    hold_out_round = 0
     model_names = ['mlp', 'rf', 'mlp_cnn', 'svm']
     present_names = ['ANN', 'RF', 'HANN', 'SVM']
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(20,20))

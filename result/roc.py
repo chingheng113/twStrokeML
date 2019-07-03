@@ -25,7 +25,7 @@ if __name__ == '__main__':
         title_te = 'Hold-out testing ROC curve of selected features dataset'
 
     for inx, model_name in enumerate(model_names):
-        mean_fpr, mean_tpr, mean_auc, std_auc = performance_util.average_roc_auc(model_name, status, sub_class, 'test')
+        mean_fpr, mean_tpr, mean_auc, std_auc = performance_util.average_roc_auc(model_name, status, sub_class, 'hold')
         plt.plot(mean_fpr, mean_tpr,
                  label=present_names[inx]+' (AUC = %0.3f $\pm$ %0.3f)' % (mean_auc, std_auc),
                  lw=1, alpha=.8)

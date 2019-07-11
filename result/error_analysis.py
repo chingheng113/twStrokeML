@@ -4,8 +4,10 @@ from result import venn
 import pandas as pd
 import numpy as np
 from my_utils import performance_util as pu
+from my_utils import data_util
 import os
 
+df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
 
 mlp_err_h = pd.Series()
 mlp_right_h = pd.Series()
@@ -66,12 +68,15 @@ for i in range(10):
 rf_err_h.drop_duplicates(inplace=True)
 rf_right_h.drop_duplicates(inplace=True)
 
-x = set(mlp_cnn_err_h) & set(mlp_err_h) & set(svm_err_h) & set(rf_err_h)
-print(len(x))
-for v in list(x):
-    a = v.split('|')
-    print(v.split('|'))
-
+all_wrong_h = set(mlp_cnn_err_h) & set(mlp_err_h) & set(svm_err_h) & set(rf_err_h)
+wrong_icaseid_h = []
+wrong_idcaseid_h = []
+for v in list(all_wrong_h):
+    ids = v.split('|')
+    wrong_icaseid_h.append(ids[0])
+    wrong_idcaseid_h.append(ids[1])
+all_wrong_h_df = df_all.loc[(df_all['ICASE_ID'].isin(wrong_icaseid_h)) & (df_all['IDCASE_ID'].isin(wrong_idcaseid_h))]
+print('a')
 # labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])
 # fig, ax = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
 # fig.savefig("hemo.png", dpi=300)

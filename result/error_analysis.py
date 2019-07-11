@@ -7,7 +7,6 @@ from my_utils import performance_util as pu
 from my_utils import data_util
 import os
 
-df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
 
 mlp_err_h = pd.Series()
 mlp_right_h = pd.Series()
@@ -68,20 +67,6 @@ for i in range(10):
 rf_err_h.drop_duplicates(inplace=True)
 rf_right_h.drop_duplicates(inplace=True)
 
-all_wrong_h = set(mlp_cnn_err_h) & set(mlp_err_h) & set(svm_err_h) & set(rf_err_h)
-wrong_icaseid_h = []
-wrong_idcaseid_h = []
-for v in list(all_wrong_h):
-    ids = v.split('|')
-    wrong_icaseid_h.append(ids[0])
-    wrong_idcaseid_h.append(ids[1])
-all_wrong_h_df = df_all.loc[(df_all['ICASE_ID'].isin(wrong_icaseid_h)) & (df_all['IDCASE_ID'].isin(wrong_idcaseid_h))]
-print('a')
-# labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])
-# fig, ax = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
-# fig.savefig("hemo.png", dpi=300)
-
-
 # ====
 mlp_err_i = pd.Series()
 mlp_right_i = pd.Series()
@@ -141,6 +126,38 @@ for i in range(10):
     rf_right_i = svm_right_i.append(same_id)
 rf_err_i.drop_duplicates(inplace=True)
 rf_right_i.drop_duplicates(inplace=True)
+
+# create data
+df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
+selected_features_h = data_util.get_selected_feature_name('hemorrhagic')
+all_wrong_h = set(mlp_cnn_err_h) & set(mlp_err_h) & set(svm_err_h) & set(rf_err_h)
+wrong_icaseid_h = []
+wrong_idcaseid_h = []
+for v in list(all_wrong_h):
+    ids = v.split('|')
+    wrong_icaseid_h.append(ids[0])
+    wrong_idcaseid_h.append(ids[1])
+all_wrong_h_df = df_all.loc[(df_all['ICASE_ID'].isin(wrong_icaseid_h)) & (df_all['IDCASE_ID'].isin(wrong_idcaseid_h))]
+all_wrong_h_df = all_wrong_h_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_3'], selected_features_h)]
+all_wrong_h_df.to_csv('all_wrong_h.csv')
+
+
+all_right_h = set(mlp_cnn_right_h) & set(mlp_right_h) & set(svm_right_h) & set(rf_right_h)
+right_icaseid_h = []
+right_idcaseid_h = []
+for v in list(all_right_h):
+    ids = v.split('|')
+    right_icaseid_h.append(ids[0])
+    right_idcaseid_h.append(ids[1])
+all_right_h_df = df_all.loc[(df_all['ICASE_ID'].isin(right_icaseid_h)) & (df_all['IDCASE_ID'].isin(right_idcaseid_h))]
+all_right_h_df = all_right_h_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_3'], selected_features_h)]
+all_right_h_df.to_csv('all_right_h.csv')
+print('a')
+
+# plot fi
+# labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])
+# fig, ax = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
+# fig.savefig("hemo.png", dpi=300)
 
 # labels = venn.get_labels([mlp_err_i, mlp_cnn_err_i, svm_err_i, rf_err_i], fill=['number'])
 # fig, ax = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])

@@ -139,7 +139,7 @@ for v in list(all_wrong_h):
     wrong_idcaseid_h.append(ids[1])
 all_wrong_h_df = df_all.loc[(df_all['ICASE_ID'].isin(wrong_icaseid_h)) & (df_all['IDCASE_ID'].isin(wrong_idcaseid_h))]
 all_wrong_h_df = all_wrong_h_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_3'], selected_features_h)]
-all_wrong_h_df.to_csv('all_wrong_h.csv')
+all_wrong_h_df['ctype'] = '0'
 
 
 all_right_h = set(mlp_cnn_right_h) & set(mlp_right_h) & set(svm_right_h) & set(rf_right_h)
@@ -152,6 +152,10 @@ for v in list(all_right_h):
 all_right_h_df = df_all.loc[(df_all['ICASE_ID'].isin(right_icaseid_h)) & (df_all['IDCASE_ID'].isin(right_idcaseid_h))]
 all_right_h_df = all_right_h_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_3'], selected_features_h)]
 all_right_h_df.to_csv('all_right_h.csv')
+all_right_h_df['ctype'] = '1'
+
+all_right_wrong_h = pd.concat([all_right_h_df, all_wrong_h_df])
+all_right_wrong_h.to_csv('all_right_wrong_h.csv', index=False)
 print('a')
 
 # plot fi

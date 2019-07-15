@@ -151,10 +151,11 @@ for v in list(all_right_h):
     right_idcaseid_h.append(ids[1])
 all_right_h_df = df_all.loc[(df_all['ICASE_ID'].isin(right_icaseid_h)) & (df_all['IDCASE_ID'].isin(right_idcaseid_h))]
 all_right_h_df = all_right_h_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_3'], selected_features_h)]
-all_right_h_df.to_csv('all_right_h.csv')
 all_right_h_df['ctype'] = '1'
 
 all_right_wrong_h = pd.concat([all_right_h_df, all_wrong_h_df])
+all_right_wrong_h['change_1m'] = all_right_wrong_h['MRS_1'] - all_right_wrong_h['discharged_mrs']
+all_right_wrong_h['change_3m'] = all_right_wrong_h['MRS_3'] - all_right_wrong_h['MRS_1']
 all_right_wrong_h.to_csv('all_right_wrong_h.csv', index=False)
 print('a')
 

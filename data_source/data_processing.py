@@ -4,6 +4,21 @@ import os
 current_path = os.path.dirname(__file__)
 
 
+def outliers_iqr(ys):
+    # http://colingorrie.github.io/outlier-detection.html
+    quartile_1, quartile_3 = np.nanpercentile(ys, [25, 75],)
+    iqr = quartile_3 - quartile_1
+    lower_bound = quartile_1 - (iqr * 1.5)
+    upper_bound = quartile_3 + (iqr * 1.5)
+    return np.where((ys > upper_bound) | (ys < lower_bound))
+
+
+def outlier_to_nan(df, columns):
+    for col in columns:
+        # df[col].replace([999, 999.9, 996], np.nan, inplace=True)
+        outlier_inx = outliers_iqr(df[col])
+        df[col].loc[outlier_inx] = np.nan
+    return df
 
 
 def is_tpa(df_case, keep_cols=False):
@@ -35,5 +50,14 @@ def nan_to_dont_know(df):
     df = df.replace(np.nan, '2')
     return df
 
+
 if __name__ == '__main__':
     # OFF_ID == 3 排除死亡及病危出院
+    dcase = pd.read_csv(os.path.join('raw', 'CASEDCASE_1.csv'))
+    df = dcase[['HBAC_NM']]
+    df.replace(-999, np.nan, inplace=True)
+    print(df.describe())
+    df_2 = outlier_to_nan(df, ['HBAC_NM'])
+    print(df_2.describe())
+
+    print('done')

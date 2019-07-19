@@ -2,21 +2,23 @@ import pandas as pd
 import numpy as np
 import os
 from data_source import selected_variables as sv
+from data_source import mRS_validator as mv
+
 current_path = os.path.dirname(__file__)
 
 
-def outliers_iqr(ys):
+def outliers_iqr(df, col):
     # http://colingorrie.github.io/outlier-detection.html
-    quartile_1, quartile_3 = np.nanpercentile(ys, [25, 75],)
+    quartile_1, quartile_3 = np.nanpercentile(df[col], [25, 75],)
     iqr = quartile_3 - quartile_1
     lower_bound = quartile_1 - (iqr * 1.5)
     upper_bound = quartile_3 + (iqr * 1.5)
-    return np.where((ys > upper_bound) | (ys < lower_bound))
+    return  df[(df[col] < lower_bound) | (df[col] > upper_bound)].index
 
 
 def outlier_to_nan(df, columns):
     for col in columns:
-        outlier_inx = outliers_iqr(df[col])
+        outlier_inx = outliers_iqr(df, col)
         df[col].loc[outlier_inx] = np.nan
     return df
 
@@ -41,8 +43,27 @@ def is_tpa(df_case, keep_cols=False):
     df_case['is_tpa'].loc[df_tpa.index] = 1
     if ~keep_cols:
         df_case.drop(['IVTPATH_ID', 'IVTPA_DT', 'IVTPAH_NM', 'IVTPAM_NM', 'IVTPAMG_NM', 'NIVTPA_ID'], axis=1, inplace=True)
-    print(df_case[df_case.is_tpa == 1].shape)
+    # print(df_case[df_case.is_tpa == 1].shape)
     return df_case
+
+
+def day_in_hospital(df_case):
+    in_date = pd.to_datetime(df_case['IH_DT'], format='%Y-%m-%d', errors='coerce')
+    out_date = pd.to_datetime(df_case['OH_DT'], format='%Y-%m-%d', errors='coerce')
+    day_diff = out_date - in_date
+    df_case['in_hosptial_days'] = day_diff.dt.days
+    df_case[df_case['in_hosptial_days'] < 0] = np.nan
+    df_case.drop(['IH_DT', 'OH_DT'], axis=1, inplace=True)
+    return df_case
+
+def create_age(df_case, df_mcase):
+    df = pd.merge(df_case, df_mcase, on='ICASE_ID')
+    b_day = pd.to_datetime(df['BIRTH_DT'], format='%Y-%m-%d', errors='coerce')
+    onset_day = pd.to_datetime(df['ONSET_DT'], format='%Y-%m-%d', errors='coerce')
+    AGE = np.floor((onset_day - b_day) / pd.Timedelta(days=365))
+    df['onset_age'] = AGE
+    df = df.drop(['BIRTH_DT', 'ONSET_DT'], axis=1)
+    return df
 
 
 def nan_to_dont_know(df):
@@ -60,14 +81,19 @@ if __name__ == '__main__':
     dcase = dcase[sv.ids+dcase_selected_cols]
     # OFF_ID == 3 排除死亡及病危出院
     dcase = dcase[dcase.OFF_ID == 3]
+    # replace
     dcase.replace(to_replace={-999: np.nan, 'z': np.nan, 'N': 0, 'Y': 1}, inplace=True)
     # create is_tpa col
     dcase = is_tpa(dcase)
     # IQR
     dcase = outlier_to_nan(dcase, sv.dcase_lb_nm)
+    # Days in hospital
+    dcase = day_in_hospital(dcase)
 
 
     
 
-     # age
+    # age
+    # mRS validation
+    dcase = mv.mRS_validate(dcase)
     print('done')

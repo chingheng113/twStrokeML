@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+from data_source import selected_variables as sv
 current_path = os.path.dirname(__file__)
 
 
@@ -15,7 +16,6 @@ def outliers_iqr(ys):
 
 def outlier_to_nan(df, columns):
     for col in columns:
-        # df[col].replace([999, 999.9, 996], np.nan, inplace=True)
         outlier_inx = outliers_iqr(df[col])
         df[col].loc[outlier_inx] = np.nan
     return df
@@ -40,7 +40,7 @@ def is_tpa(df_case, keep_cols=False):
     df_case['is_tpa'] = 0
     df_case['is_tpa'].loc[df_tpa.index] = 1
     if ~keep_cols:
-        df_case.drop(['IVTPATH_ID', 'IVTPA_DT', 'IVTPAH_NM', 'IVTPAM_NM', 'IVTPAMG_NM', 'NIVTPA_ID'], inpace=True)
+        df_case.drop(['IVTPATH_ID', 'IVTPA_DT', 'IVTPAH_NM', 'IVTPAM_NM', 'IVTPAMG_NM', 'NIVTPA_ID'], axis=1, inplace=True)
     print(df_case[df_case.is_tpa == 1].shape)
     return df_case
 
@@ -52,12 +52,22 @@ def nan_to_dont_know(df):
 
 
 if __name__ == '__main__':
+    dcase = pd.read_csv(os.path.join('raw', 'CASEDCASE.csv'))
+    dcase_selected_cols = sv.dcase_info_nm+sv.dcase_info_dt+sv.dcase_info_ca+sv.dcase_time_nm+sv.dcase_time_dt+\
+                          sv.dcase_time_ca+sv.dcase_gcsv_nm+sv.dcase_icd_ca+sv.dcase_subtype_ca+sv.dcase_heart_bo+\
+                          sv.dcase_treat_bo+sv.dcase_med_bo+sv.dcase_complicaton_bo+sv.dcase_derterioation_bo+\
+                          sv.dcase_ecg_ca+sv.dcase_lb_nm+sv.dcase_off_ca
+    dcase = dcase[sv.ids+dcase_selected_cols]
     # OFF_ID == 3 排除死亡及病危出院
-    dcase = pd.read_csv(os.path.join('raw', 'CASEDCASE_1.csv'))
-    df = dcase[['HBAC_NM']]
-    df.replace(-999, np.nan, inplace=True)
-    print(df.describe())
-    df_2 = outlier_to_nan(df, ['HBAC_NM'])
-    print(df_2.describe())
+    dcase = dcase[dcase.OFF_ID == 3]
+    dcase.replace(to_replace={-999: np.nan, 'z': np.nan, 'N': 0, 'Y': 1}, inplace=True)
+    # create is_tpa col
+    dcase = is_tpa(dcase)
+    # IQR
+    dcase = outlier_to_nan(dcase, sv.dcase_lb_nm)
 
+
+    
+
+     # age
     print('done')

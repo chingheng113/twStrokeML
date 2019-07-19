@@ -1,4 +1,4 @@
-
+ids = ['ICASE_ID', 'IDCASE_ID']
 # CASEMCASE
 mcase_dt = ['BIRTH_DT']
 mcase_ca = ['GENDER_TX']

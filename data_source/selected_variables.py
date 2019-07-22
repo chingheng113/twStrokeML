@@ -1,6 +1,7 @@
 ids = ['ICASE_ID', 'IDCASE_ID']
 # CASEMCASE
-mcase_dt = ['BIRTH_DT']
+mcase_id = ['ICASE_ID']
+mcase_dt = ['YOB']
 mcase_ca = ['GENDER_TX']
 
 # CASEDCASE
@@ -8,8 +9,8 @@ dcase_info_nm = ['HEIGHT_NM', 'WEIGHT_NM']
 dcase_info_dt = ['IH_DT', 'OH_DT']
 dcase_info_ca = ['OPC_ID']
 
-dcase_time_nm = ['IVTPAH_NM', 'IVTPAM_NM', 'IVTPAMG_NM']
-dcase_time_dt = ['ONSET_DT', 'IVTPA_DT']
+dcase_time_nm = ['IVTPAH_NM', 'IVTPAM_NM', 'IVTPAMG_NM', 'ONSETH_NM', 'ONSETM_NM', 'OTTIH_NM', 'OTTIM_NM']
+dcase_time_dt = ['ONSET_DT', 'OT_DT', 'IVTPA_DT']
 dcase_time_ca = ['IVTPATH_ID', 'NIVTPA_ID']
 
 dcase_gcsv_nm = ['GCSE_NM', 'GCSV_NM', 'GCSM_NM', 'SBP_NM', 'DBP_NM', 'BT_NM', 'HR_NM', 'RR_NM']
@@ -18,20 +19,20 @@ dcase_icd_ca = ['ICD_ID']
 
 dcase_subtype_ca = ['TOAST_ID', 'CICH_ID', 'CSAH_ID']
 
-dcase_heart_bo = ['THDA_FL', 'THDI_FL', 'THDV_FL', 'THDE_FL', 'THDM_FL', 'THDH_FL', 'THDAM_FL', 'THDR_FL', 'THDP_FL']
+# dcase_heart_bo = ['THDA_FL', 'THDI_FL', 'THDV_FL', 'THDE_FL', 'THDM_FL', 'THDH_FL', 'THDAM_FL', 'THDR_FL', 'THDP_FL']
 
-dcase_treat_bo = ['TRM_ID', 'TRMAN_FL', 'TRMAS_FL', 'TRMTI_FL', 'TRMHE_FL', 'TRMWA_FL', 'TRMIA_FL', 'TRMFO_FL',
+dcase_treat_bo = ['TRMAN_FL', 'TRMAS_FL', 'TRMTI_FL', 'TRMHE_FL', 'TRMWA_FL', 'TRMIA_FL', 'TRMFO_FL',
                   'TRMTA_FL', 'TRMSD_FL', 'TRMRE_FL', 'TRMEN_FL', 'TRMAG_FL', 'TRMCL_FL', 'TRMPL_FL', 'TRMLM_FL',
                   'TRMIV_FL', 'TRMVE_FL', 'TRMNG_FL', 'TRMDY_FL', 'TRMICU_FL', 'TRMSM_FL', 'TRMED_FL', 'TRMOP_FL']
 
 dcase_med_bo = ['OMAS_FL', 'OMAG_FL', 'OMTI_FL', 'OMCL_FL', 'OMWA_FL', 'OMPL_FL', 'OMANH_FL', 'OMAND_FL', 'OMLI_FL',
-             'AMAS_FL', 'AMAG_FL', 'AMTI_FL', 'AMCL_FL', 'AMWA_FL', 'AMPL_FL', 'AMANH_FL', 'AMAND_FL', 'AMLI_FL']
+                'AMAS_FL', 'AMAG_FL', 'AMTI_FL', 'AMCL_FL', 'AMWA_FL', 'AMPL_FL', 'AMANH_FL', 'AMAND_FL', 'AMLI_FL']
 
 dcase_complicaton_bo = ['COMPN_FL', 'COMUT_FL', 'COMUG_FL', 'COMPR_FL', 'COMPU_FL', 'COMAC_FL', 'COMSE_FL', 'COMDE_FL']
 
 dcase_derterioation_bo = ['DETST_FL', 'DETHE_FL', 'DETHO_FL', 'DETHA_FL', 'DETVA_FL', 'DETRE_FL', 'DETME_FL']
 
-dcase_ecg_ca = ['ECGL_FL', 'ECGA_FL', 'ECGQ_FL']
+# dcase_ecg_ca = ['ECGL_FL', 'ECGA_FL', 'ECGQ_FL']
 
 dcase_lb_nm = ['HB_NM', 'HCT_NM', 'PLATELET_NM', 'WBC_NM', 'PTT1_NM', 'PTT2_NM', 'PTINR_NM', 'ER_NM', 'BUN_NM',
                'CRE_NM', 'ALB_NM', 'CRP_NM', 'HBAC_NM', 'AC_NM', 'UA_NM', 'TCHO_NM', 'TG_NM', 'HDL_NM', 'LDL_NM',
@@ -69,7 +70,7 @@ dnihs_nm = ['NIHS_1a_in', 'NIHS_1b_in', 'NIHS_1c_in', 'NIHS_2_in', 'NIHS_3_in', 
             'NIHS_5aL_out', 'NIHS_5bR_out', 'NIHS_6aL_out', 'NIHS_6bR_out', 'NIHS_7_out', 'NIHS_8_out', 'NIHS_9_out',
             'NIHS_10_out', 'NIHS_11_out']
 
-# drfus
-drfus_ca = ['FLU_ID_1', 'VERSCICH_ID_1', 'VEIHD_ID_1']
-drfus_bo = ['VERS_FL_1', 'VEIHD_FL']
-drfus_nm = ['MRS_TX_1', 'MRS_TX_3']
+# drfur
+drfur_ca = ['FLU_ID_1']
+drfur_bo = ['VERS_FL_1', 'VEIHD_FL_1']
+drfur_nm = ['MRS_TX_1', 'MRS_TX_3']

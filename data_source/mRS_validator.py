@@ -78,36 +78,3 @@ def lowess_validate_on_BI(df):
     print(df5.shape)
     df_final = pd.concat([df0, df1, df2, df3, df4, df5])
     return df_final
-
-
-
-'''
-# Abandoned...
-def dbscan_validate(df):
-    for i in range(0, 6, 1):
-        df_temp = df[df['discharged_mrs'] == i]
-        df_temp_inx = pd.DataFrame(df_temp.index.values, columns=['indx'])
-        bi_mrs = df_temp[['nihss_total', 'bi_total']]
-        bi_mrs['nihss_total'] = MinMaxScaler().fit_transform(bi_mrs['nihss_total'].values.reshape(-1,1))
-        bi_mrs['bi_total'] = MinMaxScaler().fit_transform(bi_mrs['bi_total'].values.reshape(-1,1))
-
-        # Compute DBSCAN
-        mSample = round(bi_mrs.shape[0]/10, 0)
-        db = DBSCAN(eps=0.1, min_samples=mSample).fit(bi_mrs)
-        core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-        core_samples_mask[db.core_sample_indices_] = True
-        # Noise
-        labels = db.labels_
-        df_temp_inx['clust'] = labels
-        df_temp_inx_noise = df_temp_inx[df_temp_inx['clust'] == -1]
-        print(df_temp_inx_noise.shape)
-        df = df.drop(df_temp_inx_noise['indx'])
-        # Number of clusters in labels, ignoring noise if present.
-        n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-        print('Estimated number of clusters: %d' % n_clusters_)
-        print("Silhouette Coefficient: %0.3f" % metrics.silhouette_score(bi_mrs, labels))
-        pu.plot_dbscan(db, bi_mrs)
-        print(df.shape)
-    plt.show()
-    return df
-'''

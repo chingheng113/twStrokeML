@@ -60,21 +60,15 @@ def logic_validate(df):
 
 def lowess_validate_on_BI(df):
     '''the boundaries are given by lowess_clean.R'''
-    upper_bound = [120.59083, 119.46254, 114.40941, 92.63951, 58.66242, 24.06637]
-    lower_bound = [78.59050, 77.46221, 72.40908, 50.63918, 16.66209, -17.93396]
+    upper_bound = [114.78681, 113.96771, 109.56282,  87.51552,  55.93302,  18.62162]
+    lower_bound = [84.64237,  83.82327,  79.41838,  57.37109,  25.78858, -11.52281]
     # for i in range(6):
     #     df = df[~((df['discharged_mrs'] == i) & (df['bi_total'] > lower_bound[i]) & (df['bi_total'] < upper_bound[i]))]
     df0 = df[(df['discharged_mrs'] == 0) & (df['bi_total'] > lower_bound[0]) & (df['bi_total'] < upper_bound[0])]
-    print(df0.shape)
     df1 = df[(df['discharged_mrs'] == 1) & (df['bi_total'] > lower_bound[1]) & (df['bi_total'] < upper_bound[1])]
-    print(df1.shape)
     df2 = df[(df['discharged_mrs'] == 2) & (df['bi_total'] > lower_bound[2]) & (df['bi_total'] < upper_bound[2])]
-    print(df2.shape)
     df3 = df[(df['discharged_mrs'] == 3) & (df['bi_total'] > lower_bound[3]) & (df['bi_total'] < upper_bound[3])]
-    print(df3.shape)
     df4 = df[(df['discharged_mrs'] == 4) & (df['bi_total'] > lower_bound[4]) & (df['bi_total'] < upper_bound[4])]
-    print(df4.shape)
     df5 = df[(df['discharged_mrs'] == 5) & (df['bi_total'] > lower_bound[5]) & (df['bi_total'] < upper_bound[5])]
-    print(df5.shape)
     df_final = pd.concat([df0, df1, df2, df3, df4, df5])
     return df_final

@@ -119,8 +119,13 @@ def complete_cich_csah(df_case):
     return df_case
 
 
-def imputation(df, cols):
+def imputation_by_mean(df, cols):
     df[cols] = Imputer(missing_values=np.nan, strategy='mean', axis=0).fit_transform(df[cols])
+    return df
+
+
+def imputation_by_median(df, cols):
+    df[cols] = Imputer(missing_values=np.nan, strategy='median', axis=0).fit_transform(df[cols])
     return df
 
 
@@ -195,22 +200,27 @@ if __name__ == '__main__':
     drfur = pd.read_csv(os.path.join('raw', 'CASEDRFUR.csv'))
     drfur = drfur[sv.ids+sv.drfur_ca+sv.drfur_bo+sv.drfur_nm]
     drfur['MRS_TX_1'].loc[~drfur.MRS_TX_1.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan
-    drfur['MRS_TX_3'].loc[~drfur.MRS_TX_1.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan
+    drfur['MRS_TX_3'].loc[~drfur.MRS_TX_3.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan
     drfur.replace(to_replace={'N': 0, 'Y': 1}, inplace=True)
 
     # Merge together
     dfs = [df_final, dbmrs, dctmr, dgfa, dfahi, dnihs, drfur]
     df_final = reduce(lambda left, right: pd.merge(left, right, on=sv.ids), dfs)
 
-
     # imputation data
     imputation_cols = sv.dcase_lb_nm+sv.dcase_info_nm+['onset_age', 'SBP_NM', 'DBP_NM', 'BT_NM', 'HR_NM', 'RR_NM']
     df_final = outlier_to_nan(df_final, imputation_cols)
-    df_final = imputation(df_final, imputation_cols)
-    df_final.to_csv('look.csv')
+    df_final = imputation_by_mean(df_final, imputation_cols)
+
+    # sorry~ ned to give up 'go_hospital_min' for more sample size...
+    df_final.drop(['go_hospital_min'], inplace=True, axis=1)
+
+    df_final.to_csv('TSR_2018_3m.csv', index=False)
     df_final.dropna(axis=0, inplace=True)
+    df_final.to_csv('TSR_2018_3m_noMissing.csv', index=False)
     print(df_final.shape)
     # mRS validation
     df_final = mv.mRS_validate(df_final)
+    df_final.to_csv('TSR_2018_3m_noMissing_validated.csv', index=False)
     print(df_final.shape)
     print('done')

@@ -27,8 +27,8 @@ def load_all(fn):
 
 def get_x_y_data(df):
     id_data = df[['ICASE_ID', 'IDCASE_ID']]
-    y_data = df[['MRS_3']]
-    x_data = df.drop(['ICASE_ID', 'IDCASE_ID', 'MRS_3'], axis=1)
+    y_data = df[['MRS_TX_3']]
+    x_data = df.drop(['ICASE_ID', 'IDCASE_ID', 'MRS_TX_3'], axis=1)
     return id_data, x_data, y_data
 
 
@@ -50,9 +50,9 @@ def get_hemorrhagic(fn):
 
 def get_binarized_label(df):
     # Good <= 2, Poor >= 3
-    start = min(df['MRS_3'].values) - 1.0
-    end = max(df['MRS_3'].values) + 1.0
-    y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
+    start = min(df['MRS_TX_3'].values) - 1.0
+    end = max(df['MRS_TX_3'].values) + 1.0
+    y_data = pd.cut(df['MRS_TX_3'], [start, 3, end], labels=[0, 1], right=False)
     return y_data
 
 
@@ -66,9 +66,9 @@ def get_poor_god(fn, sub_class='all'):
         df = load_all(fn)
     id_data, x_data, y_data = get_x_y_data(df)
     # Good <= 2, Poor >= 3
-    start = min(df['MRS_3'].values) - 1.0
-    end = max(df['MRS_3'].values) + 1.0
-    y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
+    start = min(df['MRS_TX_3'].values) - 1.0
+    end = max(df['MRS_TX_3'].values) + 1.0
+    y_data = pd.cut(df['MRS_TX_3'], [start, 3, end], labels=[0, 1], right=False)
     return id_data, x_data, y_data
 
 
@@ -82,9 +82,9 @@ def get_poor_god_downsample(fn, sub_class='all'):
         df = load_all(fn)
     id_data, x_data, y_data = get_x_y_data(df)
     # Good <= 2, Poor >= 3
-    start = min(df['MRS_3'].values) - 1.0
-    end = max(df['MRS_3'].values) + 1.0
-    y_data = pd.cut(df['MRS_3'], [start, 3, end], labels=[0, 1], right=False)
+    start = min(df['MRS_TX_3'].values) - 1.0
+    end = max(df['MRS_TX_3'].values) + 1.0
+    y_data = pd.cut(df['MRS_TX_3'], [start, 3, end], labels=[0, 1], right=False)
     if y_data[y_data == 0].size > y_data[y_data == 1].size:
         resample_size = y_data[y_data == 1].size
         df_majority = y_data[y_data == 0]
@@ -128,7 +128,7 @@ def split_cnn_mlp_input(x_data):
     #            "NIHS_11_in", "NIHS_11_out",
     #            'OMAS_FL', 'AMAS_FL', 'OMAG_FL', 'AMAG_FL', 'OMTI_FL', 'AMTI_FL', 'OMCL_FL', 'AMCL_FL', 'OMWA_FL',
     #            'OMPL_FL', 'AMPL_FL', 'OMANH_FL', 'AMWA_FL', 'AMANH_FL', 'OMAND_FL', 'AMAND_FL', 'OMLI_FL', 'AMLI_FL']
-    cnn_col = ["discharged_mrs", "MRS_1",
+    cnn_col = ["discharged_mrs", "MRS_TX_1",
            "NIHS_1a_in", "NIHS_1a_out", "NIHS_1b_in", "NIHS_1b_out", "NIHS_1c_in", "NIHS_1c_out",
            "NIHS_2_in", "NIHS_2_out", "NIHS_3_in", "NIHS_3_out", "NIHS_4_in", "NIHS_4_out",
            "NIHS_5aL_in", "NIHS_5aL_out", "NIHS_5bR_in", "NIHS_5bR_out",

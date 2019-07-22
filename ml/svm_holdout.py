@@ -30,15 +30,15 @@ def do_svm(hold_out_round, sub_class, experiment):
         save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'fs' + os.sep
         model_name = 'svm_fs_'+sub_class+'_h_'+str(hold_out_round)
     elif experiment == 2:
-        x_train_all = x_train_all.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
-        x_hold = x_hold.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_train_all = x_train_all.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = x_hold.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
         save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'all_nf' + os.sep
         model_name = 'svm_nf_' + sub_class + '_h_' + str(hold_out_round)
     else:
         x_train_all = data_util.feature_selection(x_train_all, sub_class)
-        x_train_all = x_train_all.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_train_all = x_train_all.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
         x_hold = data_util.feature_selection(x_hold, sub_class)
-        x_hold = x_hold.drop(['VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = x_hold.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
         save_path = '..' + os.sep + 'result' + os.sep + 'svm' + os.sep + 'fs_nf' + os.sep
         model_name = 'svm_fs_nf_' + sub_class + '_h_' + str(hold_out_round)
     #

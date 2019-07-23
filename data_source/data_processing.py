@@ -183,7 +183,7 @@ if __name__ == '__main__':
     # CASEDGFA ==
     dgfa = pd.read_csv(os.path.join('raw', 'CASEDDGFA.csv'))
     dgfa = dgfa[sv.ids+sv.ddgfa_bo]
-    dgfa.replace(to_replace={-999: np.nan}, inplace=True)
+    dgfa.replace(to_replace={-999: np.nan, 'z': np.nan}, inplace=True)
 
     # CASEDFAHI
     dfahi = pd.read_csv(os.path.join('raw', 'CASEDFAHI.csv'))
@@ -206,7 +206,7 @@ if __name__ == '__main__':
     # Merge together
     dfs = [df_final, dbmrs, dctmr, dgfa, dfahi, dnihs, drfur]
     df_final = reduce(lambda left, right: pd.merge(left, right, on=sv.ids), dfs)
-
+    df_final.to_csv('noImputation.csv', index=False)
     # imputation data
     imputation_cols = sv.dcase_lb_nm+sv.dcase_info_nm+['onset_age', 'SBP_NM', 'DBP_NM', 'BT_NM', 'HR_NM', 'RR_NM']
     df_final = outlier_to_nan(df_final, imputation_cols)

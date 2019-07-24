@@ -154,8 +154,8 @@ def feature_selection(df, sub_type):
 
 
 def scale(x_data):
-    # x_data = np.round(sp.MinMaxScaler(feature_range=(0, 1)).fit_transform(x_data), 3)
-    x_data = np.round(sp.StandardScaler().fit_transform(x_data), 3)
+    x_data = np.round(sp.MinMaxScaler(feature_range=(0, 1)).fit_transform(x_data), 3)
+    # x_data = np.round(sp.StandardScaler().fit_transform(x_data), 3)
     return x_data
 
 

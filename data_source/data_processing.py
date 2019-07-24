@@ -183,13 +183,14 @@ if __name__ == '__main__':
     # CASEDGFA ==
     dgfa = pd.read_csv(os.path.join('raw', 'CASEDDGFA.csv'), na_values=np.nan)
     dgfa = dgfa[sv.ids+sv.ddgfa_ca]
-    dgfa.replace(to_replace={-999: np.nan, 'z': np.nan, 2: np.nan}, inplace=True)
+    dgfa.replace(to_replace={-999: np.nan, 'z': np.nan, 'Z': np.nan}, inplace=True)
+    dgfa = nan_to_dont_know(dgfa)
 
     # CASEDFAHI
     dfahi = pd.read_csv(os.path.join('raw', 'CASEDFAHI.csv'), na_values=np.nan)
     dfahi = dfahi[sv.ids+sv.dfahi_ca]
-    dfahi.replace(to_replace={9: np.nan, 2: np.nan, 'Z': np.nan}, inplace=True)
-    # dfahi = nan_to_dont_know(dfahi)
+    dfahi.replace(to_replace={9: np.nan, 'Z': np.nan}, inplace=True)
+    dfahi = nan_to_dont_know(dfahi)
 
     # CASEDNIHS
     dnihs = pd.read_csv(os.path.join('raw', 'CASEDNIHS.csv'), na_values=np.nan)

@@ -56,7 +56,7 @@ dctmr_nm = ['cortical_ACA_ctr', 'cortical_MCA_ctr', 'subcortical_ACA_ctr', 'subc
             'brainstem_mril', 'cerebellum_mril', 'Watershed_mril', 'Hemorrhagic_infarct_mril', 'Old_stroke_mrich']
 
 # ddgfa
-ddgfa_bo = ['HD_ID', 'PCVA_ID', 'PO_ID', 'UR_ID', 'SM_ID', 'PTIA_ID', 'HC_ID', 'HT_ID', 'DM_ID', 'PAD_ID', 'AL_ID',
+ddgfa_ca = ['HD_ID', 'PCVA_ID', 'PO_ID', 'UR_ID', 'SM_ID', 'PTIA_ID', 'HC_ID', 'HT_ID', 'DM_ID', 'PAD_ID', 'AL_ID',
             'CA_ID']
 
 # dfahi

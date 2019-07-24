@@ -183,13 +183,13 @@ if __name__ == '__main__':
     # CASEDGFA ==
     dgfa = pd.read_csv(os.path.join('raw', 'CASEDDGFA.csv'), na_values=np.nan)
     dgfa = dgfa[sv.ids+sv.ddgfa_ca]
-    dgfa.replace(to_replace={-999: np.nan, 'z': np.nan}, inplace=True)
+    dgfa.replace(to_replace={-999: np.nan, 'z': np.nan, 2: np.nan}, inplace=True)
 
     # CASEDFAHI
     dfahi = pd.read_csv(os.path.join('raw', 'CASEDFAHI.csv'), na_values=np.nan)
     dfahi = dfahi[sv.ids+sv.dfahi_ca]
-    dfahi.replace(to_replace={9: np.nan}, inplace=True)
-    dfahi = nan_to_dont_know(dfahi)
+    dfahi.replace(to_replace={9: np.nan, 2: np.nan, 'Z': np.nan}, inplace=True)
+    # dfahi = nan_to_dont_know(dfahi)
 
     # CASEDNIHS
     dnihs = pd.read_csv(os.path.join('raw', 'CASEDNIHS.csv'), na_values=np.nan)
@@ -205,7 +205,7 @@ if __name__ == '__main__':
 
     # Merge together
     dfs = [df_final, dbmrs, dctmr, dgfa, dfahi, dnihs, drfur]
-    df_final = reduce(lambda left, right: pd.merge(left, right, on=sv.ids), dfs)
+    df_final = reduce(lambda left, right: pd.merge(left, right, how='outer', on=sv.ids), dfs)
     df_final.to_csv('noImputation.csv', index=False)
     # imputation data
     imputation_cols = sv.dcase_lb_nm+sv.dcase_info_nm+['onset_age', 'SBP_NM', 'DBP_NM', 'BT_NM', 'HR_NM', 'RR_NM']

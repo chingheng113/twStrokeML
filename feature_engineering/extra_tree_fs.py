@@ -39,5 +39,5 @@ if __name__ == '__main__':
                 result_df = importance_df.rename(columns={'score': 'score_0'})
             else:
                 result_df['score_'+str(index)] = importance_df['score']
-        # result_df.to_csv('f_'+subtype+'_'+str(hold_out_round)+'.csv', sep=',', encoding='utf-8', index=False)
+        result_df.to_csv('f_'+subtype+'_'+str(hold_out_round)+'.csv', sep=',', encoding='utf-8', index=False)
         print('Done')

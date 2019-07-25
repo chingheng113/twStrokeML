@@ -77,7 +77,7 @@ def transfer_duration(df_case):
 
 def create_age(df):
     b_day = pd.to_datetime(df['YOB'], format='%Y', errors='coerce')
-    onset_date = pd.to_datetime(df['ONSET_DT'], format='%Y-%m-%d', errors='coerce')
+    onset_date = pd.to_datetime(df['ONSET_DT'], format='%Y/%m/%d', errors='coerce')
     age = np.floor((onset_date - b_day) / pd.Timedelta(days=365))
     df['onset_age'] = age
     df = df.drop(['YOB', 'ONSET_DT'], axis=1)
@@ -213,7 +213,7 @@ if __name__ == '__main__':
     df_final = outlier_to_nan(df_final, imputation_cols)
     df_final = imputation_by_mean(df_final, imputation_cols)
 
-    # sorry~ ned to give up 'go_hospital_min' for more sample size...
+    # sorry~ need to give up 'go_hospital_min' for more sample size...
     df_final.drop(['go_hospital_min'], inplace=True, axis=1)
 
     df_final.to_csv('TSR_2018_3m.csv', index=False)

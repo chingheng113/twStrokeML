@@ -133,7 +133,7 @@ if __name__ == '__main__':
     # CASEMCASE ==
     mcase = pd.read_csv(os.path.join('raw', 'CASEMCASE.csv'), na_values=np.nan)
     mcase = mcase[sv.mcase_id+sv.mcase_dt+sv.mcase_ca]
-    mcase.replace(to_replace={'F': 0, 'M': 1}, inplace=True)
+    mcase.replace(to_replace={2: 0, 1: 1}, inplace=True)
 
     # CASEDCASE ==
     dcase = pd.read_csv(os.path.join('raw', 'CASEDCASE.csv'), na_values=np.nan)

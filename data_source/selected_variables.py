@@ -2,7 +2,7 @@ ids = ['ICASE_ID', 'IDCASE_ID']
 # CASEMCASE
 mcase_id = ['ICASE_ID']
 mcase_dt = ['YOB']
-mcase_ca = ['GENDER_TX']
+mcase_ca = ['Gender']
 
 # CASEDCASE
 dcase_info_nm = ['HEIGHT_NM', 'WEIGHT_NM']

@@ -50,8 +50,8 @@ def is_tpa(df_case, keep_cols=False):
 
 
 def day_in_hospital(df_case):
-    in_date = pd.to_datetime(df_case['IH_DT'], format='%Y-%m-%d', errors='coerce')
-    out_date = pd.to_datetime(df_case['OH_DT'], format='%Y-%m-%d', errors='coerce')
+    in_date = pd.to_datetime(df_case['IH_DT'], format='%Y/%m/%d', errors='coerce')
+    out_date = pd.to_datetime(df_case['OH_DT'], format='%Y/%m/%d', errors='coerce')
     day_diff = out_date - in_date
     df_case['in_hosptial_days'] = day_diff.dt.days
     df_case[df_case['in_hosptial_days'] < 0] = np.nan
@@ -61,11 +61,11 @@ def day_in_hospital(df_case):
 
 def transfer_duration(df_case):
     df_case = df_case.fillna(value={'ONSETH_NM': 99, 'ONSETM_NM': 99, 'OTTIH_NM': 99, 'OTTIM_NM': 99})
-    onset = df_case['ONSET_DT'].map(str)+'-'+df_case['ONSETH_NM'].astype(int).map(str)+'-'+df_case['ONSETM_NM'].astype(int).map(str)
-    onset_day = pd.to_datetime(onset, format='%Y-%m-%d-%H-%M', errors='coerce')
+    onset = df_case['ONSET_DT'].map(str)+' '+df_case['ONSETH_NM'].astype(int).map(str)+':'+df_case['ONSETM_NM'].astype(int).map(str)
+    onset_day = pd.to_datetime(onset, format='%Y/%m/%d %H:%M', errors='coerce')
 
-    ot = df_case['OT_DT'].map(str) + '-' + df_case['OTTIH_NM'].astype(int).map(str) + '-' + df_case['OTTIM_NM'].astype(int).map(str)
-    ot_day = pd.to_datetime(ot, format='%Y-%m-%d-%H-%M', errors='coerce')
+    ot = df_case['OT_DT'].map(str) + ' ' + df_case['OTTIH_NM'].astype(int).map(str) + ':' + df_case['OTTIM_NM'].astype(int).map(str)
+    ot_day = pd.to_datetime(ot, format='%Y/%m/%d %H:%M', errors='coerce')
 
     diff = ot_day - onset_day
     mins = diff.dt.seconds/60
@@ -143,7 +143,7 @@ if __name__ == '__main__':
                           sv.dcase_lb_nm+sv.dcase_off_ca
     dcase = dcase[sv.ids+dcase_selected_cols]
     # OFF_ID == 3 排除死亡及病危出院
-    dcase = dcase[dcase.OFF_ID == 3]
+    dcase = dcase[dcase.OFF_ID == '3']
     dcase.drop(['OFF_ID'], axis=1, inplace=True)
     # 排除 other stroke
     dcase = dcase[dcase.ICD_ID != 99]

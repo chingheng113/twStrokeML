@@ -60,8 +60,8 @@ def logic_validate(df):
 
 def lowess_validate_on_BI(df):
     '''the boundaries are given by lowess_clean.R'''
-    upper_bound = [114.78681, 113.96771, 109.56282,  87.51552,  55.93302,  18.62162]
-    lower_bound = [84.64237,  83.82327,  79.41838,  57.37109,  25.78858, -11.52281]
+    upper_bound = [115.28060, 114.28058, 109.87628,  88.42083,  56.45594,  19.00439]
+    lower_bound = [84.09300,  83.09297,  78.68867,  57.23323,  25.26834, -12.18321]
     # for i in range(6):
     #     df = df[~((df['discharged_mrs'] == i) & (df['bi_total'] > lower_bound[i]) & (df['bi_total'] < upper_bound[i]))]
     df0 = df[(df['discharged_mrs'] == 0) & (df['bi_total'] > lower_bound[0]) & (df['bi_total'] < upper_bound[0])]

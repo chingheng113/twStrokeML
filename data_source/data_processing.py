@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # 排除 other stroke
     dcase = dcase[dcase.ICD_ID != 99]
     # replace
-    dcase.replace(to_replace={-999: np.nan, 'z': np.nan, 'N': 0, 'Y': 1}, inplace=True)
+    dcase.replace(to_replace={-999: np.nan, 'z': np.nan, 'Z': np.nan, 'N': 0, 'Y': 1}, inplace=True)
     # create is_tpa col
     dcase = is_tpa(dcase)
     # Days in hospital

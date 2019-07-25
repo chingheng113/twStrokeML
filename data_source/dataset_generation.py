@@ -25,7 +25,7 @@ if __name__ == '__main__':
     seed = range(1, 11, 1)
     print(seed)
     df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
-    dummy_cols = sv.mcase_ca+sv.dcase_info_ca+sv.dcase_icd_ca+['OFFDT_ID']+sv.drfur_ca
+    dummy_cols = sv.mcase_ca+sv.dcase_info_ca+sv.dcase_icd_ca+sv.dfahi_ca+['OFFDT_ID']+sv.ddgfa_ca+sv.drfur_ca
     df_all = make_dummy(df_all, dummy_cols)
     df_is = get_ischemic(df_all)
     df_he = get_hemorrhagic(df_all)

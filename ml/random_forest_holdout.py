@@ -30,15 +30,15 @@ def do_rf(hold_out_round, sub_class, experiment):
         save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'fs' + os.sep
         model_name = 'rf_fs_'+sub_class+'_h_'+str(hold_out_round)
     elif experiment == 2:
-        x_train_all = x_train_all.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
-        x_hold = x_hold.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_train_all = x_train_all.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+        x_hold = x_hold.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'all_nf' + os.sep
         model_name = 'rf_nf_' + sub_class + '_h_' + str(hold_out_round)
     else:
         x_train_all = data_util.feature_selection(x_train_all, sub_class)
-        x_train_all = x_train_all.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_train_all = x_train_all.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         x_hold = data_util.feature_selection(x_hold, sub_class)
-        x_hold = x_hold.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_1'], errors='ignore', axis=1)
+        x_hold = x_hold.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         save_path = '..' + os.sep + 'result' + os.sep + 'rf' + os.sep + 'fs_nf' + os.sep
         model_name = 'rf_fs_nf_'+sub_class+'_h_'+str(hold_out_round)
     #

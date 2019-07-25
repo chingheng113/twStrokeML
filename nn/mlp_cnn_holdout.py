@@ -100,13 +100,13 @@ def do_mlp_cnn(hold_out_round, sub_class, experiment):
         # training
         x_train_cnn, x_train_mlp = data_util.split_cnn_mlp_input(x_train_all.iloc[train])
         if experiment == 2:
-            x_train_cnn = x_train_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
-            x_train_mlp = x_train_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+            x_train_cnn = x_train_cnn.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+            x_train_mlp = x_train_mlp.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         if experiment == 1 or experiment == 3:
             x_train_cnn, x_train_mlp = data_util.selected_cnn_mlp_input(x_train_cnn, x_train_mlp, selected_features)
             if experiment == 3:
-                x_train_cnn = x_train_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
-                x_train_mlp = x_train_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+                x_train_cnn = x_train_cnn.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+                x_train_mlp = x_train_mlp.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         x_train_cnn = data_util.scale(x_train_cnn)
         x_train_mlp = data_util.scale(x_train_mlp)
         y_train = y_train_all.iloc[train]
@@ -114,13 +114,13 @@ def do_mlp_cnn(hold_out_round, sub_class, experiment):
         # Testing
         x_test_cnn, x_test_mlp = data_util.split_cnn_mlp_input(x_train_all.iloc[test])
         if experiment == 2:
-            x_test_cnn = x_test_cnn.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
-            x_test_mlp = x_test_mlp.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+            x_test_cnn = x_test_cnn.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+            x_test_mlp = x_test_mlp.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         if experiment == 1 or experiment == 3:
             x_test_cnn, x_test_mlp = data_util.selected_cnn_mlp_input(x_test_cnn, x_test_mlp, selected_features)
             if experiment == 3:
-                x_test_cnn = x_test_cnn.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
-                x_test_mlp = x_test_mlp.drop(['FLU_ID_1', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+                x_test_cnn = x_test_cnn.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+                x_test_mlp = x_test_mlp.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
         x_test_cnn = np.expand_dims(data_util.scale(x_test_cnn), 2)
         x_test_mlp = data_util.scale(x_test_mlp)
         y_test = y_train_all.iloc[test]

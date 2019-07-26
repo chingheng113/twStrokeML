@@ -42,7 +42,7 @@ if __name__ == '__main__':
     # -- Plot
     # fig = plt.figure(figsize=(15, 5))
     bubble_plot(df_3m, [m, b])
-    plt.ylabel('Discharge BI score')
+    plt.ylabel('Discharge BI total score')
     plt.xlabel('Discharge mRS')
-    # plt.title('Original BI/NIHSS')
+    plt.savefig('figure2-bubble', dpi=300)
     plt.show()

@@ -131,12 +131,12 @@ def imputation_by_median(df, cols):
 
 if __name__ == '__main__':
     # CASEMCASE ==
-    mcase = pd.read_csv(os.path.join('raw', 'CASEMCASE.csv'), na_values=np.nan)
+    mcase = pd.read_csv(os.path.join('raw', 'processed_CASEMCASE.csv'), na_values=np.nan)
     mcase = mcase[sv.mcase_id+sv.mcase_dt+sv.mcase_ca]
     mcase.replace(to_replace={2: 0, 1: 1}, inplace=True)
 
     # CASEDCASE ==
-    dcase = pd.read_csv(os.path.join('raw', 'CASEDCASE.csv'), na_values=np.nan)
+    dcase = pd.read_csv(os.path.join('raw', 'processed_CASEDCASE.csv'), na_values=np.nan)
     dcase_selected_cols = sv.dcase_info_nm+sv.dcase_info_dt+sv.dcase_info_ca+sv.dcase_time_nm+sv.dcase_time_dt+\
                           sv.dcase_time_ca+sv.dcase_gcsv_nm+sv.dcase_icd_ca+sv.dcase_subtype_ca+\
                           sv.dcase_treat_bo+sv.dcase_med_bo+sv.dcase_complicaton_bo+sv.dcase_derterioation_bo+\
@@ -171,34 +171,34 @@ if __name__ == '__main__':
     df_final = create_age(df_final)
 
     # CASEDBMRS ==
-    dbmrs = pd.read_csv(os.path.join('raw', 'CASEDBMRS.csv'), na_values=np.nan)
+    dbmrs = pd.read_csv(os.path.join('raw', 'processed_CASEDBMRS.csv'), na_values=np.nan)
     dbmrs = dbmrs[sv.ids+sv.dbmrs_nm]
     dbmrs.replace(to_replace={-999: np.nan}, inplace=True)
 
     # CASEDCTMR ==
-    dctmr = pd.read_csv(os.path.join('raw', 'CASEDCTMR.csv'), na_values=np.nan)
+    dctmr = pd.read_csv(os.path.join('raw', 'processed_CASEDCTMR.csv'), na_values=np.nan)
     dctmr = dctmr[sv.ids+sv.dctmr_nm]
     dctmr.replace(to_replace={'N': 0, 'Y': 1}, inplace=True)
 
     # CASEDGFA ==
-    dgfa = pd.read_csv(os.path.join('raw', 'CASEDDGFA.csv'), na_values=np.nan)
+    dgfa = pd.read_csv(os.path.join('raw', 'processed_CASEDDGFA.csv'), na_values=np.nan)
     dgfa = dgfa[sv.ids+sv.ddgfa_ca]
     dgfa.replace(to_replace={-999: np.nan, 'z': np.nan, 'Z': np.nan}, inplace=True)
     dgfa = nan_to_dont_know(dgfa)
 
     # CASEDFAHI
-    dfahi = pd.read_csv(os.path.join('raw', 'CASEDFAHI.csv'), na_values=np.nan)
+    dfahi = pd.read_csv(os.path.join('raw', 'processed_CASEDFAHI.csv'), na_values=np.nan)
     dfahi = dfahi[sv.ids+sv.dfahi_ca]
     dfahi.replace(to_replace={9: np.nan, 'Z': np.nan}, inplace=True)
     dfahi = nan_to_dont_know(dfahi)
 
     # CASEDNIHS
-    dnihs = pd.read_csv(os.path.join('raw', 'CASEDNIHS.csv'), na_values=np.nan)
+    dnihs = pd.read_csv(os.path.join('raw', 'processed_CASEDNIHS.csv'), na_values=np.nan)
     dnihs = dnihs[sv.ids+sv.dnihs_nm]
     dnihs.replace(to_replace={-999: np.nan}, inplace=True)
 
     # CASEDRFUS
-    drfur = pd.read_csv(os.path.join('raw', 'CASEDRFUR.csv'), na_values=np.nan)
+    drfur = pd.read_csv(os.path.join('raw', 'processed_CASEDRFUR.csv'), na_values=np.nan)
     drfur = drfur[sv.ids+sv.drfur_ca+sv.drfur_bo+sv.drfur_nm]
     drfur['MRS_TX_1'].loc[~drfur.MRS_TX_1.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan
     drfur['MRS_TX_3'].loc[~drfur.MRS_TX_3.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan

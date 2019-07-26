@@ -25,7 +25,10 @@ def get_final_features(feature_df, feature_names):
     feature_dict = Counter(all_selected_features)
     temp = pd.DataFrame.from_dict(feature_dict, orient='index', columns=['value']).reset_index()
     final_features = pd.DataFrame(data=temp['value'].values, index=temp['index'].values, columns=['count'])
-    return final_features
+    final_features['name'] = final_features.index
+    sorted_final_features = final_features.sort_values(by=['count', 'name'], ascending=False)
+    sorted_final_features.drop(['name'], axis=1, inplace=True)
+    return sorted_final_features
 
 
 def get_robust_features(subtype):
@@ -47,12 +50,14 @@ def get_robust_features(subtype):
 def get_feature_names():
     id_train_all, x_train_all, y_train_all = data_util.get_poor_god(
         'training_is_0.csv', sub_class='ischemic')
-    x_train_all.rename(columns={'MRS_1': '30-day mRS', 'discharged_mrs': 'Discharge mRS', 'Toilet_use': 'Toilet use',
+    x_train_all.rename(columns={'MRS_TX_1': '30-day mRS', 'discharged_mrs': 'Discharge mRS', 'Toilet_use': 'Toilet use',
                                 'Bowel_control': 'Bowel control', 'Bladder_control': 'Bladder control',
-                                'TRMNG_FL': 'Nasogastric tube', 'TRMRE_FL': 'Rehab', 'OFFDT_ID_1.0': 'Discharge to Home',
-                                'NIHS_6aL_out': 'Discharge NIHSS 6A', 'NIHS_6aL_in': 'Admission NIHSS 6A',
-                                'NIHS_6bR_out': 'Discharge NIHSS 6B', 'NIHS_10_out': 'Discharge NIHSS 10',
-                                'NIHS_5aL_out': 'Discharge NIHSS 5A', 'NIHS_5bR_out': 'Discharge NIHSS 5B'}
+                                'TRMNG_FL': 'Nasogastric tube', 'TRMRE_FL': 'Rehab', 'OFFDT_ID_1': 'Discharge to Home',
+                                'NIHS_6aL_out': 'Discharge NIHSS 6aL', 'NIHS_6aL_in': 'Admission NIHSS 6aL',
+                                'NIHS_6bR_out': 'Discharge NIHSS 6bR', 'NIHS_10_out': 'Discharge NIHSS 10',
+                                'NIHS_5aL_out': 'Discharge NIHSS 5aL', 'NIHS_5bR_out': 'Discharge NIHSS 5bR',
+                                'NIHS_1b_out': 'Discharge NIHSS 1b', 'NIHS_9_out': 'Discharge NIHSS 9',
+                                'NIHS_5aL_in': 'Admission NIHSS 5aL', 'NIHS_1b_in': 'Admission NIHSS 1b'}
                        , inplace=True)
     return x_train_all.columns.values
 

@@ -25,10 +25,10 @@ def get_final_features(feature_df, feature_names):
     feature_dict = Counter(all_selected_features)
     temp = pd.DataFrame.from_dict(feature_dict, orient='index', columns=['value']).reset_index()
     final_features = pd.DataFrame(data=temp['value'].values, index=temp['index'].values, columns=['count'])
-    final_features['name'] = final_features.index
-    sorted_final_features = final_features.sort_values(by=['count', 'name'], ascending=False)
-    sorted_final_features.drop(['name'], axis=1, inplace=True)
-    return sorted_final_features
+    # final_features['name'] = final_features.index
+    # sorted_final_features = final_features.sort_values(by=['count', 'name'], ascending=False)
+    # sorted_final_features.drop(['name'], axis=1, inplace=True)
+    return final_features
 
 
 def get_robust_features(subtype):

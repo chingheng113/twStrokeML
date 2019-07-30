@@ -157,13 +157,13 @@ def do_mlp_cnn(hold_out_round, sub_class, experiment):
     x_hold_cnn, x_hold_mlp = data_util.split_cnn_mlp_input(x_hold)
 
     if experiment == 2:
-        x_hold_cnn = x_hold_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
-        x_hold_mlp = x_hold_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+        x_hold_cnn = x_hold_cnn.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+        x_hold_mlp = x_hold_mlp.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
     if experiment == 1 or experiment == 3:
         x_hold_cnn, x_hold_mlp = data_util.selected_cnn_mlp_input(x_hold_cnn, x_hold_mlp, selected_features)
         if experiment == 3:
-            x_hold_cnn = x_hold_cnn.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
-            x_hold_mlp = x_hold_mlp.drop(['VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+            x_hold_cnn = x_hold_cnn.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
+            x_hold_mlp = x_hold_mlp.drop(['FLU_ID_1_1.0', 'FLU_ID_1_2.0', 'FLU_ID_1_3.0', 'FLU_ID_1_4.0', 'FLU_ID_1_5.0', 'FLU_ID_1_6.0', 'VERS_1', 'VEIHD_1', 'MRS_TX_1'], errors='ignore', axis=1)
 
     x_hold_cnn = np.expand_dims(data_util.scale(x_hold_cnn), 2)
     x_hold_mlp = data_util.scale(x_hold_mlp)

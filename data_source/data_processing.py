@@ -200,8 +200,10 @@ if __name__ == '__main__':
     # CASEDRFUS
     drfur = pd.read_csv(os.path.join('raw', 'processed_CASEDRFUR.csv'), na_values=np.nan)
     drfur = drfur[sv.ids+sv.drfur_ca+sv.drfur_bo+sv.drfur_nm]
-    drfur['MRS_TX_1'].loc[~drfur.MRS_TX_1.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan
-    drfur['MRS_TX_3'].loc[~drfur.MRS_TX_3.isin([0, 1, 2, 3, 4, 5, 6])] = np.nan
+    drfur['MRS_TX_1'].loc[~drfur.MRS_TX_1.isin([0, 1, 2, 3, 4, 5, 6, '0', '1', '2', '3', '4', '5', '6'])] = np.nan
+    drfur['MRS_TX_1'] = drfur['MRS_TX_1'].astype(float)
+    drfur['MRS_TX_3'].loc[~drfur.MRS_TX_3.isin([0, 1, 2, 3, 4, 5, 6, '0', '1', '2', '3', '4', '5', '6'])] = np.nan
+    drfur['MRS_TX_3'] = drfur['MRS_TX_3'].astype(float)
     drfur.replace(to_replace={'N': 0, 'Y': 1}, inplace=True)
 
     # Merge together

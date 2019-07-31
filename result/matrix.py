@@ -13,17 +13,17 @@ if __name__ == '__main__':
     # all, fs
     status = 'fs'
     # ischemic, hemorrhagic
-    sub_class = 'hemorrhagic'
+    sub_class = 'ischemic'
     hold_out_round = 0
     for model_name in model_names:
         precisions, recalls, fscores = performance_util.get_all_performance_scores(model_name, sub_class, status)
         print(model_name)
-        print(round(np.mean(precisions), 3))
-        print(round(np.std(precisions), 3))
-        print(round(np.mean(recalls), 3))
-        print(round(np.std(recalls), 3))
-        print(round(np.mean(fscores), 3))
-        print(round(np.std(fscores), 3))
+        print(round(np.mean(precisions), 3)*100)
+        print(round(np.std(precisions), 3)*100)
+        print(round(np.mean(recalls), 3)*100)
+        print(round(np.std(recalls), 3)*100)
+        print(round(np.mean(fscores), 3)*100)
+        print(round(np.std(fscores), 3)*100)
         # report = performance_util.get_average_test_classification_report(model_name, sub_class, status)
         # print(report)
 print('done')

@@ -190,8 +190,13 @@ def get_all_performance_scores(model_name, sub_class, status):
         filepath = model_name + os.sep + status + os.sep
         if status == 'fs':
             file_name = model_name + '_' + status + '_' + sub_class + '_h_' + str(inx) + '_hold.csv'
-        else:
+        elif status == 'all':
             file_name = model_name + '_' + sub_class + '_h_' + str(inx) + '_hold.csv'
+        elif status == 'all_nf':
+            file_name = model_name + '_nf_' + sub_class + '_h_' + str(inx) + '_hold.csv'
+        else:
+            file_name = model_name + '_fs_nf_' + sub_class + '_h_' + str(inx) + '_hold.csv'
+
         df = pd.read_csv(filepath+file_name, encoding='utf8')
         label = list(df['label'].values)
         probas_ = df[['0', '1']].values

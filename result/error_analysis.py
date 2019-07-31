@@ -6,6 +6,7 @@ import numpy as np
 from my_utils import performance_util as pu
 from my_utils import data_util
 import os
+import matplotlib.pyplot as plt
 
 
 def make_dummy(df, category_features):
@@ -200,14 +201,15 @@ all_right_wrong_i['change_1m'] = all_right_wrong_i['MRS_TX_1'] - all_right_wrong
 all_right_wrong_i['change_3m'] = all_right_wrong_i['MRS_TX_3'] - all_right_wrong_i['MRS_TX_1']
 all_right_wrong_i.to_csv('all_right_wrong_i.csv', index=False)
 
-# plot fi
+# plot fiure
 # labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])
-# fig, ax = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
-# fig.savefig("hemo.png", dpi=300)
+# fig_h, ax_h = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
+# fig_h.suptitle('Misclassified hemorrhagic stroke cases')
+# fig_h.savefig("hemo.png", dpi=300)
 
-# labels = venn.get_labels([mlp_err_i, mlp_cnn_err_i, svm_err_i, rf_err_i], fill=['number'])
-# fig, ax = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
-# fig.savefig("isch.png", dpi=300)
-
+labels = venn.get_labels([mlp_err_i, mlp_cnn_err_i, svm_err_i, rf_err_i], fill=['number'])
+fig_i, ax_i = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
+fig_i.suptitle('Misclassified Ischemic stroke cases')
+fig_i.savefig("isch.png", dpi=300)
 
 print('done')

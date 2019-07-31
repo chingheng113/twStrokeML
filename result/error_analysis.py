@@ -8,6 +8,16 @@ from my_utils import data_util
 import os
 
 
+def make_dummy(df, category_features):
+    for fe in category_features:
+        dummies = pd.get_dummies(df[fe], prefix=fe)
+        for i, dummy in enumerate(dummies):
+            df.insert(loc=df.columns.get_loc(fe)+i+1, column=dummy, value=dummies[dummy].values)
+    df.drop(category_features, axis=1, inplace=True)
+    return df
+
+
+
 mlp_err_h = pd.Series()
 mlp_right_h = pd.Series()
 for i in range(10):
@@ -129,8 +139,9 @@ rf_right_i.drop_duplicates(inplace=True)
 
 # create data
 df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
+df_all = make_dummy(df_all, ['OFFDT_ID'])
+print('h')
 selected_features_h = data_util.get_selected_feature_name('hemorrhagic')
-selected_features_h = ['OFFDT_ID' if x=='OFFDT_ID_1' else x for x in selected_features_h]
 all_wrong_h = set(mlp_cnn_err_h) & set(mlp_err_h) & set(svm_err_h) & set(rf_err_h)
 wrong_icaseid_h = []
 wrong_idcaseid_h = []
@@ -158,7 +169,36 @@ all_right_wrong_h = pd.concat([all_right_h_df, all_wrong_h_df])
 all_right_wrong_h['change_1m'] = all_right_wrong_h['MRS_TX_1'] - all_right_wrong_h['discharged_mrs']
 all_right_wrong_h['change_3m'] = all_right_wrong_h['MRS_TX_3'] - all_right_wrong_h['MRS_TX_1']
 all_right_wrong_h.to_csv('all_right_wrong_h.csv', index=False)
-print('a')
+
+print('i')
+selected_features_i = data_util.get_selected_feature_name('ischemic')
+all_wrong_i = set(mlp_cnn_err_i) & set(mlp_err_i) & set(svm_err_i) & set(rf_err_i)
+wrong_icaseid_i = []
+wrong_idcaseid_i = []
+for v in list(all_wrong_i):
+    ids = v.split('|')
+    wrong_icaseid_i.append(ids[0])
+    wrong_idcaseid_i.append(ids[1])
+all_wrong_i_df = df_all.loc[(df_all['ICASE_ID'].isin(wrong_icaseid_i)) & (df_all['IDCASE_ID'].isin(wrong_idcaseid_i))]
+all_wrong_i_df = all_wrong_i_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_TX_3', 'onset_age', 'Gender'], selected_features_i)]
+all_wrong_i_df['ctype'] = '0'
+
+
+all_right_i = set(mlp_cnn_right_i) & set(mlp_right_i) & set(svm_right_i) & set(rf_right_i)
+right_icaseid_i = []
+right_idcaseid_i = []
+for v in list(all_right_i):
+    ids = v.split('|')
+    right_icaseid_i.append(ids[0])
+    right_idcaseid_i.append(ids[1])
+all_right_i_df = df_all.loc[(df_all['ICASE_ID'].isin(right_icaseid_i)) & (df_all['IDCASE_ID'].isin(right_idcaseid_i))]
+all_right_i_df = all_right_i_df[np.append(['ICASE_ID', 'IDCASE_ID', 'MRS_TX_3', 'onset_age', 'Gender'], selected_features_i)]
+all_right_i_df['ctype'] = '1'
+
+all_right_wrong_i = pd.concat([all_right_i_df, all_wrong_i_df])
+all_right_wrong_i['change_1m'] = all_right_wrong_i['MRS_TX_1'] - all_right_wrong_i['discharged_mrs']
+all_right_wrong_i['change_3m'] = all_right_wrong_i['MRS_TX_3'] - all_right_wrong_i['MRS_TX_1']
+all_right_wrong_i.to_csv('all_right_wrong_i.csv', index=False)
 
 # plot fi
 # labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])

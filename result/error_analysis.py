@@ -130,6 +130,7 @@ rf_right_i.drop_duplicates(inplace=True)
 # create data
 df_all = data_util.load_all('TSR_2018_3m_noMissing_validated.csv')
 selected_features_h = data_util.get_selected_feature_name('hemorrhagic')
+selected_features_h = ['OFFDT_ID' if x=='OFFDT_ID_1' else x for x in selected_features_h]
 all_wrong_h = set(mlp_cnn_err_h) & set(mlp_err_h) & set(svm_err_h) & set(rf_err_h)
 wrong_icaseid_h = []
 wrong_idcaseid_h = []

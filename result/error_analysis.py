@@ -202,14 +202,14 @@ all_right_wrong_i['change_3m'] = all_right_wrong_i['MRS_TX_3'] - all_right_wrong
 all_right_wrong_i.to_csv('all_right_wrong_i.csv', index=False)
 
 # plot fiure
-# labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])
-# fig_h, ax_h = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
-# fig_h.suptitle('Misclassified hemorrhagic stroke cases')
-# fig_h.savefig("hemo.png", dpi=300)
+labels = venn.get_labels([mlp_err_h, mlp_cnn_err_h, svm_err_h, rf_err_h], fill=['number'])
+fig_h, ax_h = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
+fig_h.suptitle('Hemorrhagic stroke cases', fontsize=30)
+fig_h.savefig("hemo.png", dpi=300)
 
-labels = venn.get_labels([mlp_err_i, mlp_cnn_err_i, svm_err_i, rf_err_i], fill=['number'])
-fig_i, ax_i = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
-fig_i.suptitle('Misclassified Ischemic stroke cases')
-fig_i.savefig("isch.png", dpi=300)
+# labels = venn.get_labels([mlp_err_i, mlp_cnn_err_i, svm_err_i, rf_err_i], fill=['number'])
+# fig_i, ax_i = venn.venn4(labels, names=['MLP', 'HANN', 'SVM', 'RF'])
+# fig_i.suptitle('Ischemic stroke cases', fontsize=30)
+# fig_i.savefig("isch.png", dpi=300)
 
 print('done')

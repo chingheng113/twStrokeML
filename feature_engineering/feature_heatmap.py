@@ -72,6 +72,7 @@ def plot_heatmap(is_df, he_df):
     plt.subplot(122)
     plt.title('Hemorrhagic stroke', fontsize=14)
     sns.heatmap(he_df, annot=True, fmt="g", cmap='viridis', linewidths=0.3)
+    fig.savefig("fs_heatmap.png", dpi=600)
     plt.show()
 
 

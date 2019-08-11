@@ -157,5 +157,5 @@ if __name__ == '__main__':
     plt.title('HANN on Hemorrhagic Stroke', fontsize=14)
     plt.legend(loc="lower right", prop={'size': 12})
 
-    fig.savefig("roc.png", dpi=600)
+    fig.savefig("roc.png", dpi=300)
     plt.show()

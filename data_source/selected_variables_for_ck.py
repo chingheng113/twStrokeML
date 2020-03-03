@@ -44,7 +44,7 @@ dcase_off_ca = ['OFF_ID', 'OFFDT_ID']
 dcase_ck_id = ['EDU_ID', 'PRO_ID', 'THD_ID', 'TRMOP_ID', 'CD_ID', 'CDR_ID', 'CDL_ID', 'TCCS_ID', 'TCCSR_ID', 'TCCSL_ID',
                'TCCSBA_ID', 'MCDR_ID', 'MCDL_ID', 'MCDBA_ID', 'MCDRI_ID', 'MCDLI_ID']
 
-dcase_ck_fl = ['THDA_FL', 'THDH_FL', 'THDI_FL', 'THDV_FL', 'OMST_FL', 'OMNS_FL', 'MRI_FL', 'MRA_FL', 'CTA_FL',
+dcase_ck_fl = ['THDA_FL', 'THDH_FL', 'THDI_FL', 'THDV_FL', 'THDAM_FL', 'OMST_FL', 'OMNS_FL', 'MRI_FL', 'MRA_FL', 'CTA_FL',
                'DSA_FL', 'CT_FL']
 
 dcase_ck_tx = ['OMWA_TX']

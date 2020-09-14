@@ -46,6 +46,13 @@ for i in ['0', '1', '2', '3', '4', '5']:
         target.append(label.index('MRS_3_'+j))
         value.append(data[(data['MRS_1_'+i] == 1) & (data['MRS_3_'+j] == 1)].size)
 
+
+label = ['Infarct' if x == 'ICD_1' else x for x in label]
+label = ['TIA' if x == 'ICD_2' else x for x in label]
+label = ['ICH' if x == 'ICD_3' else x for x in label]
+label = ['SAH' if x == 'ICD_4' else x for x in label]
+label = ['Other stroke' if x == 'ICD_5' else x for x in label]
+
 fig = go.Figure(data=[go.Sankey(
     node = dict(
       pad = 15,

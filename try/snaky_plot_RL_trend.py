@@ -52,6 +52,7 @@ label = ['TIA' if x == 'ICD_2' else x for x in label]
 label = ['ICH' if x == 'ICD_3' else x for x in label]
 label = ['SAH' if x == 'ICD_4' else x for x in label]
 label = ['Other stroke' if x == 'ICD_5' else x for x in label]
+label = ['NIHSS_change_-1' if x == 'NIHSS_change_-1' else x for x in label]
 
 fig = go.Figure(data=[go.Sankey(
     node = dict(
